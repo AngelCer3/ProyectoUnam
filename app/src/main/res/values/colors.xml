@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="azul_fondo">#E3F2FD</color> <!-- Azul claro fondo -->
+    <color name="azul_medio">#BBDEFB</color> <!-- Azul intermedio -->
+    <color name="azul_oscuro">#1E88E5</color> <!-- Azul fuerte para texto -->
+    <color name="blanco">#FFFFFF</color> <!-- Blanco puro -->
+    <color name="gris_texto">#37474F</color> <!-- Gris oscuro para texto -->
+    <color name="transparente_blanco">#80FFFFFF</color> <!-- Blanco con transparencia -->
+    <color name="boton_fondo">#F5F5F5</color> <!-- Color sutil para botones -->
+</resources>
