@@ -166,10 +166,10 @@
 
     <!-- Botón de Envío -->
     <Button
-        android:id="@+id/btnEnviar"
+        android:id="@+id/btnSiguiente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enviar"
+        android:text="Siguiente"
         android:backgroundTint="@color/azul_medio"
         android:textColor="@color/blanco"
         android:padding="12dp"
