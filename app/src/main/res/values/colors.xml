@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black">#040404</color>
     <color name="azul_fondo">#E3F2FD</color> <!-- Azul claro fondo -->
     <color name="azul_medio">#BBDEFB</color> <!-- Azul intermedio -->
     <color name="azul_oscuro">#1E88E5</color> <!-- Azul fuerte para texto -->
