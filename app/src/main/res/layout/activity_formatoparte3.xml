@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo_curvo"
-    tools:context=".Formatoparte1Activity">
+    tools:context=".Formatoparte3Activity">
 
     <!-- Contenedor de Logos -->
     <ImageView
@@ -36,7 +36,7 @@
         android:id="@+id/titulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="CÉDULA DE VALORACIÓN SOCIOECONÓMICA\nINFONAVIT - UNAM"
+        android:text="SECCIÓN II - Situación de la Vivienda"
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -68,144 +68,233 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- DATOS GENERALES DEL ACREDITADO -->
+                <!-- Campos de datos adicionales -->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DATOS GENERALES DEL ACREDITADO"
+                    android:text="Vivienda Localizada"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
-
                 <EditText
-                    android:id="@+id/entidad_federativa"
+                    android:id="@+id/vivienda_localizada"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Entidad Federativa"
+                    android:hint="¿Está localizada?"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vivienda Habitada"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
                 <EditText
-                    android:id="@+id/ciudad_municipio_delegacion"
+                    android:id="@+id/vivienda_habitada"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ciudad / Municipio / Delegación"
+                    android:hint="¿Está habitada?"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Verificación del Método"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
                 <EditText
-                    android:id="@+id/apellido_paterno"
+                    android:id="@+id/verificacion_metodo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Apellido Paterno"
+                    android:hint="Método de Verificación"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Verificación Otro"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
                 <EditText
-                    android:id="@+id/apellido_materno"
+                    android:id="@+id/verificacion_otro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Apellido Materno"
+                    android:hint="Otro Método de Verificación"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vecino Nombre"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
                 <EditText
-                    android:id="@+id/nombres"
+                    android:id="@+id/vecino_nombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombres"
+                    android:hint="Nombre del Vecino"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
-                <!-- DATOS DEL DOMICILIO -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vecino Dirección"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/vecino_direccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Dirección del Vecino"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Acreditado Vive"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/acreditado_vive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="¿Vive el Acreditado?"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jefe de Familia Nombre"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/jefe_familia_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del Jefe de Familia"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jefe de Familia Relación"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/jefe_familia_relacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Relación con el Jefe de Familia"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha que Habita la Vivienda"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/fecha_ocupacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha que habita la vivienda"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Situación de Vivienda -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="16dp"
-                    android:text="DOMICILIO DEL ACREDITADO"
+                    android:text="Situación de Vivienda"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
-
-                <EditText
-                    android:id="@+id/domicilio_calle"
+                <Spinner
+                    android:id="@+id/situacion_vivienda_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Calle"
+                    android:entries="@array/situacion_vivienda_opciones"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Documento de Traspaso"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/documento_traspaso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Documento de Traspaso"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo de Documento de Traspaso"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
                 <EditText
-                    android:id="@+id/domicilio_condominio"
+                    android:id="@+id/tipo_documento_traspaso"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Condominio"
+                    android:hint="Tipo de Documento"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Documento Mostrado"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
                 <EditText
-                    android:id="@+id/domicilio_it"
+                    android:id="@+id/documento_mostrado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="IT"
+                    android:hint="Documento Mostrado"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Documento Copia Entregada"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
                 <EditText
-                    android:id="@+id/domicilio_mz"
+                    android:id="@+id/documento_copia_entregada"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Mz"
+                    android:hint="¿Copia del documento entregada?"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
-                <EditText
-                    android:id="@+id/domicilio_no_ext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Número Exterior"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <EditText
-                    android:id="@+id/domicilio_no_int"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Número Interior"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <EditText
-                    android:id="@+id/domicilio_edif"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Edificio"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <EditText
-                    android:id="@+id/domicilio_colonia"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Colonia"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <EditText
-                    android:id="@+id/domicilio_cp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Código Postal"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <EditText
-                    android:id="@+id/domicilio_curp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="CURP"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>

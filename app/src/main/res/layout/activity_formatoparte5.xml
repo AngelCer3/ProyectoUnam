@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo_curvo"
+    tools:context=".Formatoparte5Activity">
+
+    <!-- Contenedor de Logos -->
+    <ImageView
+        android:id="@+id/logo_izquierdo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_izquierdo"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"/>
+
+    <ImageView
+        android:id="@+id/logo_derecho"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_derecho"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"/>
+
+    <!-- Encabezado -->
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="SECCIÓN IV - Información de Reestructuración"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/logo_izquierdo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- CardView con el contenido -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/titulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Campo Reestructura Motivo -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Motivo de Reestructuración"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_motivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Motivo de la reestructuración"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Documento -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Documento de Reestructuración"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_documento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Documento de la reestructuración"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Tipo Documento -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo de Documento"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_tipo_documento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Tipo de documento"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Solicitante es Acreditado -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Solicitante es Acreditado"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_solicitante_es_acred"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Solicitante es Acreditado"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Nombre Solicitante -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre del Solicitante"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_solicitante_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del solicitante"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Parentesco -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Parentesco con el Titular"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_parentesco"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Parentesco con el titular"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Motivo Personal -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Motivo Personal de Reestructuración"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_motivo_personal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Motivo personal"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Sexo -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sexo"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_sexo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Sexo"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Fecha Nacimiento -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de Nacimiento"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_fecha_nacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha de nacimiento"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="date"/>
+
+                <!-- Campo Reestructura Edad -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edad"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_edad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Edad"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Lugar Nacimiento -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lugar de Nacimiento"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_lugar_nacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Lugar de nacimiento"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Grado de Estudios -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grado de Estudios"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_grado_estudios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Grado de estudios"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Conocimiento en Computación -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Conocimiento en Computación"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_conocimiento_comp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Conocimiento en computación"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Discapacidad -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿Discapacidad?"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_discapacidad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="¿Tiene alguna discapacidad?"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Dictamen -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dictamen Médico"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_dictamen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Dictamen médico"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Institución Dictamen -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Institución del Dictamen"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_institucion_dictamen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Institución del dictamen"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Fecha Dictamen -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha del Dictamen"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_fecha_dictamen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha del dictamen"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="date"/>
+
+                <!-- Campo Reestructura Porcentaje Discapacidad -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Porcentaje de Discapacidad"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_porcentaje_discapacidad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Porcentaje de discapacidad"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="numberDecimal"/>
+
+                <!-- Campo Reestructura Estado Civil -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estado Civil"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_estado_civil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Estado civil"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Fecha Estado Civil -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de Estado Civil"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_fecha_estado_civil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha de estado civil"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="date"/>
+
+                <!-- Campo Reestructura Ex-Esposo Aportación -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aportación del Ex-Esposo"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_exesposo_aportacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Aportación del ex-esposo"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Ex-Esposo Monto -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monto de Aportación"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_exesposo_monto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Monto de aportación"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="numberDecimal"/>
+
+                <!-- Campo Reestructura Régimen Conyugal -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Régimen Conyugal"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_regimen_conyugal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Régimen conyugal"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Vive con Cónyuge -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿Vive con su cónyuge?"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_vive_con_conyuge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="¿Vive con su cónyuge?"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Reestructura Fecha No Convive -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de No Convivencia"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/reestructura_fecha_no_convive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha de no convivencia"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="date"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botón de Envío -->
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Siguiente"
+        android:backgroundTint="@color/azul_medio"
+        android:textColor="@color/blanco"
+        android:padding="12dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

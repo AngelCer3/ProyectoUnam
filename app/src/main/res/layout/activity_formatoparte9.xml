@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo_curvo"
-    tools:context=".Formatoparte2Activity">
+    tools:context=".Formatoparte9Activity">
 
-    <!-- Contenedor de Logos -->
+    <!-- Logos -->
     <ImageView
         android:id="@+id/logo_izquierdo"
         android:layout_width="100dp"
@@ -17,7 +17,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"/>
 
     <ImageView
@@ -28,16 +28,16 @@
         android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"/>
 
-    <!-- Encabezado -->
+    <!-- Título -->
     <TextView
         android:id="@+id/titulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="SECCIÓN I. RESULTADOS DE LAS VISITAS"
-        android:textSize="18sp"
+        android:text="SECCIÓN VIII: Información Laboral del Cónyuge"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/black"
@@ -46,17 +46,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- CardView con el contenido -->
+    <!-- Contenedor de datos -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
-        android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/titulo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnSiguiente">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -68,116 +68,99 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Visita 1 -->
+                <!-- Información Laboral del Cónyuge -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Visita 1"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-
-                <EditText
-                    android:id="@+id/visita1_fecha"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha de la visita 1"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <EditText
-                    android:id="@+id/visita1_hora"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Hora de la visita 1"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <Spinner
-                    android:id="@+id/visita1_resultado"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/resultados_opciones"/>
-
-                <!-- Visita 2 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Visita 2"
+                    android:text="Datos Laborales del Cónyuge"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="16dp"/>
+                    android:paddingBottom="8dp"/>
 
                 <EditText
-                    android:id="@+id/visita2_fecha"
+                    android:id="@+id/conyuge_activo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Fecha de la visita 2"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Cónyuge Activo (Sí/No)"/>
 
                 <EditText
-                    android:id="@+id/visita2_hora"
+                    android:id="@+id/conyuge_ocupacion_actual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Hora de la visita 2"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <Spinner
-                    android:id="@+id/visita2_resultado"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/resultados_opciones"/>
-
-                <!-- Visita 3 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Visita 3"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="16dp"/>
+                    android:hint="Ocupación Actual del Cónyuge"/>
 
                 <EditText
-                    android:id="@+id/visita3_fecha"
+                    android:id="@+id/institucion_trabajo_conyuge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Fecha de la visita 3"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Institución donde Trabaja el Cónyuge"/>
 
                 <EditText
-                    android:id="@+id/visita3_hora"
+                    android:id="@+id/conyuge_actividad_remunerada"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Hora de la visita 3"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Actividad Remunerada del Cónyuge"/>
 
-                <Spinner
-                    android:id="@+id/visita3_resultado"
+                <EditText
+                    android:id="@+id/conyuge_contrato_laboral"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/resultados_opciones"/>
+                    android:hint="Tipo de Contrato Laboral del Cónyuge"/>
 
-                <!-- Botón de Siguiente -->
-                <Button
-                    android:id="@+id/btnSiguiente"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/conyuge_ingreso_mensual"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Siguiente"
-                    android:backgroundTint="@color/azul_medio"
-                    android:textColor="@color/blanco"
-                    android:padding="12dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    android:hint="Ingreso Mensual del Cónyuge"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:id="@+id/conyuge_empresa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Empresa donde Trabaja el Cónyuge"/>
+
+                <EditText
+                    android:id="@+id/conyuge_antiguedad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Antigüedad en su Empresa Actual"/>
+
+                <EditText
+                    android:id="@+id/comprobante_ingreso_conyuge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cuenta con Comprobante de Ingresos (Sí/No)"/>
+
+                <EditText
+                    android:id="@+id/institucion_cotizacion_conyuge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Institución de Cotización del Cónyuge"/>
+
+                <EditText
+                    android:id="@+id/ingresos_conceptos_conyuge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Conceptos de Ingreso del Cónyuge"/>
+
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
+
+    <!-- Botón Siguiente -->
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Siguiente"
+        android:backgroundTint="@color/azul_medio"
+        android:textColor="@color/blanco"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo_curvo"
-    tools:context=".Formatoparte2Activity">
+    tools:context=".Formatoparte6Activity">
 
-    <!-- Contenedor de Logos -->
+    <!-- Logos -->
     <ImageView
         android:id="@+id/logo_izquierdo"
         android:layout_width="100dp"
@@ -36,7 +36,7 @@
         android:id="@+id/titulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="SECCIÓN I. RESULTADOS DE LAS VISITAS"
+        android:text="SECCIÓN V: Información del Cónyuge"
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- CardView con el contenido -->
+    <!-- Contenedor principal -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,116 +68,94 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Visita 1 -->
+                <!-- Campos del cónyuge -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Visita 1"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-
-                <EditText
-                    android:id="@+id/visita1_fecha"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha de la visita 1"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <EditText
-                    android:id="@+id/visita1_hora"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Hora de la visita 1"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <Spinner
-                    android:id="@+id/visita1_resultado"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/resultados_opciones"/>
-
-                <!-- Visita 2 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Visita 2"
+                    android:text="Datos del Cónyuge"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="16dp"/>
+                    android:paddingBottom="8dp"/>
 
                 <EditText
-                    android:id="@+id/visita2_fecha"
+                    android:id="@+id/conyuge_nombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Fecha de la visita 2"
+                    android:hint="Nombre del Cónyuge"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
                 <EditText
-                    android:id="@+id/visita2_hora"
+                    android:id="@+id/conyuge_fecha_nacimiento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Hora de la visita 2"
+                    android:hint="Fecha de Nacimiento"
                     android:background="@android:color/transparent"
                     android:padding="8dp"/>
 
-                <Spinner
-                    android:id="@+id/visita2_resultado"
+                <EditText
+                    android:id="@+id/conyuge_edad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/resultados_opciones"/>
+                    android:hint="Edad"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
 
-                <!-- Visita 3 -->
+                <!-- Spinner para el sexo del cónyuge -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Visita 3"
+                    android:text="Sexo"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="16dp"/>
-
-                <EditText
-                    android:id="@+id/visita3_fecha"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha de la visita 3"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <EditText
-                    android:id="@+id/visita3_hora"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Hora de la visita 3"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:textSize="14sp"
+                    android:paddingTop="8dp"/>
 
                 <Spinner
-                    android:id="@+id/visita3_resultado"
+                    android:id="@+id/conyuge_sexo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/resultados_opciones"/>
+                    android:padding="8dp"/>
 
-                <!-- Botón de Siguiente -->
-                <Button
-                    android:id="@+id/btnSiguiente"
+                <EditText
+                    android:id="@+id/conyuge_grado_estudios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Grado de Estudios"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Spinner para conocimientos de cómputo -->
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Siguiente"
-                    android:backgroundTint="@color/azul_medio"
-                    android:textColor="@color/blanco"
-                    android:padding="12dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    android:text="Conocimientos de Cómputo"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:paddingTop="8dp"/>
+
+                <Spinner
+                    android:id="@+id/conyuge_comp_computo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"/>
+
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
+
+    <!-- Botón de Siguiente -->
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Siguiente"
+        android:backgroundTint="@color/azul_medio"
+        android:textColor="@color/blanco"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo_curvo"
-    tools:context=".Formatoparte1Activity">
+    tools:context=".Formatoparte8Activity">
 
-    <!-- Contenedor de Logos -->
+    <!-- Logos -->
     <ImageView
         android:id="@+id/logo_izquierdo"
         android:layout_width="100dp"
@@ -17,7 +17,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"/>
 
     <ImageView
@@ -28,16 +28,16 @@
         android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"/>
 
-    <!-- Encabezado -->
+    <!-- Título -->
     <TextView
         android:id="@+id/titulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="CÉDULA DE VALORACIÓN SOCIOECONÓMICA\nINFONAVIT - UNAM"
-        android:textSize="18sp"
+        android:text="SECCIÓN VII: Información Laboral"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/black"
@@ -46,17 +46,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- CardView con el contenido -->
+    <!-- Contenedor de datos -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
-        android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/titulo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnSiguiente">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -68,149 +68,115 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- DATOS GENERALES DEL ACREDITADO -->
+                <!-- Información Laboral -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DATOS GENERALES DEL ACREDITADO"
+                    android:text="Datos Laborales del Solicitante"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"/>
 
                 <EditText
-                    android:id="@+id/entidad_federativa"
+                    android:id="@+id/hogar_integrantes_trabajando"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Entidad Federativa"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Número de Integrantes que Trabajan"
+                    android:inputType="number"/>
 
                 <EditText
-                    android:id="@+id/ciudad_municipio_delegacion"
+                    android:id="@+id/solicitante_activo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ciudad / Municipio / Delegación"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Solicitante Activo (Sí/No)"/>
 
                 <EditText
-                    android:id="@+id/apellido_paterno"
+                    android:id="@+id/solicitante_ocupacion_actual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Apellido Paterno"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Ocupación Actual del Solicitante"/>
 
                 <EditText
-                    android:id="@+id/apellido_materno"
+                    android:id="@+id/solicitante_desempleado_tiempo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Apellido Materno"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Tiempo de Desempleo del Solicitante"
+                    android:inputType="text"/>
 
                 <EditText
-                    android:id="@+id/nombres"
+                    android:id="@+id/solicitante_empresa_previa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombres"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
-
-                <!-- DATOS DEL DOMICILIO -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="DOMICILIO DEL ACREDITADO"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:hint="Empresa Previa del Solicitante"/>
 
                 <EditText
-                    android:id="@+id/domicilio_calle"
+                    android:id="@+id/solicitante_antiguedad_empleo_anterior"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Calle"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Antigüedad en el Empleo Anterior"
+                    android:inputType="text"/>
 
                 <EditText
-                    android:id="@+id/domicilio_condominio"
+                    android:id="@+id/institucion_trabajo_solicitante"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Condominio"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Institución donde Trabaja el Solicitante"/>
 
                 <EditText
-                    android:id="@+id/domicilio_it"
+                    android:id="@+id/actividad_remunerada_solicitante"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="IT"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Actividad Remunerada del Solicitante"/>
 
                 <EditText
-                    android:id="@+id/domicilio_mz"
+                    android:id="@+id/contrato_laboral_solicitante"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Mz"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Tipo de Contrato Laboral del Solicitante"/>
 
                 <EditText
-                    android:id="@+id/domicilio_no_ext"
+                    android:id="@+id/solicitante_ingreso_mensual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Número Exterior"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Ingreso Mensual del Solicitante"
+                    android:inputType="number"/>
 
                 <EditText
-                    android:id="@+id/domicilio_no_int"
+                    android:id="@+id/solicitante_empresa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Número Interior"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Empresa donde Trabaja el Solicitante"/>
 
                 <EditText
-                    android:id="@+id/domicilio_edif"
+                    android:id="@+id/solicitante_antiguedad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Edificio"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Antigüedad en su Empresa Actual"/>
 
                 <EditText
-                    android:id="@+id/domicilio_colonia"
+                    android:id="@+id/comprobante_ingresos_solicitante"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Colonia"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Cuenta con Comprobante de Ingresos (Sí/No)"/>
 
                 <EditText
-                    android:id="@+id/domicilio_cp"
+                    android:id="@+id/institucion_cotizacion_solicitante"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Código Postal"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Institución de Cotización del Solicitante"/>
 
                 <EditText
-                    android:id="@+id/domicilio_curp"
+                    android:id="@+id/ingreso_conceptos_solicitante"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="CURP"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Conceptos de Ingreso del Solicitante"/>
+
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
-    <!-- Botón de Envío -->
+    <!-- Botón Siguiente -->
     <Button
         android:id="@+id/btnSiguiente"
         android:layout_width="wrap_content"

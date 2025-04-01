@@ -13,6 +13,48 @@
         android:theme="@style/Theme.UNAMProject"
         tools:targetApi="31">
         <activity
+            android:name=".Formatoparte16Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte15Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte14Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte13Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte12Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte11Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte10Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte9Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte8Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte7Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte6Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte5Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte4Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Formatoparte3Activity"
+            android:exported="false" />
+        <activity
             android:name=".Formatoparte2Activity"
             android:exported="false" />
         <activity

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo_curvo"
+    tools:context=".Formatoparte13Activity">
+
+    <!-- Logos -->
+    <ImageView
+        android:id="@+id/logo_izquierdo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_izquierdo"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"/>
+
+    <ImageView
+        android:id="@+id/logo_derecho"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_derecho"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"/>
+
+    <!-- Título Sección XII -->
+    <TextView
+        android:id="@+id/titulo_xii"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="SECCIÓN XII: Teléfonos"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/logo_izquierdo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Contenedor de datos SECCIÓN XII -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:layout_constraintTop_toBottomOf="@id/titulo_xii"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teléfonos de Contacto"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"/>
+
+                <!-- Campos de datos SECCIÓN XII -->
+                <EditText android:id="@+id/telefono1_lada" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Lada Teléfono 1"/>
+                <EditText android:id="@+id/telefono1_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número Teléfono 1"/>
+                <EditText android:id="@+id/telefono1_extension" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Extensión Teléfono 1"/>
+                <EditText android:id="@+id/telefono1_tipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Tipo Teléfono 1"/>
+                <EditText android:id="@+id/telefono2_lada" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Lada Teléfono 2"/>
+                <EditText android:id="@+id/telefono2_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número Teléfono 2"/>
+                <EditText android:id="@+id/telefono2_extension" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Extensión Teléfono 2"/>
+                <EditText android:id="@+id/telefono2_tipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Tipo Teléfono 2"/>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botón Siguiente -->
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Siguiente"
+        android:backgroundTint="@color/azul_medio"
+        android:textColor="@color/blanco"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

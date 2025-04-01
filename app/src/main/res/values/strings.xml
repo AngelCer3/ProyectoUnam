@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">UNAMProject</string>
+    <string-array name="resultados_opciones">
+        <item>Entrevista Incompleta</item>
+        <item>Entrevista Completa</item>
+        <item>Vivienda Notificada</item>
+        <item>No se localizó después de tres visitas</item>
+        <item>Vivienda no localizada</item>
+    </string-array>
+    <string-array name="situacion_vivienda_opciones">
+        <item>Rentada</item>
+        <item>Prestada a padre, madre o hijos del titular</item>
+        <item>Traspasada</item>
+        <item>Vivienda no localizada</item>
+        <item>Habitatada por Conyuge</item>
+        <item>Vivienda con tres notificaciones</item>
+        <item>Deshabitada</item>
+        <item>Habitatada por el titular</item>
+        <item>Se negó a dar la información</item>
+        <item>Muerte del titular</item>
+        <item>Ya liquido el crédito</item>
+        <item>Ya reestructuro y se negó a dar la información</item>
+        <item>No solicitó el instrumento</item>
+        <item>Habitatada por otro titular</item>
+        <item>Situación extraordinaria</item>
+        <item>Prestada a otra persona</item>
+        <item>Venta con reserva de dominio</item>
+    </string-array>
 </resources>
