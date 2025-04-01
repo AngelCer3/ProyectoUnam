@@ -299,18 +299,34 @@
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
-    <!-- Botón de Envío -->
-    <Button
-        android:id="@+id/btnSiguiente"
+    <!-- Botones de Envío y Guardar -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Siguiente"
-        android:backgroundTint="@color/azul_medio"
-        android:textColor="@color/blanco"
-        android:padding="12dp"
-        android:layout_marginBottom="24dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="24dp">
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar Datos"
+            android:backgroundTint="@color/azul_claro"
+            android:textColor="@color/blanco"
+            android:padding="12dp"
+            android:layout_marginEnd="16dp"/>
+
+        <Button
+            android:id="@+id/btnSiguiente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Siguiente"
+            android:backgroundTint="@color/azul_medio"
+            android:textColor="@color/blanco"
+            android:padding="12dp"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,4 +8,5 @@
     <color name="gris_texto">#37474F</color> <!-- Gris oscuro para texto -->
     <color name="transparente_blanco">#80FFFFFF</color> <!-- Blanco con transparencia -->
     <color name="boton_fondo">#F5F5F5</color> <!-- Color sutil para botones -->
+    <color name="verde">#1BC13F</color>
 </resources>

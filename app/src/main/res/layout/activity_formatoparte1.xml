@@ -46,21 +46,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- CardView con el contenido -->
+    <!-- Contenedor del formulario -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/titulo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/botones_layout">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="16dp">
 
             <LinearLayout
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- DATOS GENERALES DEL ACREDITADO -->
+                <!-- DATOS GENERALES -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -81,43 +82,33 @@
                     android:id="@+id/entidad_federativa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Entidad Federativa"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Entidad Federativa"/>
 
                 <EditText
                     android:id="@+id/ciudad_municipio_delegacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ciudad / Municipio / Delegación"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Ciudad / Municipio / Delegación"/>
 
                 <EditText
                     android:id="@+id/apellido_paterno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Apellido Paterno"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Apellido Paterno"/>
 
                 <EditText
                     android:id="@+id/apellido_materno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Apellido Materno"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Apellido Materno"/>
 
                 <EditText
                     android:id="@+id/nombres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombres"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Nombres"/>
 
-                <!-- DATOS DEL DOMICILIO -->
+                <!-- DOMICILIO -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,101 +118,93 @@
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
-                <EditText
-                    android:id="@+id/domicilio_calle"
+                <EditText android:id="@+id/domicilio_calle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Calle"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Calle" />
 
-                <EditText
-                    android:id="@+id/domicilio_condominio"
+                <EditText android:id="@+id/domicilio_condominio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Condominio"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Condominio" />
 
-                <EditText
-                    android:id="@+id/domicilio_it"
+                <EditText android:id="@+id/domicilio_it"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="IT"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="IT" />
 
-                <EditText
-                    android:id="@+id/domicilio_mz"
+                <EditText android:id="@+id/domicilio_mz"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Mz"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Mz" />
 
-                <EditText
-                    android:id="@+id/domicilio_no_ext"
+                <EditText android:id="@+id/domicilio_no_ext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Número Exterior"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Número Exterior" />
 
-                <EditText
-                    android:id="@+id/domicilio_no_int"
+                <EditText android:id="@+id/domicilio_no_int"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Número Interior"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Número Interior" />
 
-                <EditText
-                    android:id="@+id/domicilio_edif"
+                <EditText android:id="@+id/domicilio_edif"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Edificio"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Edificio" />
 
-                <EditText
-                    android:id="@+id/domicilio_colonia"
+                <EditText android:id="@+id/domicilio_colonia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Colonia"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Colonia" />
 
-                <EditText
-                    android:id="@+id/domicilio_cp"
+                <EditText android:id="@+id/domicilio_cp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Código Postal"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="Código Postal" />
 
-                <EditText
-                    android:id="@+id/domicilio_curp"
+                <EditText android:id="@+id/domicilio_curp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="CURP"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"/>
+                    android:hint="CURP" />
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
-    <!-- Botón de Envío -->
-    <Button
-        android:id="@+id/btnSiguiente"
-        android:layout_width="wrap_content"
+    <!-- Layout para los botones -->
+    <LinearLayout
+        android:id="@+id/botones_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Siguiente"
-        android:backgroundTint="@color/azul_medio"
-        android:textColor="@color/blanco"
-        android:padding="12dp"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Botón Guardar Datos -->
+        <Button
+            android:id="@+id/btnGuardarDatos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Guardar Datos"
+            android:backgroundTint="@color/verde"
+            android:textColor="@color/blanco"
+            android:padding="12dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Botón Siguiente -->
+        <Button
+            android:id="@+id/btnSiguiente"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Siguiente"
+            android:backgroundTint="@color/azul_medio"
+            android:textColor="@color/blanco"
+            android:padding="12dp"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

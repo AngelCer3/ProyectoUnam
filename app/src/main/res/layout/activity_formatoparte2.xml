@@ -49,14 +49,15 @@
     <!-- CardView con el contenido -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/titulo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/botones_layout">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -162,22 +163,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/resultados_opciones"/>
-
-                <!-- Botón de Siguiente -->
-                <Button
-                    android:id="@+id/btnSiguiente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Siguiente"
-                    android:backgroundTint="@color/azul_medio"
-                    android:textColor="@color/blanco"
-                    android:padding="12dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
+
+    <!-- Layout para los botones -->
+    <LinearLayout
+        android:id="@+id/botones_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Botón Guardar Datos -->
+        <Button
+            android:id="@+id/btnGuardarDatos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Guardar Datos"
+            android:backgroundTint="@color/verde"
+            android:textColor="@color/blanco"
+            android:padding="12dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Botón Siguiente -->
+        <Button
+            android:id="@+id/btnSiguiente"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Siguiente"
+            android:backgroundTint="@color/azul_medio"
+            android:textColor="@color/blanco"
+            android:padding="12dp"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
