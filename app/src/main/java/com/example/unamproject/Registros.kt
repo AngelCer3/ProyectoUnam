@@ -2,6 +2,40 @@ package com.example.unamproject
 
 import android.os.health.UidHealthStats
 
+data class LoginRequest(
+    val correo: String,
+    val contrasena: String
+)
+data class LoginResponse(
+    val usuario: UsuarioResponse
+)
+
+data class UsuarioResponse(
+    val id_usuario: Int,
+    val correo: String,
+    val id_rol: Int
+)
+
+data class identificarAcreditado(
+    val id_acreditado: Int,
+    val entidad_federativa : String,
+    val ciudad_municipio_delegacion: String,
+    val apellido_paterno: String,
+    val apellido_materno: String,
+    val nombres: String,
+    val domicilio_calle: String,
+    val domicilio_condominio: String,
+    val domicilio_it: String,
+    val domicilio_mz: String,
+    val domicilio_no_ext: String,
+    val domicilio_no_int: String,
+    val domicilio_edif: String,
+    val domicilio_colonia: String,
+    val domicilio_cp: String,
+    val domicilio_curp: String
+)
+
+
 data class Acreditado(
     val entidad_federativa : String,
     val ciudad_municipio_delegacion: String,
