@@ -97,7 +97,7 @@ interface WebService{
     @POST("/appAgregarObservaciones")
     suspend fun agregarDatosObservaciones(
         @Body datosObservaciones: datosObservaciones
-    ): Response<AcreditadoResponse>
+    ): Response<String>
 }
 
 object RetrofitClient{

@@ -67,7 +67,14 @@ class Formatoparte16Activity : AppCompatActivity() {
             return
         }
 
-        // Crear ambos objetos de datos
+        // Guardar datos de vivienda
+        guardarDatosVivienda()
+
+        // Guardar observaciones por separado
+        guardarObservaciones()
+    }
+
+    private fun guardarDatosVivienda() {
         val datosVivienda = datosEspecificosVivienda(
             vivienda_numero_habitaciones = viviendaNumeroHabitaciones.text.toString(),
             vivienda_tipo_piso = viviendaTipoPiso.text.toString(),
@@ -77,32 +84,22 @@ class Formatoparte16Activity : AppCompatActivity() {
             id_acreditado = idAcreditado!!
         )
 
-        val datosObs = datosObservaciones(
-            observaciones_entrevistador = observacionesEntrevistador.text.toString(),
-            id_acreditado = idAcreditado!!
-        )
-
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Enviar ambos conjuntos de datos al servidor
                 val responseVivienda = RetrofitClient.webService.agregarDatosEspecificosVivienda(datosVivienda)
-                val responseObs = RetrofitClient.webService.agregarDatosObservaciones(datosObs)
 
                 withContext(Dispatchers.Main) {
-                    if (responseVivienda.isSuccessful && responseObs.isSuccessful) {
+                    if (responseVivienda.isSuccessful) {
                         Toast.makeText(
                             this@Formatoparte16Activity,
-                            "Datos guardados correctamente",
-                            Toast.LENGTH_LONG
+                            "Datos de vivienda guardados correctamente",
+                            Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        val errorMsg = buildString {
-                            if (!responseVivienda.isSuccessful) append("Error en vivienda. ")
-                            if (!responseObs.isSuccessful) append("Error en observaciones.")
-                        }
+                        val errorMsg = responseVivienda.errorBody()?.string() ?: "Error desconocido"
                         Toast.makeText(
                             this@Formatoparte16Activity,
-                            "Error al guardar: $errorMsg",
+                            "Error al guardar vivienda: $errorMsg",
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -111,7 +108,45 @@ class Formatoparte16Activity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         this@Formatoparte16Activity,
-                        "Error de conexión: ${e.message}",
+                        "Error de conexión al guardar vivienda: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun guardarObservaciones() {
+        val datosObs = datosObservaciones(
+            observaciones_entrevistador = observacionesEntrevistador.text.toString(),
+            id_acreditado = idAcreditado!!
+        )
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val responseObs = RetrofitClient.webService.agregarDatosObservaciones(datosObs)
+
+                withContext(Dispatchers.Main) {
+                    if (responseObs.isSuccessful) {
+                        Toast.makeText(
+                            this@Formatoparte16Activity,
+                            "Observaciones guardadas correctamente",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        val errorBody = responseObs.errorBody()?.string() ?: "Sin detalles"
+                        Toast.makeText(
+                            this@Formatoparte16Activity,
+                            "Error al guardar observaciones: $errorBody",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@Formatoparte16Activity,
+                        "Error de conexión al guardar observaciones: ${e.message}",
                         Toast.LENGTH_LONG
                     ).show()
                 }
