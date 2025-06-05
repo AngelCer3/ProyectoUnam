@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo_curvo"
+    tools:context=".SinConexion.Formatoparte10SinConexion">
+
+    <ImageView
+        android:id="@+id/logo_izquierdo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_izquierdo"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"/>
+
+    <ImageView
+        android:id="@+id/logo_derecho"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_derecho"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"/>
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="SECCIÓN IX: Información de Otros Habitantes"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/logo_izquierdo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Contenedor de datos -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:layout_constraintTop_toBottomOf="@id/titulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnSiguiente">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Datos de Otros Habitantes"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"/>
+
+                <!-- Campos de datos -->
+                <EditText android:id="@+id/otros_habitantes_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Otros Habitantes"/>
+                <EditText android:id="@+id/hijo_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Hijos" android:inputType="number"/>
+                <EditText android:id="@+id/hijo_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Hijos"/>
+                <EditText android:id="@+id/hijo_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de Hijos"/>
+                <EditText android:id="@+id/padre_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Padres" android:inputType="number"/>
+                <EditText android:id="@+id/padre_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Padres"/>
+                <EditText android:id="@+id/padre_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de Padres"/>
+                <EditText android:id="@+id/madre_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Madres" android:inputType="number"/>
+                <EditText android:id="@+id/madre_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Madres"/>
+                <EditText android:id="@+id/madre_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de Madres"/>
+                <EditText android:id="@+id/suegros_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Suegros" android:inputType="number"/>
+                <EditText android:id="@+id/suegros_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Suegros"/>
+                <EditText android:id="@+id/suegros_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de Suegros"/>
+                <EditText android:id="@+id/hermanos_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Hermanos" android:inputType="number"/>
+                <EditText android:id="@+id/hermanos_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Hermanos"/>
+                <EditText android:id="@+id/hermanos_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de Hermanos"/>
+                <EditText android:id="@+id/nietos_numeros" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Nietos" android:inputType="number"/>
+                <EditText android:id="@+id/nietos_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Nietos"/>
+                <EditText android:id="@+id/nietos_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de Nietos"/>
+                <EditText android:id="@+id/yernos_nueras_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Yernos/Nueras" android:inputType="number"/>
+                <EditText android:id="@+id/yernos_nueras_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Yernos/Nueras"/>
+                <EditText android:id="@+id/yernos_nueras_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de Yernos/Nueras"/>
+                <EditText android:id="@+id/otros_familiares_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Otros Familiares" android:inputType="number"/>
+                <EditText android:id="@+id/otros_familiares_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de Otros Familiares"/>
+                <EditText android:id="@+id/otros_familiares_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de Otros Familiares"/>
+                <EditText android:id="@+id/no_familiares_numero" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de No Familiares" android:inputType="number"/>
+                <EditText android:id="@+id/no_familiares_actividad" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Actividad de No Familiares"/>
+                <EditText android:id="@+id/no_familiares_aportacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Aportación de No Familiares"/>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botón Siguiente -->
+    <Button
+        android:id="@+id/btnGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@android:color/holo_green_dark"
+        android:padding="12dp"
+        android:text="Guardar Datos"
+        android:textColor="@color/blanco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/azul_oscuro"
+        android:padding="12dp"
+        android:text="Siguiente"
+        android:textColor="@color/blanco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.671"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

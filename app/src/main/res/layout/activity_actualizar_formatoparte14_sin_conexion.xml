@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo_curvo"
-    tools:context=".actualizar.actualizarFormatoparte15">
+    tools:context=".SinConexion.actualizarSinConexion.actualizarFormatoparte14SinConexion">
 
     <ImageView
         android:id="@+id/logo_izquierdo"
@@ -30,12 +30,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"/>
 
-    <!-- Título Sección XIV -->
+    <!-- Título Sección XIII -->
     <TextView
-        android:id="@+id/titulo_xiv"
+        android:id="@+id/titulo_xiii"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="SECCIÓN XIV: Documentos"
+        android:text="SECCIÓN XIII: Cobranza"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -45,20 +45,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Contenedor de datos SECCIÓN XIV -->
+    <!-- Contenedor de datos SECCIÓN XIII -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
-        app:layout_constraintTop_toBottomOf="@id/titulo_xiv"
+        app:layout_constraintTop_toBottomOf="@id/titulo_xiii"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnActualizar">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -73,55 +69,50 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Documentos"
+                    android:text="Cobranza"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:paddingBottom="8dp"/>
 
-                <!-- Campos de datos SECCIÓN XIV -->
-                <EditText android:id="@+id/doc_credencial_votar_cuenta" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Cuenta Credencial de Votación"/>
-                <EditText android:id="@+id/doc_credencial_votar_mostro" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="¿Mostró Credencial de Votación?"/>
-                <EditText android:id="@+id/doc_credencial_votar_entrego_copia" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="¿Entregó Copia Credencial de Votación?"/>
-
-                <EditText android:id="@+id/doc_poder_amplio_cuenta" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Cuenta Poder Amplio"/>
-                <EditText android:id="@+id/doc_poder_amplio_mostro" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="¿Mostró Poder Amplio?"/>
-                <EditText android:id="@+id/doc_poder_amplio_entrego_copia" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="¿Entregó Copia Poder Amplio?"/>
-
-                <EditText android:id="@+id/doc_comprobante_ingresos_cuenta" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Cuenta Comprobante de Ingresos"/>
-                <EditText android:id="@+id/doc_comprobante_ingresos_mostro" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="¿Mostró Comprobante de Ingresos?"/>
-                <EditText android:id="@+id/doc_comprobante_ingresos_entrego_copia" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="¿Entregó Copia Comprobante de Ingresos?"/>
-
+                <!-- Campos de datos SECCIÓN XIII -->
+                <EditText android:id="@+id/cobranza_visita" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Visita de Cobranza"/>
+                <EditText android:id="@+id/cobranza_numero_visitas" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Número de Visitas"/>
+                <EditText android:id="@+id/cobranza_ultima_fecha_visita" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Última Fecha de Visita"/>
+                <EditText android:id="@+id/cobranza_despacho" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Despacho"/>
+                <EditText android:id="@+id/cobranza_calificacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Calificación"/>
+                <EditText android:id="@+id/cobranza_comentario" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Comentario"/>
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
-    <!-- Botones alineados correctamente -->
+    <!-- Botón Siguiente -->
     <Button
         android:id="@+id/btnActualizar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="120dp"
         android:backgroundTint="@android:color/holo_green_dark"
         android:padding="12dp"
         android:text="Actualizar Datos"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnSiguiente"
-        android:layout_marginStart="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSiguiente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="120dp"
         android:backgroundTint="@color/azul_oscuro"
         android:padding="12dp"
         android:text="Siguiente"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.767"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

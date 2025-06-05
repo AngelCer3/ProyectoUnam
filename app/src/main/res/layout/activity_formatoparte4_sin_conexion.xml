@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo_curvo"
+    tools:context=".SinConexion.Formatoparte4SinConexion">
+
+    <ImageView
+        android:id="@+id/logo_izquierdo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_izquierdo"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"/>
+
+    <ImageView
+        android:id="@+id/logo_derecho"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_derecho"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"/>
+
+    <!-- Encabezado -->
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="SECCIÓN III - Información del Crédito"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/logo_izquierdo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- CardView con el contenido -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/titulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Campo Crédito Fecha Entrega -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de Entrega del Crédito"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/credito_fecha_entrega"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingrese la fecha de entrega"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Crédito Monto -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monto del Crédito"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/credito_monto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Monto del Crédito"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="numberDecimal"/>
+
+                <!-- Campo Crédito Sueldo Otorgado -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sueldo Otorgado"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/credito_sueldo_otorgado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Sueldo Otorgado"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="numberDecimal"/>
+
+                <!-- Campo Crédito Fecha Último Pago -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha del Último Pago"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/credito_fecha_ultimo_pago"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha del último pago"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="date"/>
+
+                <!-- Campo Crédito Recibo de Pago -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recibo de Pago"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/credito_recibo_pago"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Recibo de Pago"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"/>
+
+                <!-- Campo Crédito Pago Actual -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pago Actual"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/credito_pago_actual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Pago Actual"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="numberDecimal"/>
+
+                <!-- Campo Crédito Deuda Actual -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deuda Actual"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/credito_deuda_actual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Deuda Actual"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="numberDecimal"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botón de Envío -->
+
+    <Button
+        android:id="@+id/btnGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@android:color/holo_green_dark"
+        android:padding="12dp"
+        android:text="Guardar Datos"
+        android:textColor="@color/blanco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.291"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/azul_oscuro"
+        android:padding="12dp"
+        android:text="Siguiente"
+        android:textColor="@color/blanco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.659"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

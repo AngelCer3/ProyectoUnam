@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo_curvo"
+    tools:context=".SinConexion.Formatoparte11SinConexion">
+
+    <ImageView
+        android:id="@+id/logo_izquierdo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_izquierdo"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"/>
+
+    <ImageView
+        android:id="@+id/logo_derecho"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_derecho"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"/>
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="SECCIÓN X: Gastos Mensuales"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/logo_izquierdo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Contenedor de datos -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:layout_constraintTop_toBottomOf="@id/titulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnSiguiente">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gastos Mensuales"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"/>
+
+                <!-- Campos de datos -->
+                <EditText android:id="@+id/gasto_despensa_alimentacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Despensa y Alimentación"/>
+                <EditText android:id="@+id/gasto_despensa_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Despensa"/>
+                <EditText android:id="@+id/gasto_gas" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Gas"/>
+                <EditText android:id="@+id/gasto_gas_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Gas"/>
+                <EditText android:id="@+id/gasto_luz" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Luz"/>
+                <EditText android:id="@+id/gasto_luz_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Luz"/>
+                <EditText android:id="@+id/gasto_agua" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Agua"/>
+                <EditText android:id="@+id/gasto_agua_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Agua"/>
+                <EditText android:id="@+id/gasto_servicio_telefonico" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Servicio Telefónico"/>
+                <EditText android:id="@+id/gasto_servicio_telefonico_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Servicio Telefónico"/>
+                <EditText android:id="@+id/gasto_mantenimiento_vivienda" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Mantenimiento de Vivienda"/>
+                <EditText android:id="@+id/gasto_mantenimiento_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Mantenimiento"/>
+                <EditText android:id="@+id/gasto_transporte_publico" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Transporte Público"/>
+                <EditText android:id="@+id/gasto_transporte_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Transporte Público"/>
+                <EditText android:id="@+id/gasto_gasolina" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Gasolina"/>
+                <EditText android:id="@+id/gasto_gasolina_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Gasolina"/>
+                <EditText android:id="@+id/gasto_servicios_salud" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Servicios de Salud"/>
+                <EditText android:id="@+id/gasto_salud_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Salud"/>
+                <EditText android:id="@+id/gasto_educacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Educación"/>
+                <EditText android:id="@+id/gasto_educacion_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Educación"/>
+                <EditText android:id="@+id/gasto_recreacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Recreación"/>
+                <EditText android:id="@+id/gasto_recreacion_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Recreación"/>
+                <EditText android:id="@+id/gasto_comidas_fuera" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Comidas Fuera"/>
+                <EditText android:id="@+id/gasto_comidas_fuera_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Comidas Fuera"/>
+                <EditText android:id="@+id/gasto_vestido_calzado" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Vestido y Calzado"/>
+                <EditText android:id="@+id/gasto_vestido_calzado_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Vestido y Calzado"/>
+                <EditText android:id="@+id/gasto_pension_vehiculo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Pensión de Vehículo"/>
+                <EditText android:id="@+id/gasto_pension_vehiculo_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Pensión de Vehículo"/>
+                <EditText android:id="@+id/gasto_telefono_celular" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Teléfono Celular"/>
+                <EditText android:id="@+id/gasto_telefono_celular_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Teléfono Celular"/>
+                <EditText android:id="@+id/gasto_television_pago" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Televisión de Pago"/>
+                <EditText android:id="@+id/gasto_television_pago_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Televisión de Pago"/>
+                <EditText android:id="@+id/gasto_pago_creditos" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Gasto en Pagos de Créditos"/>
+                <EditText android:id="@+id/gasto_pago_creditos_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto de Créditos"/>
+                <EditText android:id="@+id/gasto_otros_descripcion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Otros Gastos - Descripción"/>
+                <EditText android:id="@+id/gasto_otros_motivo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Motivo del Gasto Otros"/>
+                <EditText android:id="@+id/gasto_metodo_pago" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Método de Pago"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botón Siguiente -->
+    <Button
+        android:id="@+id/btnGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@android:color/holo_green_dark"
+        android:padding="12dp"
+        android:text="Guardar Datos"
+        android:textColor="@color/blanco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/azul_oscuro"
+        android:padding="12dp"
+        android:text="Siguiente"
+        android:textColor="@color/blanco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.715"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

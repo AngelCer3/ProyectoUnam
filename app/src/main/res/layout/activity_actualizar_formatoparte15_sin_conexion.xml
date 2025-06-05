@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo_curvo"
-    tools:context=".actualizar.actualizarFormatoparte15">
-
+    tools:context=".SinConexion.actualizarSinConexion.actualizarFormatoparte15SinConexion">
     <ImageView
         android:id="@+id/logo_izquierdo"
         android:layout_width="100dp"
@@ -123,5 +122,4 @@
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
