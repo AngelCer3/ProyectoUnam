@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.unamproject.actualizar.actualizarFormatoparte1
 import kotlinx.coroutines.launch
 
 class MenuTrabajadorActivity : AppCompatActivity() {
@@ -43,14 +44,14 @@ class MenuTrabajadorActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val listaAcreditados = retrofitService.ObtenerAcreditados()
-                adapter = AcreditadosAdapter(listaAcreditados) { acreditado ->
-                    // Acción al dar click en "Actualizar"
-                    Toast.makeText(this@MenuTrabajadorActivity, "Actualizar: ${acreditado.nombres}", Toast.LENGTH_SHORT).show()
-                    // Aquí puedes lanzar otra actividad para editar, por ejemplo:
-                    // val intent = Intent(this@MenuTrabajadorActivity, EditarAcreditadoActivity::class.java)
-                    // intent.putExtra("id_acreditado", acreditado.id_acreditado)
-                    // startActivity(intent)
-                }
+
+                    adapter = AcreditadosAdapter(listaAcreditados) { acreditado ->
+                        val intent = Intent(this@MenuTrabajadorActivity, actualizarFormatoparte1::class.java).apply {
+                            putExtra("acreditado", acreditado)
+                        }
+                        startActivity(intent)
+                    }
+
                 rvAcreditados.adapter = adapter
             } catch (e: Exception) {
                 e.printStackTrace()

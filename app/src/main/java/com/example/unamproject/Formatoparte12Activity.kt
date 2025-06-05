@@ -47,7 +47,7 @@ class Formatoparte12Activity : AppCompatActivity() {
         }
         val datos = datosFamiliaDeudas(
             familia_tiene_deudas = familiaTieneDeudas.text.toString(),
-            familia_cantidad_deuda = familiaCantidadDeuda.text.toString(),
+            familia_cantidad_deudas = familiaCantidadDeuda.text.toString(),
             id_acreditado = idAcreditado!!
         )
 

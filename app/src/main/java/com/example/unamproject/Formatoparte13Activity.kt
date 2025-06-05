@@ -63,6 +63,7 @@ class Formatoparte13Activity : AppCompatActivity() {
             telefono1_numero = telefono1Numero.text.toString(),
             telefono1_extension = telefono1Extension.text.toString(),
             telefono1_tipo = telefono1Tipo.text.toString(),
+            telefono2_lada = telefono2Lada.text.toString(),
             telefono2_numero = telefono2Numero.text.toString(),
             telefono2_extension = telefono2Extension.text.toString(),
             telefono2_tipo = telefono2Tipo.text.toString(),

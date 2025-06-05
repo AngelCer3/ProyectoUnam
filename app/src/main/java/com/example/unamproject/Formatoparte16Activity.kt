@@ -67,10 +67,8 @@ class Formatoparte16Activity : AppCompatActivity() {
             return
         }
 
-        // Guardar datos de vivienda
+        // Guardar datos de vivienda y observaciones en paralelo para mejor UX
         guardarDatosVivienda()
-
-        // Guardar observaciones por separado
         guardarObservaciones()
     }
 
@@ -87,7 +85,6 @@ class Formatoparte16Activity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val responseVivienda = RetrofitClient.webService.agregarDatosEspecificosVivienda(datosVivienda)
-
                 withContext(Dispatchers.Main) {
                     if (responseVivienda.isSuccessful) {
                         Toast.makeText(
@@ -125,7 +122,6 @@ class Formatoparte16Activity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val responseObs = RetrofitClient.webService.agregarDatosObservaciones(datosObs)
-
                 withContext(Dispatchers.Main) {
                     if (responseObs.isSuccessful) {
                         Toast.makeText(
@@ -156,7 +152,6 @@ class Formatoparte16Activity : AppCompatActivity() {
 
     private fun irSiguiente() {
         val intent = Intent(this, MenuTrabajadorActivity::class.java)
-        intent.putExtra("id_acreditado", idAcreditado)
         startActivity(intent)
         finish()
     }

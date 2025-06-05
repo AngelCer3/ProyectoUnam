@@ -80,7 +80,7 @@ class Formatoparte8Activity : AppCompatActivity() {
             solicitante_ocupacion_actual = solicitanteOcupacionActual.text.toString(),
             solicitante_desempleado_tiempo = solicitanteDesempleadoTiempo.text.toString(),
             solicitante_empresa_previa = solicitanteEmpresaPrevia.text.toString(),
-            solicitante_antiguedad_empleo_anterior = solicitanteAntiguedadEmpleoAnterior.text.toString(),
+            solicitante_antiguedad_trabajo_anterior = solicitanteAntiguedadEmpleoAnterior.text.toString(),
             institucion_trabajo_solicitante = institucionTrabajoSolicitante.text.toString(),
             actividad_remunerada_solicitante = actividadRemuneradaSolicitante.text.toString(),
             contrato_laboral_solicitante = contratoLaboralSolicitante.text.toString(),
@@ -89,7 +89,7 @@ class Formatoparte8Activity : AppCompatActivity() {
             solicitante_antiguedad = solicitanteAntiguedad.text.toString(),
             comprobante_ingresos_solicitante = comprobanteIngresosSolicitante.text.toString(),
             institucion_cotizacion_solicitante = institucionCotizacionSolicitante.text.toString(),
-            ingreso_conceptos_solicitante = ingresoConceptosSolicitante.text.toString(),
+            ingresos_conceptos_solicitante = ingresoConceptosSolicitante.text.toString(),
             id_acreditado = idAcreditado!!
         )
 

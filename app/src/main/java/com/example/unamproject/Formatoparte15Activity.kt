@@ -74,7 +74,7 @@ class Formatoparte15Activity : AppCompatActivity() {
             doc_poder_amplio_entrego_copia = docPoderAmplioEntregoCopia.text.toString(),
             doc_comprobante_ingresos_cuenta = docComprobanteIngresosCuenta.text.toString(),
             doc_comprobante_ingresos_mostro = docComprobanteIngresosMostro.text.toString(),
-            doc_comprobante_ingreso_entrego_copia = docComprobanteIngresosEntregoCopia.text.toString(),
+            doc_comprobante_ingresos_entrego_copia = docComprobanteIngresosEntregoCopia.text.toString(),
             id_acreditado = idAcreditado!!
         )
 

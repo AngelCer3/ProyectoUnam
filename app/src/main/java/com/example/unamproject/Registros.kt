@@ -1,6 +1,7 @@
 package com.example.unamproject
 
 import android.os.health.UidHealthStats
+import java.io.Serializable
 
 data class LoginRequest(
     val correo: String,
@@ -17,7 +18,7 @@ data class UsuarioResponse(
 )
 
 data class identificarAcreditado(
-    val id_acreditado: Int,
+    val id_acreditado: String,
     val entidad_federativa : String,
     val ciudad_municipio_delegacion: String,
     val apellido_paterno: String,
@@ -33,7 +34,7 @@ data class identificarAcreditado(
     val domicilio_colonia: String,
     val domicilio_cp: String,
     val domicilio_curp: String
-)
+): Serializable
 
 
 data class Acreditado(
@@ -57,6 +58,11 @@ data class AcreditadoResponse(
     val success: Boolean,
     val id_acreditado: String
 )
+data class ResponseMessage(
+    val success: Boolean,
+    val message: String
+)
+
 
 
 data class Visitas(
@@ -71,6 +77,7 @@ data class Visitas(
     val visita3_resultado: String,
     val id_acreditado: String
 )
+
 data class datosVivienda(
     val vivienda_localizada: String,
     val vivienda_habitada: String,
@@ -100,6 +107,7 @@ data class datosCredito(
     val credito_deuda_actual: String,
     val id_acreditado: String
 )
+
 data class DatosReestructura(
     val reestructura_motivo: String,
     val reestructura_documento: String,
@@ -138,50 +146,51 @@ data class datosConyuge(
     val id_acreditado: String
 )
 data class datosFamiliares(
-    val familia_integrantes: String?,
-    val familia_total_ocupantes: String?,
-    val familia_tipo: String?,
-    val edad_0_5_hombres: String?,
-    val edad_0_5_mujeres: String?,
-    val edad_6_12_hombres: String?,
-    val edad_6_12_mujeres: String?,
-    val edad_13_18_hombres: String?,
-    val edad_13_18_mujeres: String?,
-    val edad_19_35_hombres: String?,
-    val edad_19_35_mujeres: String?,
-    val edad_36_59_hombres: String?,
-    val edad_36_59_mujeres: String?,
-    val edad_60_mas_hombres: String?,
-    val edad_60_mas_mujeres: String?,
-    val escuela_asistencia: String?,
-    val escolaridad_niveles: String?,
-    val familiares_enfermedad: String?,
-    val familiares_enfermedad_cuantos: String?,
-    val familiares_enfermedad_quien: String?,
-    val comprobante_enfermedad: String?,
-    val tratamiento_recibido: String?,
-    val tratamiento_lugar: String?,
+    val familia_integrantes: String,
+    val familia_total_ocupantes: String,
+    val familia_tipo: String,
+    val edad_0_5_hombres: String,
+    val edad_0_5_mujeres: String,
+    val edad_6_12_hombres: String,
+    val edad_6_12_mujeres: String,
+    val edad_13_18_hombres: String,
+    val edad_13_18_mujeres: String,
+    val edad_19_35_hombres: String,
+    val edad_19_35_mujeres: String,
+    val edad_36_59_hombres: String,
+    val edad_36_59_mujeres: String,
+    val edad_60_mas_hombres: String,
+    val edad_60_mas_mujeres: String,
+    val escuela_asistencia: String,
+    val escolaridad_niveles: String,
+    val familiares_enfermedad: String,
+    val familiares_enfermedad_cuantos: String,
+    val familiares_enfermedad_quien: String,
+    val comprobante_enfermedad: String,
+    val tratamiento_recibido: String,
+    val tratamiento_lugar: String,
     val id_acreditado: String
 )
 
 data class datosSolicitante(
-    val hogar_integrantes_trabajando: String?,
-    val solicitante_activo: String?,
-    val solicitante_ocupacion_actual: String?,
-    val solicitante_desempleado_tiempo: String?,
-    val solicitante_empresa_previa: String?,
-    val solicitante_antiguedad_empleo_anterior: String?,
-    val institucion_trabajo_solicitante: String?,
-    val actividad_remunerada_solicitante: String?,
-    val contrato_laboral_solicitante: String?,
-    val solicitante_ingreso_mensual: String?,
-    val solicitante_empresa: String?,
-    val solicitante_antiguedad: String?,
-    val comprobante_ingresos_solicitante: String?,
-    val institucion_cotizacion_solicitante: String?,
-    val ingreso_conceptos_solicitante: String?,
+    val hogar_integrantes_trabajando: String,
+    val solicitante_activo: String,
+    val solicitante_ocupacion_actual: String,
+    val solicitante_desempleado_tiempo: String,
+    val solicitante_empresa_previa: String,
+    val solicitante_antiguedad_trabajo_anterior: String,
+    val institucion_trabajo_solicitante: String,
+    val actividad_remunerada_solicitante: String,
+    val contrato_laboral_solicitante: String,
+    val solicitante_ingreso_mensual: String,
+    val solicitante_empresa: String,
+    val solicitante_antiguedad: String,
+    val comprobante_ingresos_solicitante: String,
+    val institucion_cotizacion_solicitante: String,
+    val ingresos_conceptos_solicitante: String,
     val id_acreditado: String
 )
+
 
 data class datosEspecificosConyuge(
     val conyuge_activo: String,
@@ -273,7 +282,7 @@ data class datosGastos(
 
 data class datosFamiliaDeudas(
     val familia_tiene_deudas: String,
-    val familia_cantidad_deuda: String,
+    val familia_cantidad_deudas: String,
     val id_acreditado: String
 )
 
@@ -282,6 +291,7 @@ data class datosTelefonos(
     val telefono1_numero: String,
     val telefono1_extension: String,
     val telefono1_tipo: String,
+    val telefono2_lada: String,
     val telefono2_numero: String,
     val telefono2_extension: String,
     val telefono2_tipo: String,
@@ -307,7 +317,7 @@ data class datosDocumentos(
     val doc_poder_amplio_entrego_copia: String,
     val doc_comprobante_ingresos_cuenta: String,
     val doc_comprobante_ingresos_mostro: String,
-    val doc_comprobante_ingreso_entrego_copia: String,
+    val doc_comprobante_ingresos_entrego_copia: String,
     val id_acreditado: String
 )
 

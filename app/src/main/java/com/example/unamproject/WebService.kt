@@ -24,6 +24,55 @@ interface WebService{
     @GET("/appObtenerAcreditados")
     suspend fun ObtenerAcreditados(): List<identificarAcreditado>
 
+    @GET("/appObtenerFechaVisita/{id}")
+    suspend fun obtenerVisitas(@Path("id") idAcreditado: String): Response<Visitas>
+
+    @GET("/appObtenerDatosVivienda/{id}")
+    suspend fun obtenerVivienda(@Path("id") idAcreditado: String): Response<datosVivienda>
+
+    @GET("/appObtenerDatosCredito/{id}")
+    suspend fun obtenerCredito(@Path("id")idAcreditado: String): Response<datosCredito>
+
+    @GET("/appObtenerDatosReestructura/{id}")
+    suspend fun obtenerReestructura(@Path("id") idAcreditado: String): Response<DatosReestructura>
+
+    @GET("/appObtenerDatosConyuge/{id}")
+    suspend fun obtenerDatosConyuge(@Path("id") idAcreditado: String): Response<datosConyuge>
+
+    @GET("/appObtenerDatosFamiliares/{id}")
+    suspend fun obtenerDatosFamiliares(@Path("id") idAcreditado: String): Response<datosFamiliares>
+
+    @GET("/appObtenerDatosSolicitante/{id}")
+    suspend fun obtenerDatosSolicitante(@Path("id") idAcreditado: String): Response<datosSolicitante>
+
+    @GET("/appObtenerDatosEspecificosConyuge/{id}")
+    suspend fun obtenerDatosEspecificosConyuge(@Path("id") idAcreditado: String): Response<datosEspecificosConyuge>
+
+    @GET("/appObtenerDatosOtrosFamiliares/{id}")
+    suspend fun obtenerDatosOtrosFamiliares(@Path("id") idAcreditado: String): Response<datosOtrosFamiliares>
+
+    @GET("/appObtenerDatosGastos/{id}")
+    suspend fun obtenerDatosGastos(@Path("id") idAcreditado: String): Response<datosGastos>
+
+    @GET("/appObtenerDatosFamiliaDeudas/{id}")
+    suspend fun obtenerDatosFamiliaDeudas(@Path("id") idAcreditado: String): Response<datosFamiliaDeudas>
+
+    @GET("/appObtenerDatosTelefonos/{id}")
+    suspend fun obtenerDatosTelefonos(@Path("id") idAcreditado: String): Response<datosTelefonos>
+
+    @GET("/appObtenerDatosCobranza/{id}")
+    suspend fun obtenerDatosCobranza(@Path("id") idAcreditado: String): Response<datosCobranza>
+
+    @GET("/appObtenerDatosDocumentos/{id}")
+    suspend fun obtenerDatosDocumentos(@Path("id") idAcreditado: String): Response<datosDocumentos>
+
+    @GET("/appObtenerDatosEspecificosVivienda/{id}")
+    suspend fun obtenerDatosEspecificosVivienda(@Path("id") idAcreditado: String): Response<datosEspecificosVivienda>
+
+    @GET("/appObtenerDatosObservaciones/{id}")
+    suspend fun obtenerDatosObservaciones(@Path("id") idAcreditado: String): Response<datosObservaciones>
+
+
     @POST("/appAgregarDatosGenerales")
     suspend fun agregarAcreditado(
         @Body acreditado: Acreditado
@@ -102,7 +151,7 @@ interface WebService{
     @POST ("/appAgregarDatosEspecificiosVivienda")
     suspend fun agregarDatosEspecificosVivienda(
         @Body datosEspecificosVivienda: datosEspecificosVivienda
-    ): Response<AcreditadoResponse>
+    ): Response<String>
 
     @POST("/appAgregarObservaciones")
     suspend fun agregarDatosObservaciones(
@@ -112,7 +161,7 @@ interface WebService{
     @PUT("/appActualizarDatosGenerales/{id}")
     suspend fun actualizarAcreditado(
         @Path("id") idAcreditado: String,
-        @Body acreditado: Acreditado
+        @Body acreditado: identificarAcreditado
     ): Response<AcreditadoResponse>
 
     @PUT("/appActualizarFechaVisita/{id}")
@@ -127,16 +176,17 @@ interface WebService{
         @Body datosVivienda: datosVivienda
     ): Response<AcreditadoResponse>
 
-    @PUT("/appActualizarDatosReestructura/{id}")
-    suspend fun actualizarDatosReestructura(
-        @Path("id") idAcreditado: String,
-        @Body datosReestructura: DatosReestructura
-    ): Response<AcreditadoResponse>
 
     @PUT("/appActualizarDatosFechaCredito/{id}")
     suspend fun actualizarDatosCredito(
         @Path("id") idAcreditado: String,
         @Body datosCredito: datosCredito
+    ): Response<AcreditadoResponse>
+
+    @PUT("/appActualizarDatosReestructura/{id}")
+    suspend fun actualizarDatosReestructura(
+        @Path("id") idAcreditado: String,
+        @Body datosReestructura: DatosReestructura
     ): Response<AcreditadoResponse>
 
     @PUT("/appActualizarDatosGeneralesConyuge/{id}")
@@ -203,13 +253,13 @@ interface WebService{
     suspend fun actualizarDatosEspecificosVivienda(
         @Path("id") idAcreditado: String,
         @Body datosEspecificosVivienda: datosEspecificosVivienda
-    ): Response<AcreditadoResponse>
+    ): Response<ResponseMessage>
 
     @PUT("/appActualizarObservaciones/{id}")
     suspend fun actualizarDatosObservaciones(
         @Path("id") idAcreditado: String,
         @Body datosObservaciones: datosObservaciones
-    ): Response<String>
+    ): Response<ResponseMessage>
 }
 
 object RetrofitClient{
