@@ -32,6 +32,7 @@ class Formatoparte1Activity : AppCompatActivity() {
     private lateinit var domicilioColonia: EditText
     private lateinit var domicilioCp: EditText
     private lateinit var domicilioCurp: EditText
+    private var idAcreditado:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,14 +118,20 @@ class Formatoparte1Activity : AppCompatActivity() {
                 val response = RetrofitClient.webService.agregarAcreditado(acreditado)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@Formatoparte1Activity, "Datos guardados correctamente", Toast.LENGTH_LONG).show()
+                        val body = response.body()
+                        if (body != null && body.success) {
+                            idAcreditado = body.id_acreditado
+                            Toast.makeText(this@Formatoparte1Activity, "Guardado correctamente. ID: $idAcreditado", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(this@Formatoparte1Activity, "Error al guardar", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
-                        Toast.makeText(this@Formatoparte1Activity, "Error ${response.code()}: ${response.errorBody()?.string()}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Formatoparte1Activity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte1Activity, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Formatoparte1Activity, "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -132,6 +139,7 @@ class Formatoparte1Activity : AppCompatActivity() {
 
     private fun siguienteFormato() {
         val intent = Intent(this, Formatoparte2Activity::class.java)
+        intent.putExtra("id_acreditado", idAcreditado)
         startActivity(intent)
     }
 

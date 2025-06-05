@@ -323,7 +323,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Siguiente"
-            android:backgroundTint="@color/azul_medio"
+            android:backgroundTint="@color/azul_oscuro"
             android:textColor="@color/blanco"
             android:padding="12dp"/>
     </LinearLayout>

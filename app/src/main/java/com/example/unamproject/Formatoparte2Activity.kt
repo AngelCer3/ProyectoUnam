@@ -25,9 +25,13 @@ class Formatoparte2Activity : AppCompatActivity() {
     private lateinit var visita3Hora: EditText
     private lateinit var visita3Resultado: Spinner
 
+    private var idAcreditado: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte2)
+
+        idAcreditado = intent.getStringExtra("id_acreditado")
 
         // Inicializar campos
         visita1Fecha = findViewById(R.id.visita1_fecha)
@@ -81,7 +85,8 @@ class Formatoparte2Activity : AppCompatActivity() {
             visita2_resultado = visita2ResultadoValue,
             visita3_fecha = visita3FechaValue,
             visita3_hora = visita3HoraValue,
-            visita3_resultado = visita3ResultadoValue
+            visita3_resultado = visita3ResultadoValue,
+            id_acreditado = idAcreditado!!
         )
 
         // Llamamos a la API para guardar los datos
@@ -110,6 +115,7 @@ class Formatoparte2Activity : AppCompatActivity() {
 
     private fun siguienteFormato() {
         val intent = Intent(this, Formatoparte3Activity::class.java)
+        intent.putExtra("id_acreditado", idAcreditado)
         startActivity(intent)
     }
 }
