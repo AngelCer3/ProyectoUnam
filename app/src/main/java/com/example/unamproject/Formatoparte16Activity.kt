@@ -29,6 +29,8 @@ class Formatoparte16Activity : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,8 @@ class Formatoparte16Activity : AppCompatActivity() {
 
         // Obtener el ID del acreditado del intent
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
+
 
         // Vincular vistas
         bindViews()
@@ -79,7 +83,8 @@ class Formatoparte16Activity : AppCompatActivity() {
             vivienda_tipo_piso_otro = viviendaTipoPisoOtro.text.toString(),
             vivienda_tipo_techo = viviendaTipoTecho.text.toString(),
             vivienda_cuenta_bano = viviendaCuentaBano.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -116,7 +121,8 @@ class Formatoparte16Activity : AppCompatActivity() {
     private fun guardarObservaciones() {
         val datosObs = datosObservaciones(
             observaciones_entrevistador = observacionesEntrevistador.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -151,8 +157,8 @@ class Formatoparte16Activity : AppCompatActivity() {
     }
 
     private fun irSiguiente() {
-        val intent = Intent(this, MenuTrabajadorActivity::class.java)
+        val intent = Intent(this, FormatoparteFinal::class.java)
+        intent.putExtra("id_acreditado", idAcreditado)
         startActivity(intent)
-        finish()
     }
 }

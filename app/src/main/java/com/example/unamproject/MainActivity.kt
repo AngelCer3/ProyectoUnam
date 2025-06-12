@@ -61,15 +61,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun iniciarSesionTrabajador(correo: String, contrasena: String) {
         val loginRequest = LoginRequest(correo, contrasena)
-
         RetrofitClient.webService.iniciarSesion(loginRequest)
             .enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful && response.body() != null) {
                         val usuario = response.body()!!.usuario
+                        val usuarioResponse = response.body()!!
                         if (usuario.id_rol == 1) {
                             val intent = Intent(this@MainActivity, MenuTrabajadorActivity::class.java)
-                            intent.putExtra("id_usuario", usuario.id_usuario)
+                            intent.putExtra("id_usuario", usuarioResponse.usuario.id_usuario.toString())
                             startActivity(intent)
                         } else {
                             Toast.makeText(this@MainActivity, "Este acceso es solo para trabajadores", Toast.LENGTH_SHORT).show()

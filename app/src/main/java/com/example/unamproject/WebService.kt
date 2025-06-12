@@ -21,6 +21,11 @@ interface WebService{
     @POST("/appInicioSesion")
     fun iniciarSesion(@Body request: LoginRequest): Call<LoginResponse>
 
+    @GET("/appObtenerAcreditadosPorId/{id}")
+    suspend fun ObtenerAcreditadoPorId(
+        @Path("id") idUsuario: String
+    ): List<identificarAcreditado>
+
     @GET("/appObtenerAcreditados")
     suspend fun ObtenerAcreditados(): List<identificarAcreditado>
 
@@ -71,6 +76,9 @@ interface WebService{
 
     @GET("/appObtenerDatosObservaciones/{id}")
     suspend fun obtenerDatosObservaciones(@Path("id") idAcreditado: String): Response<datosObservaciones>
+
+    @GET("/appObtenerDatosCoordenadas/{id}")
+    suspend fun obtenerDatosCoordenadas(@Path("id") idAcreditado: String): Response<datosCoordenadas>
 
 
     @POST("/appAgregarDatosGenerales")
@@ -151,11 +159,16 @@ interface WebService{
     @POST ("/appAgregarDatosEspecificiosVivienda")
     suspend fun agregarDatosEspecificosVivienda(
         @Body datosEspecificosVivienda: datosEspecificosVivienda
-    ): Response<String>
+    ): Response<AcreditadoResponse>
 
     @POST("/appAgregarObservaciones")
     suspend fun agregarDatosObservaciones(
         @Body datosObservaciones: datosObservaciones
+    ): Response<AcreditadoResponse>
+
+    @POST("/appAgregarCoordenadas")
+    suspend fun agregarDatosCoordenadas(
+        @Body datosCoordenadas: datosCoordenadas
     ): Response<String>
 
     @PUT("/appActualizarDatosGenerales/{id}")
@@ -259,6 +272,12 @@ interface WebService{
     suspend fun actualizarDatosObservaciones(
         @Path("id") idAcreditado: String,
         @Body datosObservaciones: datosObservaciones
+    ): Response<AcreditadoResponse>
+
+    @PUT("/appActualizarCoordenadas/{id}")
+    suspend fun actualizarDatosCoordenadas(
+        @Path("id") idAcreditado: String,
+        @Body datosCoordenadas: datosCoordenadas
     ): Response<ResponseMessage>
 }
 

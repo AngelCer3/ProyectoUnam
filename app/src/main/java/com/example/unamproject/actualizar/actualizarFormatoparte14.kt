@@ -27,13 +27,12 @@ class actualizarFormatoparte14 : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_actualizar_formatoparte14)
-
-
 
         // Enlazar views
         cobranzaVisita = findViewById(R.id.cobranza_visita)
@@ -47,6 +46,7 @@ class actualizarFormatoparte14 : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.btnSiguiente)
 
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario")
         if (idAcreditado.isEmpty()) {
             Toast.makeText(this, "ID acreditado no recibido", Toast.LENGTH_LONG).show()
             finish()
@@ -62,6 +62,7 @@ class actualizarFormatoparte14 : AppCompatActivity() {
         btnSiguiente.setOnClickListener {
             val intent = Intent(this, actualizarFormatoparte15::class.java)
             intent.putExtra("id_acreditado", idAcreditado)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
         }
     }
@@ -95,7 +96,8 @@ class actualizarFormatoparte14 : AppCompatActivity() {
             cobranza_despacho = cobranzaDespacho.text.toString(),
             cobranza_calificacion = cobranzaCalificacion.text.toString(),
             cobranza_comentario = cobranzaComentario.text.toString(),
-            id_acreditado = idAcreditado
+            id_acreditado = idAcreditado,
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {

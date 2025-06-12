@@ -31,13 +31,14 @@ class Formatoparte3Activity : AppCompatActivity() {
     private lateinit var documentoCopiaEntregada: EditText
 
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte3)
 
         idAcreditado = intent.getStringExtra("id_acreditado")
-
+        idUsuario = intent.getStringExtra("id_usuario")
 
         viviendaLocalizada = findViewById(R.id.vivienda_localizada)
         viviendaHabitada = findViewById(R.id.vivienda_habitada)
@@ -84,7 +85,8 @@ class Formatoparte3Activity : AppCompatActivity() {
             tipo_documento_traspaso = tipoDocumentoTraspaso.text.toString(),
             documento_mostrado = documentoMostrado.text.toString(),
             documento_copia_entregada = documentoCopiaEntregada.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -108,6 +110,7 @@ class Formatoparte3Activity : AppCompatActivity() {
     private fun siguienteFormato() {
         val intent = Intent(this, Formatoparte4Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

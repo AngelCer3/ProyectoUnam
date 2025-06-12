@@ -59,6 +59,7 @@ class actualizarFormatoparte11 : AppCompatActivity() {
     private lateinit var botonSiguiente: Button
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +73,7 @@ class actualizarFormatoparte11 : AppCompatActivity() {
 
         // Obtener id_acreditado del Intent
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario")
 
         // Referencias a los EditText
         despensaAlimentacion = findViewById(R.id.gasto_despensa_alimentacion)
@@ -218,7 +220,8 @@ class actualizarFormatoparte11 : AppCompatActivity() {
             gasto_otros_descripcion = otrosDescripcion.text.toString(),
             gasto_otros_motivo = otrosMotivo.text.toString(),
             gasto_metodo_pago = metodoPago.text.toString(),
-            id_acreditado = idAcreditado
+            id_acreditado = idAcreditado,
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {
@@ -238,6 +241,7 @@ class actualizarFormatoparte11 : AppCompatActivity() {
     private fun irASiguiente() {
         val intent = Intent(this, actualizarFormatoparte12::class.java) // Cambia a la actividad que sigue
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

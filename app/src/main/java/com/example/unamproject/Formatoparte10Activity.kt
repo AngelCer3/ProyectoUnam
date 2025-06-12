@@ -47,6 +47,8 @@ class Formatoparte10Activity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +56,8 @@ class Formatoparte10Activity : AppCompatActivity() {
         setContentView(R.layout.activity_formatoparte10)
 
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
+
 
         // Vincular vistas con sus IDs correspondientes
         otrosHabitantesActividad = findViewById(R.id.otros_habitantes_actividad)
@@ -122,7 +126,8 @@ class Formatoparte10Activity : AppCompatActivity() {
             no_familiares_numero = noFamiliaresNumero.text.toString(),
             no_familiares_actividad = noFamiliaresActividad.text.toString(),
             no_familiares_aportacion = noFamiliaresAportacion.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -146,6 +151,7 @@ class Formatoparte10Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, Formatoparte11Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

@@ -28,12 +28,16 @@ class actualizarFormatoparte1 : AppCompatActivity() {
     private lateinit var colonia: EditText
     private lateinit var cp: EditText
     private lateinit var curp: EditText
+    private var idUsuario: String? = null
+
 
     private lateinit var acreditado: identificarAcreditado
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actualizar_formatoparte1)
+
+        idUsuario = intent.getStringExtra("id_usuario")
 
         // Inicializa todas las vistas
         initViews()
@@ -126,7 +130,8 @@ class actualizarFormatoparte1 : AppCompatActivity() {
             domicilio_edif = edif.text.toString(),
             domicilio_colonia = colonia.text.toString(),
             domicilio_cp = cp.text.toString(),
-            domicilio_curp = curp.text.toString()
+            domicilio_curp = curp.text.toString(),
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {
@@ -151,6 +156,7 @@ class actualizarFormatoparte1 : AppCompatActivity() {
     private fun navegarAParte2() {
         val intent = Intent(this, actualizarFormatoparte2::class.java).apply {
             putExtra("id_acreditado", acreditado.id_acreditado) // o acreditado.id según tu data class
+            intent.putExtra("id_usuario", idUsuario)
         }
         startActivity(intent)
     }

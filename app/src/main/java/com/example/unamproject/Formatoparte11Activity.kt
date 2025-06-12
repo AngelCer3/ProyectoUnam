@@ -56,6 +56,8 @@ class Formatoparte11Activity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +66,8 @@ class Formatoparte11Activity : AppCompatActivity() {
 
         // Obtener el ID del acreditado del Intent
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
+
 
         // Inicializar todas las vistas
         inicializarVistas()
@@ -162,7 +166,8 @@ class Formatoparte11Activity : AppCompatActivity() {
             gasto_otros_descripcion = gastoOtrosDescripcion.text.toString(),
             gasto_otros_motivo = gastoOtrosMotivo.text.toString(),
             gasto_metodo_pago = gastoMetodoPago.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         // Enviar los datos al servidor en un hilo secundario
@@ -200,6 +205,7 @@ class Formatoparte11Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, Formatoparte12Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
         finish()
     }

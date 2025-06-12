@@ -22,6 +22,7 @@ class Formatoparte6Activity : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +30,7 @@ class Formatoparte6Activity : AppCompatActivity() {
         setContentView(R.layout.activity_formatoparte6) // tu XML
 
         idAcreditado = intent.getStringExtra("id_acreditado")
-
+        idUsuario = intent.getStringExtra("id_usuario")
         // Vincula views
         nombre = findViewById(R.id.conyuge_nombre)
         fechaNacimiento = findViewById(R.id.conyuge_fecha_nacimiento)
@@ -68,8 +69,8 @@ class Formatoparte6Activity : AppCompatActivity() {
             conyuge_sexo = sexo.selectedItem.toString(),
             conyuge_grado_estudios = gradoEstudios.text.toString(),
             conyuge_comp_computo = compComputo.selectedItem.toString(),
-            id_acreditado = idAcreditado!!
-
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -93,6 +94,7 @@ class Formatoparte6Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, Formatoparte7Activity::class.java) // Cambia al siguiente Activity real
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

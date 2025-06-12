@@ -28,6 +28,8 @@ class Formatoparte15Activity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,8 @@ class Formatoparte15Activity : AppCompatActivity() {
 
         // Obtener el ID del acreditado del intent
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
+
 
         // Vincular vistas
         bindViews()
@@ -75,7 +79,8 @@ class Formatoparte15Activity : AppCompatActivity() {
             doc_comprobante_ingresos_cuenta = docComprobanteIngresosCuenta.text.toString(),
             doc_comprobante_ingresos_mostro = docComprobanteIngresosMostro.text.toString(),
             doc_comprobante_ingresos_entrego_copia = docComprobanteIngresosEntregoCopia.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -111,6 +116,7 @@ class Formatoparte15Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, Formatoparte16Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario",idUsuario)
         startActivity(intent)
     }
 }

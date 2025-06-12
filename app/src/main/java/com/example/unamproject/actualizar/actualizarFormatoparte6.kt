@@ -26,6 +26,7 @@ class actualizarFormatoparte6 : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
 
     private val opcionesSexo = listOf("Masculino", "Femenino", "Otro")
     private val opcionesComp = listOf("Ninguno", "Básico", "Intermedio", "Avanzado")
@@ -34,11 +35,6 @@ class actualizarFormatoparte6 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_actualizar_formatoparte6)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         // Vincular EditText y Spinners con layout
         nombre = findViewById(R.id.conyuge_nombre)
@@ -52,6 +48,7 @@ class actualizarFormatoparte6 : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.btnSiguiente)
 
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario")
         if (idAcreditado.isEmpty()) {
             Toast.makeText(this, "ID acreditado no recibido", Toast.LENGTH_LONG).show()
             finish()
@@ -113,7 +110,8 @@ class actualizarFormatoparte6 : AppCompatActivity() {
             conyuge_edad = edad.text.toString(),
             conyuge_grado_estudios = gradoEstudios.text.toString(),
             conyuge_comp_computo = compComputo.selectedItem.toString(),
-            id_acreditado = idAcreditado
+            id_acreditado = idAcreditado,
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {
@@ -133,6 +131,7 @@ class actualizarFormatoparte6 : AppCompatActivity() {
     private fun irASiguiente() {
         val intent = Intent(this, actualizarFormatoparte7::class.java) // Cambia al siguiente activity
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

@@ -94,7 +94,7 @@ class Formatoparte2SinConexion : AppCompatActivity() {
 
     private fun irASiguiente() {
         val intent = Intent(this, Formatoparte3SinConexion::class.java)
-        intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_acreditado", idAcreditado.toString())
         startActivity(intent)
     }
 }

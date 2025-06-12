@@ -313,3 +313,21 @@ interface DatosObservacionesDao {
     @Query("DELETE FROM datos_observaciones")
     suspend fun deleteAllDatosObservaciones()
 }
+
+@Dao
+interface DatosCoordenadasDao {
+    @Insert
+    suspend fun insertDatosCoordenadas(datos: DatosCoordenadasEntity)
+
+    @Query("SELECT * FROM datos_coordenadas WHERE id_acreditado = :idAcreditado")
+    suspend fun getDatosCoordenadasByAcreditado(idAcreditado: String): DatosCoordenadasEntity?
+
+    @Update
+    suspend fun updateDatosCoordenadas(datos: DatosCoordenadasEntity)
+
+    @Query("DELETE FROM datos_coordenadas WHERE id_acreditado = :idAcreditado")
+    suspend fun deleteDatosCoordenadasByAcreditado(idAcreditado: String)
+
+    @Query("DELETE FROM datos_coordenadas")
+    suspend fun deleteAllDatosCoordenadas()
+}

@@ -34,7 +34,7 @@ class Formatoparte8Activity : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private var idAcreditado: String? = null
-
+    private var idUsuario:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +42,7 @@ class Formatoparte8Activity : AppCompatActivity() {
         setContentView(R.layout.activity_formatoparte8)
 
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
 
 
         // Vincular vistas
@@ -90,7 +91,8 @@ class Formatoparte8Activity : AppCompatActivity() {
             comprobante_ingresos_solicitante = comprobanteIngresosSolicitante.text.toString(),
             institucion_cotizacion_solicitante = institucionCotizacionSolicitante.text.toString(),
             ingresos_conceptos_solicitante = ingresoConceptosSolicitante.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -114,6 +116,7 @@ class Formatoparte8Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, Formatoparte9Activity::class.java) // Ajusta el siguiente Activity real
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

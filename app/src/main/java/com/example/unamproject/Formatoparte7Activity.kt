@@ -36,6 +36,7 @@ class Formatoparte7Activity : AppCompatActivity() {
     private lateinit var tratamiento_recibido: EditText
     private lateinit var tratamiento_lugar: EditText
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,7 @@ class Formatoparte7Activity : AppCompatActivity() {
         setContentView(R.layout.activity_formatoparte7)
 
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
 
         // Inicialización de campos
         familia_integrantes = findViewById(R.id.familia_integrantes)
@@ -104,7 +106,8 @@ class Formatoparte7Activity : AppCompatActivity() {
             comprobante_enfermedad.text.toString(),
             tratamiento_recibido.text.toString(),
             tratamiento_lugar.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -127,6 +130,7 @@ class Formatoparte7Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, Formatoparte8Activity::class.java) // Cambia al siguiente Activity real
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario",idUsuario)
         startActivity(intent)
     }
 }

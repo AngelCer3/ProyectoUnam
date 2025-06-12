@@ -4,23 +4,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unamproject.R
-import com.example.unamproject.identificarAcreditado
+import com.example.unamproject.SinConexion.AcreditadoEntity
 
-class AcreditadosTrabajadorAdapter(
-    private val acreditados: List<identificarAcreditado>
-) : RecyclerView.Adapter<AcreditadosTrabajadorAdapter.AcreditadoTrabajadorViewHolder>() {
+class AdaptadorAcreditadoSinConexion(
+    private val acreditados: List<AcreditadoEntity>
+) : RecyclerView.Adapter<AdaptadorAcreditadoSinConexion.AcreditadoSinConexionViewHolder>() {
 
-    inner class AcreditadoTrabajadorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class AcreditadoSinConexionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvNombre: TextView = itemView.findViewById(R.id.tvNombre)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AcreditadoTrabajadorViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AcreditadoSinConexionViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_acreditado_trabajador, parent, false)
-        return AcreditadoTrabajadorViewHolder(view)
+            .inflate(R.layout.item_acreditado_trabajador_sin_conexion, parent, false)
+        return AcreditadoSinConexionViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: AcreditadoTrabajadorViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AcreditadoSinConexionViewHolder, position: Int) {
         val acreditado = acreditados[position]
         val nombreCompleto = "${acreditado.id_acreditado} - " +
                 "${acreditado.apellido_paterno} " +

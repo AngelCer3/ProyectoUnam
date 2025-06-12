@@ -33,7 +33,8 @@ data class identificarAcreditado(
     val domicilio_edif: String,
     val domicilio_colonia: String,
     val domicilio_cp: String,
-    val domicilio_curp: String
+    val domicilio_curp: String,
+    val id_usuario: String
 ): Serializable
 
 
@@ -52,7 +53,8 @@ data class Acreditado(
     val domicilio_edif: String,
     val domicilio_colonia: String,
     val domicilio_cp: String,
-    val domicilio_curp: String
+    val domicilio_curp: String,
+    val id_usuario: String
 )
 data class AcreditadoResponse(
     val success: Boolean,
@@ -75,7 +77,8 @@ data class Visitas(
     val visita3_fecha: String,
     val visita3_hora: String,
     val visita3_resultado: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosVivienda(
@@ -94,7 +97,8 @@ data class datosVivienda(
     val tipo_documento_traspaso: String,
     val documento_mostrado: String,
     val documento_copia_entregada: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosCredito(
@@ -105,7 +109,8 @@ data class datosCredito(
     val credito_recibo_pago: String,
     val credito_pago_actual: String,
     val credito_deuda_actual: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class DatosReestructura(
@@ -134,7 +139,8 @@ data class DatosReestructura(
     val reestructura_regimen_conyugal: String,
     val reestructura_vive_con_conyuge: String,
     val reestructura_fecha_no_convive: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 data class datosConyuge(
     val conyuge_nombre: String,
@@ -143,7 +149,8 @@ data class datosConyuge(
     val conyuge_edad: String,
     val conyuge_grado_estudios: String,
     val conyuge_comp_computo: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 data class datosFamiliares(
     val familia_integrantes: String,
@@ -169,7 +176,8 @@ data class datosFamiliares(
     val comprobante_enfermedad: String,
     val tratamiento_recibido: String,
     val tratamiento_lugar: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosSolicitante(
@@ -188,7 +196,8 @@ data class datosSolicitante(
     val comprobante_ingresos_solicitante: String,
     val institucion_cotizacion_solicitante: String,
     val ingresos_conceptos_solicitante: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 
@@ -204,7 +213,8 @@ data class datosEspecificosConyuge(
     val comprobante_ingreso_conyuge: String,
     val institucion_cotizacion_conyuge: String,
     val ingresos_conceptos_conyuge: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosOtrosFamiliares(
@@ -236,7 +246,8 @@ data class datosOtrosFamiliares(
     val no_familiares_numero: String,
     val no_familiares_actividad: String,
     val no_familiares_aportacion: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosGastos(
@@ -277,13 +288,15 @@ data class datosGastos(
     val gasto_otros_descripcion: String,
     val gasto_otros_motivo: String,
     val gasto_metodo_pago: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosFamiliaDeudas(
     val familia_tiene_deudas: String,
     val familia_cantidad_deudas: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosTelefonos(
@@ -295,7 +308,8 @@ data class datosTelefonos(
     val telefono2_numero: String,
     val telefono2_extension: String,
     val telefono2_tipo: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosCobranza(
@@ -305,7 +319,8 @@ data class datosCobranza(
     val cobranza_despacho: String,
     val cobranza_calificacion: String,
     val cobranza_comentario: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosDocumentos(
@@ -318,7 +333,8 @@ data class datosDocumentos(
     val doc_comprobante_ingresos_cuenta: String,
     val doc_comprobante_ingresos_mostro: String,
     val doc_comprobante_ingresos_entrego_copia: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosEspecificosVivienda(
@@ -327,10 +343,19 @@ data class datosEspecificosVivienda(
     val vivienda_tipo_piso_otro: String,
     val vivienda_tipo_techo: String,
     val vivienda_cuenta_bano: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
 )
 
 data class datosObservaciones(
     val observaciones_entrevistador: String,
-    val id_acreditado: String
+    val id_acreditado: String,
+    val id_usuario: String
+)
+
+data class datosCoordenadas(
+    val coordenadaX: String,
+    val coordenadaY: String,
+    val id_acreditado: String,
+    val id_usuario: String
 )

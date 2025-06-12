@@ -29,6 +29,8 @@ class Formatoparte9Activity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +39,7 @@ class Formatoparte9Activity : AppCompatActivity() {
         setContentView(R.layout.activity_formatoparte9)
 
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
 
         // Vincular vistas
         conyugeActivo = findViewById(R.id.conyuge_activo)
@@ -76,7 +79,8 @@ class Formatoparte9Activity : AppCompatActivity() {
             comprobante_ingreso_conyuge = comprobanteIngresoConyuge.text.toString(),
             institucion_cotizacion_conyuge = institucionCotizacionConyuge.text.toString(),
             ingresos_conceptos_conyuge = ingresosConceptosConyuge.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         // Ejemplo con Retrofit y corrutinas
@@ -102,6 +106,7 @@ class Formatoparte9Activity : AppCompatActivity() {
         // Ajusta el siguiente Activity según corresponda
         val intent = Intent(this, Formatoparte10Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

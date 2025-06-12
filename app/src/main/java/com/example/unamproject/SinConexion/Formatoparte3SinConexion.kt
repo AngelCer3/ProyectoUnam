@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unamproject.R
@@ -27,7 +28,7 @@ class Formatoparte3SinConexion : AppCompatActivity() {
     private lateinit var jefeFamiliaNombre: EditText
     private lateinit var jefeFamiliaRelacion: EditText
     private lateinit var fechaOcupacion: EditText
-    private lateinit var situacionVivienda: EditText
+    private lateinit var situacionVivienda: Spinner
     private lateinit var documentoTraspaso: EditText
     private lateinit var tipoDocumentoTraspaso: EditText
     private lateinit var documentoMostrado: EditText
@@ -87,7 +88,7 @@ class Formatoparte3SinConexion : AppCompatActivity() {
             jefe_familia_nombre = jefeFamiliaNombre.text.toString(),
             jefe_familia_relacion = jefeFamiliaRelacion.text.toString(),
             fecha_ocupacion = fechaOcupacion.text.toString(),
-            situacion_vivienda = situacionVivienda.text.toString(),
+            situacion_vivienda = situacionVivienda.selectedItem.toString(),
             documento_traspaso = documentoTraspaso.text.toString(),
             tipo_documento_traspaso = tipoDocumentoTraspaso.text.toString(),
             documento_mostrado = documentoMostrado.text.toString(),
@@ -119,7 +120,7 @@ class Formatoparte3SinConexion : AppCompatActivity() {
 
     private fun irASiguiente() {
         val intent = Intent(this, Formatoparte4SinConexion::class.java)
-        intent.putExtra("id_acreditado", idAcreditado.toLong())
+        intent.putExtra("id_acreditado", idAcreditado)
         startActivity(intent)
     }
 }

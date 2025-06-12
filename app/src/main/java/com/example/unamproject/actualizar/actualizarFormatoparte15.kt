@@ -31,17 +31,12 @@ class actualizarFormatoparte15 : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_actualizar_formatoparte15)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         // Vincular EditText
         docCredencialCuenta = findViewById(R.id.doc_credencial_votar_cuenta)
@@ -58,6 +53,7 @@ class actualizarFormatoparte15 : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.btnSiguiente)
 
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario")
         if (idAcreditado.isEmpty()) {
             Toast.makeText(this, "ID acreditado no recibido", Toast.LENGTH_LONG).show()
             finish()
@@ -73,6 +69,7 @@ class actualizarFormatoparte15 : AppCompatActivity() {
         btnSiguiente.setOnClickListener {
             val intent = Intent(this, actualizarFormatoparte16::class.java)
             intent.putExtra("id_acreditado", idAcreditado)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
         }
     }
@@ -112,7 +109,8 @@ class actualizarFormatoparte15 : AppCompatActivity() {
             doc_comprobante_ingresos_cuenta = docComprobanteCuenta.text.toString(),
             doc_comprobante_ingresos_mostro = docComprobanteMostro.text.toString(),
             doc_comprobante_ingresos_entrego_copia = docComprobanteEntrego.text.toString(),
-            id_acreditado = idAcreditado
+            id_acreditado = idAcreditado,
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {

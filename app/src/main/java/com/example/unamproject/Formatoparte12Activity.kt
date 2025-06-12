@@ -20,6 +20,7 @@ class Formatoparte12Activity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
     private var idAcreditado: String? = null
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,8 @@ class Formatoparte12Activity : AppCompatActivity() {
 
         // Obtener el ID del acreditado del intent
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
+
 
         // Vincular vistas con sus IDs correspondientes
         familiaTieneDeudas = findViewById(R.id.familia_tiene_deudas)
@@ -48,7 +51,8 @@ class Formatoparte12Activity : AppCompatActivity() {
         val datos = datosFamiliaDeudas(
             familia_tiene_deudas = familiaTieneDeudas.text.toString(),
             familia_cantidad_deudas = familiaCantidadDeuda.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         // Enviar los datos al servidor en un hilo secundario
@@ -73,6 +77,7 @@ class Formatoparte12Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, Formatoparte13Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

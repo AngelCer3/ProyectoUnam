@@ -26,6 +26,7 @@ class Formatoparte13Activity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,8 @@ class Formatoparte13Activity : AppCompatActivity() {
 
 
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
+
 
 
         telefono1Lada = findViewById(R.id.telefono1_lada)
@@ -67,7 +70,8 @@ class Formatoparte13Activity : AppCompatActivity() {
             telefono2_numero = telefono2Numero.text.toString(),
             telefono2_extension = telefono2Extension.text.toString(),
             telefono2_tipo = telefono2Tipo.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -91,6 +95,7 @@ class Formatoparte13Activity : AppCompatActivity() {
     private fun irSiguiente() {
          val intent = Intent(this, Formatoparte14Activity::class.java)
          intent.putExtra("id_acreditado", idAcreditado)
+         intent.putExtra("id_usuario", idUsuario)
          startActivity(intent)
     }
 }

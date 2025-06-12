@@ -37,6 +37,7 @@ class actualizarFormatoparte8 : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +65,7 @@ class actualizarFormatoparte8 : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.btnSiguiente)
 
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario")
         if (idAcreditado.isEmpty()) {
             Toast.makeText(this, "ID acreditado no recibido", Toast.LENGTH_LONG).show()
             finish()
@@ -128,7 +130,8 @@ class actualizarFormatoparte8 : AppCompatActivity() {
             comprobante_ingresos_solicitante = comprobanteIngresosSolicitante.text.toString(),
             institucion_cotizacion_solicitante = institucionCotizacionSolicitante.text.toString(),
             ingresos_conceptos_solicitante = ingresoConceptosSolicitante.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {
@@ -149,6 +152,7 @@ class actualizarFormatoparte8 : AppCompatActivity() {
         // Cambiar siguienteActivity por la actividad correspondiente
         val intent = Intent(this, actualizarFormatoparte9::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

@@ -20,7 +20,9 @@ class MenuAdministradorActivity : AppCompatActivity() {
 
     private lateinit var agregar: Button
     private lateinit var rvAcreditados: RecyclerView
+    private lateinit var cerrarSesion: Button
     private lateinit var adapter: AcreditadosAdapter
+    private var idUsuario: String? = null
 
     private val retrofitService = RetrofitClient.webService
 
@@ -36,12 +38,18 @@ class MenuAdministradorActivity : AppCompatActivity() {
         agregar.setOnClickListener {
             agregarFormato()
         }
+        cerrarSesion = findViewById(R.id.btn_cerrar_sesion)
+
+        cerrarSesion.setOnClickListener {
+            cerrarSesion()
+        }
 
         cargarAcreditados()
     }
 
     private fun agregarFormato() {
         val intent = Intent(this, Formatoparte1Activity::class.java)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 
@@ -52,6 +60,7 @@ class MenuAdministradorActivity : AppCompatActivity() {
 
                 adapter = AcreditadosAdapter(listaAcreditados) { acreditado ->
                     val intent = Intent(this@MenuAdministradorActivity, actualizarFormatoparte1::class.java).apply {
+                        intent.putExtra("id_usuario", idUsuario)
                         putExtra("acreditado", acreditado)
                     }
                     startActivity(intent)
@@ -63,5 +72,20 @@ class MenuAdministradorActivity : AppCompatActivity() {
                 Toast.makeText(this@MenuAdministradorActivity, "Error al cargar acreditados", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+    private fun cerrarSesion() {
+        // Limpiar SharedPreferences (ejemplo)
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        prefs.edit().clear().apply()
+
+        // Opcional: mostrar mensaje
+        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
+
+        // Ir a pantalla de login y cerrar esta actividad
+        val intent = Intent(this, MainActivity::class.java)
+        // Para evitar que pueda volver con el botón atrás:
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

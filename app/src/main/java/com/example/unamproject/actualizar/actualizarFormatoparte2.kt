@@ -28,12 +28,17 @@ class actualizarFormatoparte2 : AppCompatActivity() {
     private lateinit var btnActualizarDatos: Button
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
+
+
 
     private lateinit var acreditado: identificarAcreditado
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actualizar_formatoparte2)
+
+
 
         // Vincular vistas
         visita1Fecha = findViewById(R.id.visita1_fecha)
@@ -52,6 +57,8 @@ class actualizarFormatoparte2 : AppCompatActivity() {
 
         // Obtener id_acreditado del intent
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario")
+
 
         if (idAcreditado.isEmpty()) {
             Toast.makeText(this, "ID acreditado no recibido", Toast.LENGTH_LONG).show()
@@ -122,7 +129,8 @@ class actualizarFormatoparte2 : AppCompatActivity() {
             visita3_fecha = visita3Fecha.text.toString(),
             visita3_hora = visita3Hora.text.toString(),
             visita3_resultado = visita3Resultado.selectedItem?.toString() ?: "",
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {
@@ -142,6 +150,7 @@ class actualizarFormatoparte2 : AppCompatActivity() {
     private fun navegarAParte3() {
         val intent = Intent(this, actualizarFormatoparte3::class.java).apply {
             putExtra("id_acreditado", idAcreditado) // o acreditado.id según tu data class
+            putExtra("id_usuario", idUsuario)
         }
         startActivity(intent)
     }

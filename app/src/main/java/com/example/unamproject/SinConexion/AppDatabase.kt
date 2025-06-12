@@ -23,9 +23,10 @@ import androidx.room.RoomDatabase
         DatosCobranzaEntity::class,
         DatosDocumentosEntity::class,
         DatosEspecificosViviendaEntity::class,
-        DatosObservacionesEntity::class
+        DatosObservacionesEntity::class,
+        DatosCoordenadasEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 
@@ -47,6 +48,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun datosDocumentosDao(): DatosDocumentosDao
     abstract fun datosEspecificosViviendaDao(): DatosEspecificosViviendaDao
     abstract fun datosObservacionesDao(): DatosObservacionesDao
+    abstract fun datosCoordenadasDao(): DatosCoordenadasDao
 
     companion object {
         @Volatile

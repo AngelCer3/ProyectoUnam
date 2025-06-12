@@ -24,16 +24,12 @@ class actualizarFormatoparte12 : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_actualizar_formatoparte12)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         // Vincular EditText con IDs del layout
         familiaTieneDeudas = findViewById(R.id.familia_tiene_deudas)
@@ -43,6 +39,7 @@ class actualizarFormatoparte12 : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.btnSiguiente)
 
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario")
         if (idAcreditado.isEmpty()) {
             Toast.makeText(this, "ID acreditado no recibido", Toast.LENGTH_LONG).show()
             finish()
@@ -81,7 +78,8 @@ class actualizarFormatoparte12 : AppCompatActivity() {
         val datos = datosFamiliaDeudas(
             familia_tiene_deudas = familiaTieneDeudas.text.toString(),
             familia_cantidad_deudas = familiaCantidadDeuda.text.toString(),
-            id_acreditado = idAcreditado
+            id_acreditado = idAcreditado,
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {
@@ -102,6 +100,7 @@ class actualizarFormatoparte12 : AppCompatActivity() {
         // Cambiar actualizarFormatoparte13 por la siguiente actividad que corresponda
         val intent = Intent(this, actualizarFormatoparte13::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

@@ -23,6 +23,7 @@ class Formatoparte4Activity : AppCompatActivity() {
     private lateinit var creditoDeudaActual: EditText
 
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,7 @@ class Formatoparte4Activity : AppCompatActivity() {
         setContentView(R.layout.activity_formatoparte4)
 
         idAcreditado = intent.getStringExtra("id_acreditado")
+        idUsuario = intent.getStringExtra("id_usuario")
 
 
         creditoFechaEntrega = findViewById(R.id.credito_fecha_entrega)
@@ -61,7 +63,8 @@ class Formatoparte4Activity : AppCompatActivity() {
             credito_recibo_pago = creditoReciboPago.text.toString(),
             credito_pago_actual = creditoPagoActual.text.toString(),
             credito_deuda_actual = creditoDeudaActual.text.toString(),
-            id_acreditado = idAcreditado!!
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -86,6 +89,7 @@ class Formatoparte4Activity : AppCompatActivity() {
         // Aquí cambia "SiguienteActivity::class.java" al que venga después
         val intent = Intent(this, Formatoparte5Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

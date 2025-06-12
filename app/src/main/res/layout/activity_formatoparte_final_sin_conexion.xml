@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo_curvo"
-    tools:context=".SinConexion.actualizarSinConexion.actualizarFormatoparte12SinConexion">
+    tools:context=".SinConexion.FormatoparteFinalSinConexion">
 
     <ImageView
         android:id="@+id/logo_izquierdo"
@@ -30,12 +30,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"/>
 
-    <!-- Título Sección XI -->
     <TextView
-        android:id="@+id/titulo_xi"
+        android:id="@+id/titulo_xv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="SECCIÓN XI: Deudas Familiares"
+        android:text="SECCIÓN XVIII: Coordenadas"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -45,71 +44,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Contenedor de datos SECCIÓN XI -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="6dp"
-        app:layout_constraintTop_toBottomOf="@id/titulo_xi"
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/titulo_xv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
+    <EditText
+        android:id="@+id/latitudEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Latitud (Y)"
+        android:inputType="numberDecimal"
+        android:enabled="false"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/map"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="8dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    <EditText
+        android:id="@+id/longitudEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Longitud (X)"
+        android:inputType="numberDecimal"
+        android:enabled="false"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/latitudEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deudas Familiares"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingBottom="8dp"/>
-
-                <!-- Campos de datos SECCIÓN XI -->
-                <EditText android:id="@+id/familia_tiene_deudas" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="¿Tiene deudas la familia?"/>
-                <EditText android:id="@+id/familia_cantidad_deuda" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Cantidad de Deuda"/>
-            </LinearLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
 
     <!-- Botón Siguiente -->
-
     <Button
-        android:id="@+id/btnActualizar"
+        android:id="@+id/btnGuardar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="296dp"
+        android:layout_marginBottom="28dp"
         android:backgroundTint="@android:color/holo_green_dark"
         android:padding="12dp"
-        android:text="Actualizar Datos"
+        android:text="Guardar Datos"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.322"
+        app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSiguiente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="296dp"
+        android:layout_marginBottom="28dp"
         android:backgroundTint="@color/azul_oscuro"
         android:padding="12dp"
         android:text="Siguiente"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.761"
+        app:layout_constraintHorizontal_bias="0.687"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

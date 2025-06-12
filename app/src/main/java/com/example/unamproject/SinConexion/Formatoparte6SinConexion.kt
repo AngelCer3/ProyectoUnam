@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unamproject.R
@@ -19,7 +20,7 @@ class Formatoparte6SinConexion : AppCompatActivity() {
     private lateinit var conyugeFechaNacimiento: EditText
     private lateinit var conyugeEdad: EditText
     private lateinit var conyugeGradoEstudios: EditText
-    private lateinit var conyugeCompComputo: EditText
+    private lateinit var conyugeCompComputo: Spinner
 
     private lateinit var guardarBtn: Button
     private lateinit var siguienteBtn: Button
@@ -56,8 +57,6 @@ class Formatoparte6SinConexion : AppCompatActivity() {
             irASiguiente()
         }
 
-        // Cargar datos previos si existen
-        cargarDatosConyuge()
     }
 
     private fun guardarDatosConyuge() {
@@ -67,7 +66,7 @@ class Formatoparte6SinConexion : AppCompatActivity() {
             conyuge_fecha_nacimiento = conyugeFechaNacimiento.text.toString(),
             conyuge_edad = conyugeEdad.text.toString(),
             conyuge_grado_estudios = conyugeGradoEstudios.text.toString(),
-            conyuge_comp_computo = conyugeCompComputo.text.toString(),
+            conyuge_comp_computo = conyugeCompComputo.selectedItem.toString(),
             id_acreditado = idAcreditado.toString()
         )
 
@@ -87,22 +86,6 @@ class Formatoparte6SinConexion : AppCompatActivity() {
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@Formatoparte6SinConexion, "Error al guardar datos: ${e.message}", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-    }
-
-    private fun cargarDatosConyuge() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val datos = database.datosConyugeDao().getDatosConyugeByAcreditado(idAcreditado.toString())
-            if (datos != null) {
-                withContext(Dispatchers.Main) {
-                    conyugeNombre.setText(datos.conyuge_nombre)
-                    conyugeSexo.setText(datos.conyuge_sexo)
-                    conyugeFechaNacimiento.setText(datos.conyuge_fecha_nacimiento)
-                    conyugeEdad.setText(datos.conyuge_edad)
-                    conyugeGradoEstudios.setText(datos.conyuge_grado_estudios)
-                    conyugeCompComputo.setText(datos.conyuge_comp_computo)
                 }
             }
         }

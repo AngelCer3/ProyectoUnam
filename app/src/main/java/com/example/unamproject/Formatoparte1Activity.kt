@@ -33,11 +33,13 @@ class Formatoparte1Activity : AppCompatActivity() {
     private lateinit var domicilioCp: EditText
     private lateinit var domicilioCurp: EditText
     private var idAcreditado:String? = null
+    private var idUsuario:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte1)
 
+        idUsuario = intent.getStringExtra("id_usuario")
         // Asignación de los EditText
         entidadFederativa = findViewById(R.id.entidad_federativa)
         ciudadMunicipio = findViewById(R.id.ciudad_municipio_delegacion)
@@ -104,7 +106,8 @@ class Formatoparte1Activity : AppCompatActivity() {
             domicilio_edif = domicilioEdifValue,
             domicilio_colonia = domicilioColoniaValue,
             domicilio_cp = domicilioCpValue,
-            domicilio_curp = domicilioCurpValue
+            domicilio_curp = domicilioCurpValue,
+            id_usuario = idUsuario!!
         )
 
         // Llamamos a la API para guardar los datos
@@ -140,6 +143,7 @@ class Formatoparte1Activity : AppCompatActivity() {
     private fun siguienteFormato() {
         val intent = Intent(this, Formatoparte2Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 

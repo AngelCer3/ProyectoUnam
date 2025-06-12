@@ -17,6 +17,7 @@ import kotlinx.coroutines.withContext
 class actualizarFormatoparte16 : AppCompatActivity() {
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
 
     private lateinit var viviendaNumeroHabitaciones: EditText
     private lateinit var viviendaTipoPiso: EditText
@@ -33,6 +34,7 @@ class actualizarFormatoparte16 : AppCompatActivity() {
 
         // Obtener ID del acreditado
         idAcreditado = intent.getStringExtra("id_acreditado") ?: return
+        idUsuario = intent.getStringExtra("id_usuario")
 
         // Vincular vistas
         viviendaNumeroHabitaciones = findViewById(R.id.vivienda_numero_habitaciones)
@@ -54,9 +56,10 @@ class actualizarFormatoparte16 : AppCompatActivity() {
 
         // Botón Siguiente
         btnSiguiente.setOnClickListener {
-            val intent = Intent(this, MenuTrabajadorActivity::class.java)
+            val intent = Intent(this,actualizarFormatoparteFinal::class.java)
+            intent.putExtra("id_acreditado", idAcreditado)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
-            finish()
         }
     }
 
@@ -89,12 +92,14 @@ class actualizarFormatoparte16 : AppCompatActivity() {
             vivienda_tipo_piso_otro = viviendaTipoPisoOtro.text.toString(),
             vivienda_tipo_techo = viviendaTipoTecho.text.toString(),
             vivienda_cuenta_bano = viviendaCuentaBano.text.toString(),
-            id_acreditado = idAcreditado
+            id_acreditado = idAcreditado,
+            id_usuario = idUsuario!!
         )
 
         val observacionesData = datosObservaciones(
             observaciones_entrevistador = observacionesEntrevistador.text.toString(),
-            id_acreditado = idAcreditado
+            id_acreditado = idAcreditado,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -109,12 +114,13 @@ class actualizarFormatoparte16 : AppCompatActivity() {
                     if (bodyVivienda != null && bodyObs != null) {
                         Toast.makeText(
                             this@actualizarFormatoparte16,
-                            "Vivienda: ${bodyVivienda.message}\nObservaciones: ${bodyObs.message}",
+                            "Datos Actualizados correctamente",
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
                         Toast.makeText(this@actualizarFormatoparte16, "Respuesta vacía del servidor", Toast.LENGTH_LONG).show()
                     }
+
                 } else {
                     val errorMsgVivienda = responseVivienda.errorBody()?.string()
                     val errorMsgObs = responseObs.errorBody()?.string()

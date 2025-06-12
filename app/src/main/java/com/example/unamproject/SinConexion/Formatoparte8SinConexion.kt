@@ -44,11 +44,6 @@ class Formatoparte8SinConexion : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_formatoparte8_sin_conexion)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
 

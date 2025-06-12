@@ -43,13 +43,14 @@ class Formatoparte5Activity : AppCompatActivity() {
     private lateinit var fechaNoConvive: EditText
 
     private var idAcreditado: String? = null
+    private var idUsuario:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte5)
 
         idAcreditado = intent.getStringExtra("id_acreditado")
-
+        idUsuario = intent.getStringExtra("id_usuario")
 
         motivo = findViewById(R.id.reestructura_motivo)
         documento = findViewById(R.id.reestructura_documento)
@@ -116,8 +117,8 @@ class Formatoparte5Activity : AppCompatActivity() {
             reestructura_regimen_conyugal = regimenConyugal.text.toString(),
             reestructura_vive_con_conyuge = viveConConyuge.text.toString(),
             reestructura_fecha_no_convive = fechaNoConvive.text.toString(),
-            id_acreditado = idAcreditado!!
-
+            id_acreditado = idAcreditado!!,
+            id_usuario = idUsuario!!
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -140,6 +141,7 @@ class Formatoparte5Activity : AppCompatActivity() {
     private fun siguienteFormato() {
         val intent = Intent(this, Formatoparte6Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
     }
 }

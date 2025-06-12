@@ -118,7 +118,7 @@ data class DatosConyugeEntity(
 
 @Entity(tableName = "datos_familiares")
 data class DatosFamiliaresEntity(
-    @PrimaryKey(autoGenerate = true) val id_familia: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id_familiares: Int = 0,
     val familia_integrantes: String,
     val familia_total_ocupantes: String,
     val familia_tipo: String,
@@ -168,7 +168,7 @@ data class DatosSolicitanteEntity(
 
 @Entity(tableName = "datos_especificos_conyuge")
 data class DatosEspecificosConyugeEntity(
-    @PrimaryKey(autoGenerate = true) val id_especifico_conyuge: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id_especiconyuge: Int = 0,
     val conyuge_activo: String,
     val conyuge_ocupacion_actual: String,
     val institucion_trabajo_conyuge: String,
@@ -185,7 +185,7 @@ data class DatosEspecificosConyugeEntity(
 
 @Entity(tableName = "datos_otros_familiares")
 data class DatosOtrosFamiliaresEntity(
-    @PrimaryKey(autoGenerate = true) val id_otros_familiares: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id_otrosfamiliares: Int = 0,
     val otros_habitantes_actividad: String,
     val hijo_numero: String,
     val hijo_actividad: String,
@@ -262,7 +262,7 @@ data class DatosGastosEntity(
 
 @Entity(tableName = "datos_familia_deudas")
 data class DatosFamiliaDeudasEntity(
-    @PrimaryKey(autoGenerate = true) val id_familia_deudas: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id_deudas: Int = 0,
     val familia_tiene_deudas: String,
     val familia_cantidad_deudas: String,
     val id_acreditado: String
@@ -311,7 +311,7 @@ data class DatosDocumentosEntity(
 
 @Entity(tableName = "datos_especificos_vivienda")
 data class DatosEspecificosViviendaEntity(
-    @PrimaryKey(autoGenerate = true) val id_especificos_vivienda: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id_especifivivienda: Int = 0,
     val vivienda_numero_habitaciones: String,
     val vivienda_tipo_piso: String,
     val vivienda_tipo_piso_otro: String,
@@ -324,5 +324,13 @@ data class DatosEspecificosViviendaEntity(
 data class DatosObservacionesEntity(
     @PrimaryKey(autoGenerate = true) val id_observaciones: Int = 0,
     val observaciones_entrevistador: String,
+    val id_acreditado: String
+)
+
+@Entity(tableName = "datos_coordenadas")
+data class DatosCoordenadasEntity(
+    @PrimaryKey(autoGenerate = true) val id_coordenada: Int = 0,
+    val coordenadaX: String,
+    val coordenadaY: String,
     val id_acreditado: String
 )

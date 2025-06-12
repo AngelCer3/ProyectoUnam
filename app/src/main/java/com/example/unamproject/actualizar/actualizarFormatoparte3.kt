@@ -32,6 +32,7 @@ class actualizarFormatoparte3 : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private lateinit var idAcreditado: String
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +66,7 @@ class actualizarFormatoparte3 : AppCompatActivity() {
 
         // Obtener id_acreditado del intent
         idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario")
         if (idAcreditado.isEmpty()) {
             Toast.makeText(this, "ID acreditado no recibido", Toast.LENGTH_LONG).show()
             finish()
@@ -80,6 +82,7 @@ class actualizarFormatoparte3 : AppCompatActivity() {
         btnSiguiente.setOnClickListener {
             val intent = Intent(this, actualizarFormatoparte4::class.java)
             intent.putExtra("id_acreditado", idAcreditado)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
         }
     }
@@ -137,7 +140,8 @@ class actualizarFormatoparte3 : AppCompatActivity() {
             tipo_documento_traspaso = tipoDocumentoTraspaso.text.toString(),
             documento_mostrado = documentoMostrado.text.toString(),
             documento_copia_entregada = documentoCopiaEntregada.text.toString(),
-            id_acreditado = idAcreditado
+            id_acreditado = idAcreditado,
+            id_usuario = idUsuario!!
         )
 
         lifecycleScope.launch {
