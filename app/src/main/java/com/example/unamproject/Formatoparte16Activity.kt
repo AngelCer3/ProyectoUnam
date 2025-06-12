@@ -159,7 +159,7 @@ class Formatoparte16Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, FormatoparteFinal::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
-        idUsuario = intent.getStringExtra("id_usuario")
+        intent.putExtra("id_usuario",idUsuario)
         startActivity(intent)
     }
 }
