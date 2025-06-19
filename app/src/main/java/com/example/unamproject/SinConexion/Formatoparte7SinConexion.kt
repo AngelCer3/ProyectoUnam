@@ -2,9 +2,9 @@ package com.example.unamproject.SinConexion
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unamproject.R
 import kotlinx.coroutines.CoroutineScope
@@ -42,17 +42,27 @@ class Formatoparte7SinConexion : AppCompatActivity() {
     private lateinit var siguienteBtn: Button
 
     private lateinit var database: AppDatabase
-    private var idAcreditado: String = ""
+    private var idAcreditado: Long = 0L
+    private var datosGuardados = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_formatoparte7_sin_conexion) // Asegúrate que este es el layout correcto
+        setContentView(R.layout.activity_formatoparte7_sin_conexion)
 
-        idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        // Obtener ID del acreditado
+        idAcreditado = intent.getStringExtra("id_acreditado")?.toLongOrNull() ?: run {
+            mostrarErrorYCerrar("No se recibió el ID del acreditado")
+            return
+        }
 
+        // Inicializar base de datos
         database = AppDatabase.getDatabase(this)
 
-        // Inicializar EditTexts con los IDs de tu layout
+        initViews()
+        setupButtons()
+    }
+
+    private fun initViews() {
         integrantesEt = findViewById(R.id.familia_integrantes)
         totalOcupantesEt = findViewById(R.id.familia_total_ocupantes)
         tipoFamiliaEt = findViewById(R.id.familia_tipo)
@@ -79,61 +89,218 @@ class Formatoparte7SinConexion : AppCompatActivity() {
 
         guardarBtn = findViewById(R.id.btnGuardar)
         siguienteBtn = findViewById(R.id.btnSiguiente)
+    }
 
+    private fun setupButtons() {
         guardarBtn.setOnClickListener {
-            guardarDatosFamiliares()
+            if (validarCampos()) {
+                guardarDatosFamiliares()
+            }
         }
 
         siguienteBtn.setOnClickListener {
-            irASiguiente()
+            if (!datosGuardados) {
+                mostrarDialogo(
+                    titulo = "Advertencia",
+                    mensaje = "Debes guardar los datos antes de continuar",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFFFA000.toInt(),
+                    onAceptar = { guardarDatosFamiliares() }
+                )
+            } else {
+                irASiguiente()
+            }
         }
+    }
+
+    private fun validarCampos(): Boolean {
+        // Validar campos obligatorios
+        val camposRequeridos = listOf(
+            integrantesEt to "Número de integrantes de la familia",
+            totalOcupantesEt to "Total de ocupantes",
+            tipoFamiliaEt to "Tipo de familia"
+        )
+
+        for ((campo, nombre) in camposRequeridos) {
+            if (campo.text.toString().trim().isEmpty()) {
+                mostrarDialogo(
+                    titulo = "Campo requerido",
+                    mensaje = "El campo $nombre es obligatorio",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
+        }
+
+        // Validar que los campos de edades sean numéricos
+        val camposEdades = listOf(
+            edad0_5HombresEt to "Hombres 0-5 años",
+            edad0_5MujeresEt to "Mujeres 0-5 años",
+            edad6_12HombresEt to "Hombres 6-12 años",
+            edad6_12MujeresEt to "Mujeres 6-12 años",
+            edad13_18HombresEt to "Hombres 13-18 años",
+            edad13_18MujeresEt to "Mujeres 13-18 años",
+            edad19_35HombresEt to "Hombres 19-35 años",
+            edad19_35MujeresEt to "Mujeres 19-35 años",
+            edad36_59HombresEt to "Hombres 36-59 años",
+            edad36_59MujeresEt to "Mujeres 36-59 años",
+            edad60MasHombresEt to "Hombres 60+ años",
+            edad60MasMujeresEt to "Mujeres 60+ años"
+        )
+
+        for ((campo, nombre) in camposEdades) {
+            val valor = campo.text.toString().trim()
+            if (valor.isNotEmpty()) {
+                try {
+                    valor.toInt()
+                } catch (e: NumberFormatException) {
+                    mostrarDialogo(
+                        titulo = "Valor inválido",
+                        mensaje = "El campo $nombre debe ser un número entero",
+                        iconoResId = android.R.drawable.ic_dialog_alert,
+                        colorTitulo = 0xFFD32F2F.toInt()
+                    )
+                    campo.requestFocus()
+                    return false
+                }
+            }
+        }
+
+        // Validar que si hay familiares con enfermedad, se especifique cuántos y quiénes
+        if (familiaresEnfermedadEt.text.toString().trim().equals("Sí", ignoreCase = true)) {
+            if (familiaresEnfermedadCuantosEt.text.toString().trim().isEmpty()) {
+                mostrarDialogo(
+                    titulo = "Campo requerido",
+                    mensaje = "Debe especificar cuántos familiares tienen enfermedad",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFD32F2F.toInt()
+                )
+                familiaresEnfermedadCuantosEt.requestFocus()
+                return false
+            }
+
+            if (familiaresEnfermedadQuienEt.text.toString().trim().isEmpty()) {
+                mostrarDialogo(
+                    titulo = "Campo requerido",
+                    mensaje = "Debe especificar qué familiares tienen enfermedad",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFD32F2F.toInt()
+                )
+                familiaresEnfermedadQuienEt.requestFocus()
+                return false
+            }
+        }
+
+        return true
     }
 
     private fun guardarDatosFamiliares() {
         val datos = DatosFamiliaresEntity(
-            familia_integrantes = integrantesEt.text.toString(),
-            familia_total_ocupantes = totalOcupantesEt.text.toString(),
-            familia_tipo = tipoFamiliaEt.text.toString(),
-            edad_0_5_hombres = edad0_5HombresEt.text.toString(),
-            edad_0_5_mujeres = edad0_5MujeresEt.text.toString(),
-            edad_6_12_hombres = edad6_12HombresEt.text.toString(),
-            edad_6_12_mujeres = edad6_12MujeresEt.text.toString(),
-            edad_13_18_hombres = edad13_18HombresEt.text.toString(),
-            edad_13_18_mujeres = edad13_18MujeresEt.text.toString(),
-            edad_19_35_hombres = edad19_35HombresEt.text.toString(),
-            edad_19_35_mujeres = edad19_35MujeresEt.text.toString(),
-            edad_36_59_hombres = edad36_59HombresEt.text.toString(),
-            edad_36_59_mujeres = edad36_59MujeresEt.text.toString(),
-            edad_60_mas_hombres = edad60MasHombresEt.text.toString(),
-            edad_60_mas_mujeres = edad60MasMujeresEt.text.toString(),
-            escuela_asistencia = escuelaAsistenciaEt.text.toString(),
-            escolaridad_niveles = escolaridadNivelesEt.text.toString(),
-            familiares_enfermedad = familiaresEnfermedadEt.text.toString(),
-            familiares_enfermedad_cuantos = familiaresEnfermedadCuantosEt.text.toString(),
-            familiares_enfermedad_quien = familiaresEnfermedadQuienEt.text.toString(),
-            comprobante_enfermedad = comprobanteEnfermedadEt.text.toString(),
-            tratamiento_recibido = tratamientoRecibidoEt.text.toString(),
-            tratamiento_lugar = tratamientoLugarEt.text.toString(),
-            id_acreditado = idAcreditado
+            familia_integrantes = integrantesEt.text.toString().trim(),
+            familia_total_ocupantes = totalOcupantesEt.text.toString().trim(),
+            familia_tipo = tipoFamiliaEt.text.toString().trim(),
+            edad_0_5_hombres = edad0_5HombresEt.text.toString().trim(),
+            edad_0_5_mujeres = edad0_5MujeresEt.text.toString().trim(),
+            edad_6_12_hombres = edad6_12HombresEt.text.toString().trim(),
+            edad_6_12_mujeres = edad6_12MujeresEt.text.toString().trim(),
+            edad_13_18_hombres = edad13_18HombresEt.text.toString().trim(),
+            edad_13_18_mujeres = edad13_18MujeresEt.text.toString().trim(),
+            edad_19_35_hombres = edad19_35HombresEt.text.toString().trim(),
+            edad_19_35_mujeres = edad19_35MujeresEt.text.toString().trim(),
+            edad_36_59_hombres = edad36_59HombresEt.text.toString().trim(),
+            edad_36_59_mujeres = edad36_59MujeresEt.text.toString().trim(),
+            edad_60_mas_hombres = edad60MasHombresEt.text.toString().trim(),
+            edad_60_mas_mujeres = edad60MasMujeresEt.text.toString().trim(),
+            escuela_asistencia = escuelaAsistenciaEt.text.toString().trim(),
+            escolaridad_niveles = escolaridadNivelesEt.text.toString().trim(),
+            familiares_enfermedad = familiaresEnfermedadEt.text.toString().trim(),
+            familiares_enfermedad_cuantos = familiaresEnfermedadCuantosEt.text.toString().trim(),
+            familiares_enfermedad_quien = familiaresEnfermedadQuienEt.text.toString().trim(),
+            comprobante_enfermedad = comprobanteEnfermedadEt.text.toString().trim(),
+            tratamiento_recibido = tratamientoRecibidoEt.text.toString().trim(),
+            tratamiento_lugar = tratamientoLugarEt.text.toString().trim(),
+            id_acreditado = idAcreditado.toString()
         )
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 database.datosFamiliaresDao().insertDatosFamiliares(datos)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte7SinConexion, "Datos guardados", Toast.LENGTH_SHORT).show()
+                    datosGuardados = true
+                    mostrarDialogo(
+                        titulo = "Éxito",
+                        mensaje = "Datos familiares guardados correctamente",
+                        iconoResId = android.R.drawable.ic_dialog_info,
+                        colorTitulo = 0xFF388E3C.toInt()
+                    )
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte7SinConexion, "Error al guardar datos: ${e.message}", Toast.LENGTH_LONG).show()
+                    mostrarErrorInesperado("Error al guardar datos familiares: ${e.message ?: "Error desconocido"}")
                 }
             }
         }
     }
 
     private fun irASiguiente() {
-        val intent = Intent(this, Formatoparte8SinConexion::class.java)  // Cambia al nombre correcto de la siguiente activity
-        intent.putExtra("id_acreditado", idAcreditado)
+        val intent = Intent(this, Formatoparte8SinConexion::class.java)
+        intent.putExtra("id_acreditado", idAcreditado.toString())
         startActivity(intent)
+    }
+
+    private fun mostrarErrorInesperado(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error inesperado",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        )
+    }
+
+    private fun mostrarErrorYCerrar(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error crítico",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        ) {
+            finish()
+        }
+    }
+
+    private fun mostrarDialogo(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog, null)
+
+        view.findViewById<ImageView>(R.id.ivIcon).apply {
+            setImageResource(iconoResId)
+            setColorFilter(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvTitle).apply {
+            text = titulo
+            setTextColor(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvMessage).text = mensaje
+
+        AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+            .apply {
+                view.findViewById<Button>(R.id.btnOk).setOnClickListener {
+                    dismiss()
+                    onAceptar?.invoke()
+                }
+                show()
+            }
     }
 }

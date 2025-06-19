@@ -2,7 +2,9 @@ package com.example.unamproject.SinConexion
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unamproject.R
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +15,8 @@ import kotlinx.coroutines.withContext
 class Formatoparte11SinConexion : AppCompatActivity() {
 
     private lateinit var database: AppDatabase
-    private lateinit var idAcreditado: String
+    private var idAcreditado: Long = 0L
+    private var datosGuardados = false
 
     // EditTexts
     private lateinit var gastoDespensaAlimentacion: EditText
@@ -62,9 +65,20 @@ class Formatoparte11SinConexion : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte11_sin_conexion)
 
-        idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        // Obtener ID del acreditado
+        idAcreditado = intent.getStringExtra("id_acreditado")?.toLongOrNull() ?: run {
+            mostrarErrorYCerrar("No se recibió el ID del acreditado")
+            return
+        }
+
+        // Inicializar base de datos
         database = AppDatabase.getDatabase(this)
 
+        initViews()
+        setupButtons()
+    }
+
+    private fun initViews() {
         // Inicializar EditTexts
         gastoDespensaAlimentacion = findViewById(R.id.gasto_despensa_alimentacion)
         gastoDespensaMotivo = findViewById(R.id.gasto_despensa_motivo)
@@ -106,71 +120,233 @@ class Formatoparte11SinConexion : AppCompatActivity() {
 
         btnGuardar = findViewById(R.id.btnGuardar)
         btnSiguiente = findViewById(R.id.btnSiguiente)
+    }
 
+    private fun setupButtons() {
         btnGuardar.setOnClickListener {
-            guardarDatosGastos()
+            if (validarCampos()) {
+                guardarDatosGastos()
+            }
         }
 
         btnSiguiente.setOnClickListener {
-            val intent = Intent(this, Formatoparte12SinConexion::class.java) // Cambia NextActivity por la pantalla siguiente real
-            intent.putExtra("id_acreditado", idAcreditado)
-            startActivity(intent)
+            if (!datosGuardados) {
+                mostrarDialogo(
+                    titulo = "Advertencia",
+                    mensaje = "Debes guardar los datos antes de continuar",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFFFA000.toInt(),
+                    onAceptar = { guardarDatosGastos() }
+                )
+            } else {
+                irASiguiente()
+            }
         }
+    }
+
+    private fun validarCampos(): Boolean {
+        // Validar que los montos sean numéricos y no negativos
+        val camposMontos = listOf(
+            gastoDespensaAlimentacion to "Gasto en despensa/alimentación",
+            gastoGas to "Gasto en gas",
+            gastoLuz to "Gasto en luz",
+            gastoAgua to "Gasto en agua",
+            gastoServicioTelefonico to "Gasto en servicio telefónico",
+            gastoMantenimientoVivienda to "Gasto en mantenimiento de vivienda",
+            gastoTransportePublico to "Gasto en transporte público",
+            gastoGasolina to "Gasto en gasolina",
+            gastoServiciosSalud to "Gasto en servicios de salud",
+            gastoEducacion to "Gasto en educación",
+            gastoRecreacion to "Gasto en recreación",
+            gastoComidasFuera to "Gasto en comidas fuera",
+            gastoVestidoCalzado to "Gasto en vestido y calzado",
+            gastoPensionVehiculo to "Gasto en pensión vehicular",
+            gastoTelefonoCelular to "Gasto en teléfono celular",
+            gastoTelevisionPago to "Gasto en televisión de pago",
+            gastoPagoCreditos to "Gasto en pago de créditos"
+        )
+
+        for ((campo, nombre) in camposMontos) {
+            val valor = campo.text.toString().trim()
+            if (valor.isNotEmpty()) {
+                try {
+                    val monto = valor.toDouble()
+                    if (monto < 0) {
+                        mostrarDialogo(
+                            titulo = "Valor inválido",
+                            mensaje = "El $nombre no puede ser negativo",
+                            iconoResId = android.R.drawable.ic_dialog_alert,
+                            colorTitulo = 0xFFD32F2F.toInt()
+                        )
+                        campo.requestFocus()
+                        return false
+                    }
+                } catch (e: NumberFormatException) {
+                    mostrarDialogo(
+                        titulo = "Valor inválido",
+                        mensaje = "El $nombre debe ser un valor numérico",
+                        iconoResId = android.R.drawable.ic_dialog_alert,
+                        colorTitulo = 0xFFD32F2F.toInt()
+                    )
+                    campo.requestFocus()
+                    return false
+                }
+            }
+        }
+
+        // Validar campos obligatorios
+        val camposRequeridos = listOf(
+            gastoMetodoPago to "Método de pago principal"
+        )
+
+        for ((campo, nombre) in camposRequeridos) {
+            if (campo.text.toString().trim().isEmpty()) {
+                mostrarDialogo(
+                    titulo = "Campo requerido",
+                    mensaje = "El campo $nombre es obligatorio",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
+        }
+
+        // Validar que si hay gasto en "otros", se especifique descripción
+        if (gastoOtrosDescripcion.text.toString().trim().isNotEmpty() &&
+            gastoOtrosMotivo.text.toString().trim().isEmpty()) {
+            mostrarDialogo(
+                titulo = "Campo requerido",
+                mensaje = "Debe especificar el motivo del gasto en 'Otros'",
+                iconoResId = android.R.drawable.ic_dialog_alert,
+                colorTitulo = 0xFFD32F2F.toInt()
+            )
+            gastoOtrosMotivo.requestFocus()
+            return false
+        }
+
+        return true
     }
 
     private fun guardarDatosGastos() {
         val datos = DatosGastosEntity(
-            gasto_despensa_alimentacion = gastoDespensaAlimentacion.text.toString(),
-            gasto_despensa_motivo = gastoDespensaMotivo.text.toString(),
-            gasto_gas = gastoGas.text.toString(),
-            gasto_gas_motivo = gastoGasMotivo.text.toString(),
-            gasto_luz = gastoLuz.text.toString(),
-            gasto_luz_motivo = gastoLuzMotivo.text.toString(),
-            gasto_agua = gastoAgua.text.toString(),
-            gasto_agua_motivo = gastoAguaMotivo.text.toString(),
-            gasto_servicio_telefonico = gastoServicioTelefonico.text.toString(),
-            gasto_servicio_telefonico_motivo = gastoServicioTelefonicoMotivo.text.toString(),
-            gasto_mantenimiento_vivienda = gastoMantenimientoVivienda.text.toString(),
-            gasto_mantenimiento_motivo = gastoMantenimientoMotivo.text.toString(),
-            gasto_transporte_publico = gastoTransportePublico.text.toString(),
-            gasto_transporte_motivo = gastoTransporteMotivo.text.toString(),
-            gasto_gasolina = gastoGasolina.text.toString(),
-            gasto_gasolina_motivo = gastoGasolinaMotivo.text.toString(),
-            gasto_servicios_salud = gastoServiciosSalud.text.toString(),
-            gasto_salud_motivo = gastoSaludMotivo.text.toString(),
-            gasto_educacion = gastoEducacion.text.toString(),
-            gasto_educacion_motivo = gastoEducacionMotivo.text.toString(),
-            gasto_recreacion = gastoRecreacion.text.toString(),
-            gasto_recreacion_motivo = gastoRecreacionMotivo.text.toString(),
-            gasto_comidas_fuera = gastoComidasFuera.text.toString(),
-            gasto_comidas_fuera_motivo = gastoComidasFueraMotivo.text.toString(),
-            gasto_vestido_calzado = gastoVestidoCalzado.text.toString(),
-            gasto_vestido_calzado_motivo = gastoVestidoCalzadoMotivo.text.toString(),
-            gasto_pension_vehiculo = gastoPensionVehiculo.text.toString(),
-            gasto_pension_vehiculo_motivo = gastoPensionVehiculoMotivo.text.toString(),
-            gasto_telefono_celular = gastoTelefonoCelular.text.toString(),
-            gasto_telefono_celular_motivo = gastoTelefonoCelularMotivo.text.toString(),
-            gasto_television_pago = gastoTelevisionPago.text.toString(),
-            gasto_television_pago_motivo = gastoTelevisionPagoMotivo.text.toString(),
-            gasto_pago_creditos = gastoPagoCreditos.text.toString(),
-            gasto_pago_creditos_motivo = gastoPagoCreditosMotivo.text.toString(),
-            gasto_otros_descripcion = gastoOtrosDescripcion.text.toString(),
-            gasto_otros_motivo = gastoOtrosMotivo.text.toString(),
-            gasto_metodo_pago = gastoMetodoPago.text.toString(),
-            id_acreditado = idAcreditado
+            gasto_despensa_alimentacion = gastoDespensaAlimentacion.text.toString().trim(),
+            gasto_despensa_motivo = gastoDespensaMotivo.text.toString().trim(),
+            gasto_gas = gastoGas.text.toString().trim(),
+            gasto_gas_motivo = gastoGasMotivo.text.toString().trim(),
+            gasto_luz = gastoLuz.text.toString().trim(),
+            gasto_luz_motivo = gastoLuzMotivo.text.toString().trim(),
+            gasto_agua = gastoAgua.text.toString().trim(),
+            gasto_agua_motivo = gastoAguaMotivo.text.toString().trim(),
+            gasto_servicio_telefonico = gastoServicioTelefonico.text.toString().trim(),
+            gasto_servicio_telefonico_motivo = gastoServicioTelefonicoMotivo.text.toString().trim(),
+            gasto_mantenimiento_vivienda = gastoMantenimientoVivienda.text.toString().trim(),
+            gasto_mantenimiento_motivo = gastoMantenimientoMotivo.text.toString().trim(),
+            gasto_transporte_publico = gastoTransportePublico.text.toString().trim(),
+            gasto_transporte_motivo = gastoTransporteMotivo.text.toString().trim(),
+            gasto_gasolina = gastoGasolina.text.toString().trim(),
+            gasto_gasolina_motivo = gastoGasolinaMotivo.text.toString().trim(),
+            gasto_servicios_salud = gastoServiciosSalud.text.toString().trim(),
+            gasto_salud_motivo = gastoSaludMotivo.text.toString().trim(),
+            gasto_educacion = gastoEducacion.text.toString().trim(),
+            gasto_educacion_motivo = gastoEducacionMotivo.text.toString().trim(),
+            gasto_recreacion = gastoRecreacion.text.toString().trim(),
+            gasto_recreacion_motivo = gastoRecreacionMotivo.text.toString().trim(),
+            gasto_comidas_fuera = gastoComidasFuera.text.toString().trim(),
+            gasto_comidas_fuera_motivo = gastoComidasFueraMotivo.text.toString().trim(),
+            gasto_vestido_calzado = gastoVestidoCalzado.text.toString().trim(),
+            gasto_vestido_calzado_motivo = gastoVestidoCalzadoMotivo.text.toString().trim(),
+            gasto_pension_vehiculo = gastoPensionVehiculo.text.toString().trim(),
+            gasto_pension_vehiculo_motivo = gastoPensionVehiculoMotivo.text.toString().trim(),
+            gasto_telefono_celular = gastoTelefonoCelular.text.toString().trim(),
+            gasto_telefono_celular_motivo = gastoTelefonoCelularMotivo.text.toString().trim(),
+            gasto_television_pago = gastoTelevisionPago.text.toString().trim(),
+            gasto_television_pago_motivo = gastoTelevisionPagoMotivo.text.toString().trim(),
+            gasto_pago_creditos = gastoPagoCreditos.text.toString().trim(),
+            gasto_pago_creditos_motivo = gastoPagoCreditosMotivo.text.toString().trim(),
+            gasto_otros_descripcion = gastoOtrosDescripcion.text.toString().trim(),
+            gasto_otros_motivo = gastoOtrosMotivo.text.toString().trim(),
+            gasto_metodo_pago = gastoMetodoPago.text.toString().trim(),
+            id_acreditado = idAcreditado.toString()
         )
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 database.datosGastosDao().insertDatosGastos(datos)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte11SinConexion, "Datos guardados correctamente", Toast.LENGTH_SHORT).show()
+                    datosGuardados = true
+                    mostrarDialogo(
+                        titulo = "Éxito",
+                        mensaje = "Datos de gastos guardados correctamente",
+                        iconoResId = android.R.drawable.ic_dialog_info,
+                        colorTitulo = 0xFF388E3C.toInt()
+                    )
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte11SinConexion, "Error al guardar: ${e.message}", Toast.LENGTH_LONG).show()
+                    mostrarErrorInesperado("Error al guardar datos de gastos: ${e.message ?: "Error desconocido"}")
                 }
             }
         }
+    }
+
+    private fun irASiguiente() {
+        val intent = Intent(this, Formatoparte12SinConexion::class.java)
+        intent.putExtra("id_acreditado", idAcreditado.toString())
+        startActivity(intent)
+    }
+
+    private fun mostrarErrorInesperado(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error inesperado",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        )
+    }
+
+    private fun mostrarErrorYCerrar(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error crítico",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        ) {
+            finish()
+        }
+    }
+
+    private fun mostrarDialogo(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog, null)
+
+        view.findViewById<ImageView>(R.id.ivIcon).apply {
+            setImageResource(iconoResId)
+            setColorFilter(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvTitle).apply {
+            text = titulo
+            setTextColor(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvMessage).text = mensaje
+
+        AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+            .apply {
+                view.findViewById<Button>(R.id.btnOk).setOnClickListener {
+                    dismiss()
+                    onAceptar?.invoke()
+                }
+                show()
+            }
     }
 }

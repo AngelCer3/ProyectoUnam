@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/fondo_curvo"
     tools:context=".SinConexion.MenuSinConexion">
+
+    <!-- Logos -->
     <ImageView
         android:id="@+id/logo_izquierdo"
         android:layout_width="100dp"
@@ -29,6 +30,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"/>
 
+    <!-- Título -->
     <TextView
         android:id="@+id/tv_bienvenido"
         android:layout_width="wrap_content"
@@ -42,19 +44,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp"/>
 
+    <!-- Botón Agregar -->
     <Button
         android:id="@+id/btn_agregar"
-        android:layout_width="216dp"
+        android:layout_width="0dp"
         android:layout_height="61dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="4dp"
         android:backgroundTint="@color/boton_fondo"
         android:elevation="4dp"
         android:padding="12dp"
         android:text="Agregar"
         android:textColor="@color/azul_oscuro"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cerrar_sesion"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_bienvenido" />
+
+    <!-- Botón Cerrar Sesión -->
+
+    <!-- RecyclerView -->
+    <Button
+        android:id="@+id/btn_cerrar_sesion"
+        android:layout_width="0dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/boton_fondo"
+        android:elevation="4dp"
+        android:padding="12dp"
+        android:text="Cerrar sesión"
+        android:textColor="@color/azul_oscuro"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_agregar"
         app:layout_constraintTop_toBottomOf="@id/tv_bienvenido" />
 
     <androidx.recyclerview.widget.RecyclerView

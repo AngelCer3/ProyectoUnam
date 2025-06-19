@@ -2,17 +2,19 @@ package com.example.unamproject.actualizar
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.example.unamproject.R
 import com.example.unamproject.RetrofitClient
 import com.example.unamproject.identificarAcreditado
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import retrofit2.HttpException
+import java.io.IOException
 
 class actualizarFormatoparte1 : AppCompatActivity() {
 
-    // Declara todos tus EditText como lateinit
     private lateinit var entidadFederativa: EditText
     private lateinit var ciudadMunicipioDelegacion: EditText
     private lateinit var apellidoPaterno: EditText
@@ -28,40 +30,30 @@ class actualizarFormatoparte1 : AppCompatActivity() {
     private lateinit var colonia: EditText
     private lateinit var cp: EditText
     private lateinit var curp: EditText
-    private var idUsuario: String? = null
-
 
     private lateinit var acreditado: identificarAcreditado
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actualizar_formatoparte1)
 
-        idUsuario = intent.getStringExtra("id_usuario")
+        // Validar idUsuario primero
+        idUsuario = intent.getStringExtra("id_usuario").takeIf { !it.isNullOrBlank() }
+            ?: run {
+                mostrarErrorYCerrar("No se recibió el ID de usuario")
+                return
+            }
 
-        // Inicializa todas las vistas
-        initViews()
-
-        // Obtiene el objeto del intent
+        // Obtener datos del acreditado
         acreditado = intent.getSerializableExtra("acreditado") as? identificarAcreditado ?: run {
-            Toast.makeText(this, "Error: Datos no recibidos", Toast.LENGTH_SHORT).show()
-            finish()
+            mostrarErrorYCerrar("No se recibieron los datos del acreditado")
             return
         }
 
-        // Carga los datos en los campos
+        initViews()
         cargarDatos()
-
-        // Configura los botones
-        findViewById<Button>(R.id.btnActualizarDatos).setOnClickListener {
-            if (validarCampos()) {
-                actualizarDatos()
-            }
-        }
-
-        findViewById<Button>(R.id.btnSiguiente).setOnClickListener {
-            navegarAParte2()
-        }
+        setupButtons()
     }
 
     private fun initViews() {
@@ -100,65 +92,230 @@ class actualizarFormatoparte1 : AppCompatActivity() {
         curp.setText(acreditado.domicilio_curp)
     }
 
-    private fun validarCampos(): Boolean {
-        var valido = true
-
-        if (apellidoPaterno.text.isNullOrBlank()) {
-            apellidoPaterno.error = "Requerido"
-            valido = false
+    private fun setupButtons() {
+        findViewById<Button>(R.id.btnActualizarDatos).setOnClickListener {
+            if (validarCampos()) {
+                actualizarDatos()
+            }
         }
 
-        // Agrega validaciones para otros campos importantes
+        findViewById<Button>(R.id.btnSiguiente).setOnClickListener {
+            navegarAParte2()
+        }
+    }
 
-        return valido
+    private fun validarCampos(): Boolean {
+        val camposRequeridos = listOf(
+            entidadFederativa to "Entidad Federativa",
+            ciudadMunicipioDelegacion to "Ciudad/Municipio/Delegación",
+            apellidoPaterno to "Apellido Paterno",
+            nombres to "Nombres",
+            calle to "Domicilio - Calle",
+            colonia to "Domicilio - Colonia",
+            cp to "Domicilio - Código Postal",
+            curp to "CURP"
+        )
+
+        for ((campo, nombre) in camposRequeridos) {
+            if (campo.text.toString().trim().isEmpty()) {
+                mostrarDialogo(
+                    titulo = "Campo requerido",
+                    mensaje = "El campo $nombre es obligatorio",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
+        }
+
+        // Validación específica para Código Postal (5 dígitos)
+        if (!cp.text.toString().trim().matches(Regex("\\d{5}"))) {
+            mostrarDialogo(
+                titulo = "Código Postal inválido",
+                mensaje = "El código postal debe contener exactamente 5 dígitos",
+                iconoResId = android.R.drawable.ic_dialog_alert,
+                colorTitulo = 0xFFD32F2F.toInt()
+            )
+            cp.requestFocus()
+            return false
+        }
+
+        // Validación específica para CURP (18 caracteres)
+        val curpText = curp.text.toString().trim()
+        if (curpText.length != 18) {
+            mostrarDialogo(
+                titulo = "CURP inválido",
+                mensaje = "El CURP debe contener exactamente 18 caracteres",
+                iconoResId = android.R.drawable.ic_dialog_alert,
+                colorTitulo = 0xFFD32F2F.toInt()
+            )
+            curp.requestFocus()
+            return false
+        }
+
+        return true
     }
 
     private fun actualizarDatos() {
         val acreditadoActualizado = identificarAcreditado(
             id_acreditado = acreditado.id_acreditado,
-            entidad_federativa = entidadFederativa.text.toString(),
-            ciudad_municipio_delegacion = ciudadMunicipioDelegacion.text.toString(),
-            apellido_paterno = apellidoPaterno.text.toString(),
-            apellido_materno = apellidoMaterno.text.toString(),
-            nombres = nombres.text.toString(),
-            domicilio_calle = calle.text.toString(),
-            domicilio_condominio = condominio.text.toString(),
-            domicilio_it = it.text.toString(),
-            domicilio_mz = mz.text.toString(),
-            domicilio_no_ext = noExt.text.toString(),
-            domicilio_no_int = noInt.text.toString(),
-            domicilio_edif = edif.text.toString(),
-            domicilio_colonia = colonia.text.toString(),
-            domicilio_cp = cp.text.toString(),
-            domicilio_curp = curp.text.toString(),
+            entidad_federativa = entidadFederativa.text.toString().trim(),
+            ciudad_municipio_delegacion = ciudadMunicipioDelegacion.text.toString().trim(),
+            apellido_paterno = apellidoPaterno.text.toString().trim(),
+            apellido_materno = apellidoMaterno.text.toString().trim(),
+            nombres = nombres.text.toString().trim(),
+            domicilio_calle = calle.text.toString().trim(),
+            domicilio_condominio = condominio.text.toString().trim(),
+            domicilio_it = it.text.toString().trim(),
+            domicilio_mz = mz.text.toString().trim(),
+            domicilio_no_ext = noExt.text.toString().trim(),
+            domicilio_no_int = noInt.text.toString().trim(),
+            domicilio_edif = edif.text.toString().trim(),
+            domicilio_colonia = colonia.text.toString().trim(),
+            domicilio_cp = cp.text.toString().trim(),
+            domicilio_curp = curp.text.toString().trim(),
             id_usuario = idUsuario!!
         )
 
-        lifecycleScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitClient.webService.actualizarAcreditado(
                     acreditado.id_acreditado.toString(),
                     acreditadoActualizado
                 )
 
-                if (response.isSuccessful) {
-                    Toast.makeText(this@actualizarFormatoparte1, "Actualizado correctamente", Toast.LENGTH_SHORT).show()
-                    acreditado = acreditadoActualizado
-                } else {
-                    Toast.makeText(this@actualizarFormatoparte1, "Error al actualizar", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { respuesta ->
+                            if (respuesta.success) {
+                                acreditado = acreditadoActualizado
+                                mostrarDialogo(
+                                    titulo = "Éxito",
+                                    mensaje = "Datos actualizados correctamente",
+                                    iconoResId = android.R.drawable.ic_dialog_info,
+                                    colorTitulo = 0xFF388E3C.toInt()
+                                )
+                            } else {
+                                mostrarErrorServidor("El servidor no pudo procesar la actualización")
+                            }
+                        } ?: mostrarErrorServidor("Respuesta vacía del servidor")
+                    } else {
+                        manejarErrorRespuesta(response.code(), response.errorBody()?.string())
+                    }
+                }
+            } catch (e: HttpException) {
+                withContext(Dispatchers.Main) {
+                    manejarErrorRespuesta(e.code(), e.message)
+                }
+            } catch (e: IOException) {
+                withContext(Dispatchers.Main) {
+                    mostrarErrorConexion(e.message ?: "Error de red desconocido")
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@actualizarFormatoparte1, "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    mostrarErrorInesperado(e.message ?: "Error desconocido")
+                }
             }
+        }
+    }
+
+    private fun manejarErrorRespuesta(codigo: Int, mensajeError: String?) {
+        when (codigo) {
+            500 -> mostrarErrorServidor("Error interno del servidor (500): ${mensajeError ?: "sin detalles"}")
+            400 -> mostrarDialogo(
+                titulo = "Datos inválidos",
+                mensaje = "Verifica la información ingresada: ${mensajeError ?: "Error 400"}",
+                iconoResId = android.R.drawable.ic_dialog_alert,
+                colorTitulo = 0xFFD32F2F.toInt()
+            )
+            404 -> mostrarDialogo(
+                titulo = "No encontrado",
+                mensaje = "El registro a actualizar no fue encontrado",
+                iconoResId = android.R.drawable.ic_dialog_alert,
+                colorTitulo = 0xFFD32F2F.toInt()
+            )
+            else -> mostrarErrorServidor("Error $codigo: ${mensajeError ?: "Error desconocido"}")
+        }
+    }
+
+    private fun mostrarErrorServidor(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error del servidor",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        )
+    }
+
+    private fun mostrarErrorConexion(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error de conexión",
+            mensaje = "No se pudo conectar al servidor: $mensaje",
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        )
+    }
+
+    private fun mostrarErrorInesperado(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error inesperado",
+            mensaje = "Ocurrió un error: $mensaje",
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        )
+    }
+
+    private fun mostrarErrorYCerrar(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error crítico",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        ) {
+            finish()
         }
     }
 
     private fun navegarAParte2() {
         val intent = Intent(this, actualizarFormatoparte2::class.java).apply {
-            putExtra("id_acreditado", acreditado.id_acreditado) // o acreditado.id según tu data class
-            intent.putExtra("id_usuario", idUsuario)
+            putExtra("id_acreditado", acreditado.id_acreditado)
+            putExtra("id_usuario", acreditado.id_usuario)
         }
         startActivity(intent)
     }
 
+    private fun mostrarDialogo(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog, null)
+
+        view.findViewById<ImageView>(R.id.ivIcon).apply {
+            setImageResource(iconoResId)
+            setColorFilter(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvTitle).apply {
+            text = titulo
+            setTextColor(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvMessage).text = mensaje
+
+        AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+            .apply {
+                view.findViewById<Button>(R.id.btnOk).setOnClickListener {
+                    dismiss()
+                    onAceptar?.invoke()
+                }
+                show()
+            }
+    }
 }

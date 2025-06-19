@@ -2,7 +2,9 @@ package com.example.unamproject.SinConexion
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unamproject.R
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +15,8 @@ import kotlinx.coroutines.withContext
 class Formatoparte10SinConexion : AppCompatActivity() {
 
     private lateinit var database: AppDatabase
-    private lateinit var idAcreditado: String
+    private var idAcreditado: Long = 0L
+    private var datosGuardados = false
 
     // EditTexts
     private lateinit var otrosHabitantesActividadEt: EditText
@@ -52,9 +55,20 @@ class Formatoparte10SinConexion : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte10_sin_conexion)
 
-        idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        // Obtener ID del acreditado
+        idAcreditado = intent.getStringExtra("id_acreditado")?.toLongOrNull() ?: run {
+            mostrarErrorYCerrar("No se recibió el ID del acreditado")
+            return
+        }
+
+        // Inicializar base de datos
         database = AppDatabase.getDatabase(this)
 
+        initViews()
+        setupButtons()
+    }
+
+    private fun initViews() {
         // Inicializar EditTexts
         otrosHabitantesActividadEt = findViewById(R.id.otros_habitantes_actividad)
         hijoNumeroEt = findViewById(R.id.hijo_numero)
@@ -88,62 +102,225 @@ class Formatoparte10SinConexion : AppCompatActivity() {
         // Botones
         btnGuardar = findViewById(R.id.btnGuardar)
         btnSiguiente = findViewById(R.id.btnSiguiente)
+    }
 
+    private fun setupButtons() {
         btnGuardar.setOnClickListener {
-            guardarDatosOtrosFamiliares()
+            if (validarCampos()) {
+                guardarDatosOtrosFamiliares()
+            }
         }
 
         btnSiguiente.setOnClickListener {
-            val intent = Intent(this, Formatoparte11SinConexion::class.java)
-            intent.putExtra("id_acreditado", idAcreditado)
-            startActivity(intent)
+            if (!datosGuardados) {
+                mostrarDialogo(
+                    titulo = "Advertencia",
+                    mensaje = "Debes guardar los datos antes de continuar",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFFFA000.toInt(),
+                    onAceptar = { guardarDatosOtrosFamiliares() }
+                )
+            } else {
+                irASiguiente()
+            }
         }
+    }
+
+    private fun validarCampos(): Boolean {
+        // Validar que los campos numéricos contengan números válidos
+        val camposNumericos = listOf(
+            hijoNumeroEt to "Número de hijos",
+            padreNumeroEt to "Número de padres",
+            madreNumeroEt to "Número de madres",
+            suegrosNumeroEt to "Número de suegros",
+            hermanosNumeroEt to "Número de hermanos",
+            nietosNumerosEt to "Número de nietos",
+            yernosNuerasNumeroEt to "Número de yernos/nueras",
+            otrosFamiliaresNumeroEt to "Número de otros familiares",
+            noFamiliaresNumeroEt to "Número de no familiares"
+        )
+
+        for ((campo, nombre) in camposNumericos) {
+            val valor = campo.text.toString().trim()
+            if (valor.isNotEmpty()) {
+                try {
+                    val num = valor.toInt()
+                    if (num < 0) {
+                        mostrarDialogo(
+                            titulo = "Valor inválido",
+                            mensaje = "El campo $nombre no puede ser negativo",
+                            iconoResId = android.R.drawable.ic_dialog_alert,
+                            colorTitulo = 0xFFD32F2F.toInt()
+                        )
+                        campo.requestFocus()
+                        return false
+                    }
+                } catch (e: NumberFormatException) {
+                    mostrarDialogo(
+                        titulo = "Valor inválido",
+                        mensaje = "El campo $nombre debe ser un número entero",
+                        iconoResId = android.R.drawable.ic_dialog_alert,
+                        colorTitulo = 0xFFD32F2F.toInt()
+                    )
+                    campo.requestFocus()
+                    return false
+                }
+            }
+        }
+
+        // Validar que si hay número de familiares, se especifique actividad y aportación
+        val gruposFamiliares = listOf(
+            Triple(hijoNumeroEt, hijoActividadEt, hijoAportacionEt) to "hijos",
+            Triple(padreNumeroEt, padreActividadEt, padreAportacionEt) to "padres",
+            Triple(madreNumeroEt, madreActividadEt, madreAportacionEt) to "madres",
+            Triple(suegrosNumeroEt, suegrosActividadEt, suegrosAportacionEt) to "suegros",
+            Triple(hermanosNumeroEt, hermanosActividadEt, hermanosAportacionEt) to "hermanos",
+            Triple(nietosNumerosEt, nietosActividadEt, nietosAportacionEt) to "nietos",
+            Triple(yernosNuerasNumeroEt, yernosNuerasActividadEt, yernosNuerasAportacionEt) to "yernos/nueras",
+            Triple(otrosFamiliaresNumeroEt, otrosFamiliaresActividadEt, otrosFamiliaresAportacionEt) to "otros familiares",
+            Triple(noFamiliaresNumeroEt, noFamiliaresActividadEt, noFamiliaresAportacionEt) to "no familiares"
+        )
+
+        for ((grupo, nombreGrupo) in gruposFamiliares) {
+            val (numeroEt, actividadEt, aportacionEt) = grupo
+            if (numeroEt.text.toString().trim().toIntOrNull() ?: 0 > 0) {
+                if (actividadEt.text.toString().trim().isEmpty()) {
+                    mostrarDialogo(
+                        titulo = "Campo requerido",
+                        mensaje = "Debe especificar la actividad de los $nombreGrupo",
+                        iconoResId = android.R.drawable.ic_dialog_alert,
+                        colorTitulo = 0xFFD32F2F.toInt()
+                    )
+                    actividadEt.requestFocus()
+                    return false
+                }
+
+                if (aportacionEt.text.toString().trim().isEmpty()) {
+                    mostrarDialogo(
+                        titulo = "Campo requerido",
+                        mensaje = "Debe especificar la aportación de los $nombreGrupo",
+                        iconoResId = android.R.drawable.ic_dialog_alert,
+                        colorTitulo = 0xFFD32F2F.toInt()
+                    )
+                    aportacionEt.requestFocus()
+                    return false
+                }
+            }
+        }
+
+        return true
     }
 
     private fun guardarDatosOtrosFamiliares() {
         val datos = DatosOtrosFamiliaresEntity(
-            otros_habitantes_actividad = otrosHabitantesActividadEt.text.toString(),
-            hijo_numero = hijoNumeroEt.text.toString(),
-            hijo_actividad = hijoActividadEt.text.toString(),
-            hijo_aportacion = hijoAportacionEt.text.toString(),
-            padre_numero = padreNumeroEt.text.toString(),
-            padre_actividad = padreActividadEt.text.toString(),
-            padre_aportacion = padreAportacionEt.text.toString(),
-            madre_numero = madreNumeroEt.text.toString(),
-            madre_actividad = madreActividadEt.text.toString(),
-            madre_aportacion = madreAportacionEt.text.toString(),
-            suegros_numero = suegrosNumeroEt.text.toString(),
-            suegros_actividad = suegrosActividadEt.text.toString(),
-            suegros_aportacion = suegrosAportacionEt.text.toString(),
-            hermanos_numero = hermanosNumeroEt.text.toString(),
-            hermanos_actividad = hermanosActividadEt.text.toString(),
-            hermanos_aportacion = hermanosAportacionEt.text.toString(),
-            nietos_numeros = nietosNumerosEt.text.toString(),
-            nietos_actividad = nietosActividadEt.text.toString(),
-            nietos_aportacion = nietosAportacionEt.text.toString(),
-            yernos_nueras_numero = yernosNuerasNumeroEt.text.toString(),
-            yernos_nueras_actividad = yernosNuerasActividadEt.text.toString(),
-            yernos_nueras_aportacion = yernosNuerasAportacionEt.text.toString(),
-            otros_familiares_numero = otrosFamiliaresNumeroEt.text.toString(),
-            otros_familiares_actividad = otrosFamiliaresActividadEt.text.toString(),
-            otros_familiares_aportacion = otrosFamiliaresAportacionEt.text.toString(),
-            no_familiares_numero = noFamiliaresNumeroEt.text.toString(),
-            no_familiares_actividad = noFamiliaresActividadEt.text.toString(),
-            no_familiares_aportacion = noFamiliaresAportacionEt.text.toString(),
-            id_acreditado = idAcreditado
+            otros_habitantes_actividad = otrosHabitantesActividadEt.text.toString().trim(),
+            hijo_numero = hijoNumeroEt.text.toString().trim(),
+            hijo_actividad = hijoActividadEt.text.toString().trim(),
+            hijo_aportacion = hijoAportacionEt.text.toString().trim(),
+            padre_numero = padreNumeroEt.text.toString().trim(),
+            padre_actividad = padreActividadEt.text.toString().trim(),
+            padre_aportacion = padreAportacionEt.text.toString().trim(),
+            madre_numero = madreNumeroEt.text.toString().trim(),
+            madre_actividad = madreActividadEt.text.toString().trim(),
+            madre_aportacion = madreAportacionEt.text.toString().trim(),
+            suegros_numero = suegrosNumeroEt.text.toString().trim(),
+            suegros_actividad = suegrosActividadEt.text.toString().trim(),
+            suegros_aportacion = suegrosAportacionEt.text.toString().trim(),
+            hermanos_numero = hermanosNumeroEt.text.toString().trim(),
+            hermanos_actividad = hermanosActividadEt.text.toString().trim(),
+            hermanos_aportacion = hermanosAportacionEt.text.toString().trim(),
+            nietos_numeros = nietosNumerosEt.text.toString().trim(),
+            nietos_actividad = nietosActividadEt.text.toString().trim(),
+            nietos_aportacion = nietosAportacionEt.text.toString().trim(),
+            yernos_nueras_numero = yernosNuerasNumeroEt.text.toString().trim(),
+            yernos_nueras_actividad = yernosNuerasActividadEt.text.toString().trim(),
+            yernos_nueras_aportacion = yernosNuerasAportacionEt.text.toString().trim(),
+            otros_familiares_numero = otrosFamiliaresNumeroEt.text.toString().trim(),
+            otros_familiares_actividad = otrosFamiliaresActividadEt.text.toString().trim(),
+            otros_familiares_aportacion = otrosFamiliaresAportacionEt.text.toString().trim(),
+            no_familiares_numero = noFamiliaresNumeroEt.text.toString().trim(),
+            no_familiares_actividad = noFamiliaresActividadEt.text.toString().trim(),
+            no_familiares_aportacion = noFamiliaresAportacionEt.text.toString().trim(),
+            id_acreditado = idAcreditado.toString()
         )
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 database.datosOtrosFamiliaresDao().insertDatosOtrosFamiliares(datos)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte10SinConexion, "Datos guardados correctamente", Toast.LENGTH_SHORT).show()
+                    datosGuardados = true
+                    mostrarDialogo(
+                        titulo = "Éxito",
+                        mensaje = "Datos de familiares guardados correctamente",
+                        iconoResId = android.R.drawable.ic_dialog_info,
+                        colorTitulo = 0xFF388E3C.toInt()
+                    )
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte10SinConexion, "Error al guardar: ${e.message}", Toast.LENGTH_LONG).show()
+                    mostrarErrorInesperado("Error al guardar datos de familiares: ${e.message ?: "Error desconocido"}")
                 }
             }
         }
+    }
+
+    private fun irASiguiente() {
+        val intent = Intent(this, Formatoparte11SinConexion::class.java)
+        intent.putExtra("id_acreditado", idAcreditado.toString())
+        startActivity(intent)
+    }
+
+    private fun mostrarErrorInesperado(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error inesperado",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        )
+    }
+
+    private fun mostrarErrorYCerrar(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error crítico",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        ) {
+            finish()
+        }
+    }
+
+    private fun mostrarDialogo(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog, null)
+
+        view.findViewById<ImageView>(R.id.ivIcon).apply {
+            setImageResource(iconoResId)
+            setColorFilter(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvTitle).apply {
+            text = titulo
+            setTextColor(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvMessage).text = mensaje
+
+        AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+            .apply {
+                view.findViewById<Button>(R.id.btnOk).setOnClickListener {
+                    dismiss()
+                    onAceptar?.invoke()
+                }
+                show()
+            }
     }
 }

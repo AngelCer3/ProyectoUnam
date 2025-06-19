@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,24 +31,35 @@ class Formatoparte15Activity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
     private var idAcreditado: String? = null
-    private var idUsuario:String? = null
-
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_formatoparte15)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // Obtener el ID del acreditado del intent
         idAcreditado = intent.getStringExtra("id_acreditado")
         idUsuario = intent.getStringExtra("id_usuario")
 
-
         // Vincular vistas
         bindViews()
 
-        btnGuardar.setOnClickListener { guardarDatos() }
-        btnSiguiente.setOnClickListener { irSiguiente() }
+        btnGuardar.setOnClickListener {
+            if (validarCampos()) {
+                guardarDatos()
+            }
+        }
+
+        btnSiguiente.setOnClickListener {
+            if (validarCampos()) {
+                irSiguiente()
+            }
+        }
     }
 
     private fun bindViews() {
@@ -63,12 +77,124 @@ class Formatoparte15Activity : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.btnSiguiente)
     }
 
-    private fun guardarDatos() {
-        if (idAcreditado.isNullOrEmpty()) {
-            Toast.makeText(this, "Error: ID de acreditado no disponible", Toast.LENGTH_LONG).show()
-            return
+    private fun validarCampos(): Boolean {
+        // Validar IDs
+        if (idAcreditado.isNullOrBlank() || idUsuario.isNullOrBlank()) {
+            mostrarDialogoValidacion(
+                "Datos faltantes",
+                "Faltan datos del acreditado o usuario",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            return false
         }
 
+        // Validar documentos Credencial para Votar
+        if (docCredencialVotarCuenta.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si cuenta con Credencial para Votar",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docCredencialVotarCuenta.requestFocus()
+            return false
+        }
+
+        if (docCredencialVotarMostro.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si mostró la Credencial para Votar",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docCredencialVotarMostro.requestFocus()
+            return false
+        }
+
+        if (docCredencialVotarEntregoCopia.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si entregó copia de la Credencial para Votar",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docCredencialVotarEntregoCopia.requestFocus()
+            return false
+        }
+
+        // Validar documentos Poder Amplio
+        if (docPoderAmplioCuenta.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si cuenta con Poder Amplio",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docPoderAmplioCuenta.requestFocus()
+            return false
+        }
+
+        if (docPoderAmplioMostro.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si mostró el Poder Amplio",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docPoderAmplioMostro.requestFocus()
+            return false
+        }
+
+        if (docPoderAmplioEntregoCopia.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si entregó copia del Poder Amplio",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docPoderAmplioEntregoCopia.requestFocus()
+            return false
+        }
+
+        // Validar documentos Comprobante de Ingresos
+        if (docComprobanteIngresosCuenta.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si cuenta con Comprobante de Ingresos",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docComprobanteIngresosCuenta.requestFocus()
+            return false
+        }
+
+        if (docComprobanteIngresosMostro.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si mostró el Comprobante de Ingresos",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docComprobanteIngresosMostro.requestFocus()
+            return false
+        }
+
+        if (docComprobanteIngresosEntregoCopia.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si entregó copia del Comprobante de Ingresos",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            docComprobanteIngresosEntregoCopia.requestFocus()
+            return false
+        }
+
+        return true
+    }
+
+    private fun guardarDatos() {
         val datos = datosDocumentos(
             doc_credencial_votar_cuenta = docCredencialVotarCuenta.text.toString(),
             doc_credencial_votar_mostro = docCredencialVotarMostro.text.toString(),
@@ -88,26 +214,29 @@ class Formatoparte15Activity : AppCompatActivity() {
                 val response = RetrofitClient.webService.agregarDatosDocumentos(datos)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@Formatoparte15Activity,
+                        mostrarDialogoValidacion(
+                            "Éxito",
                             "Datos de documentos guardados correctamente",
-                            Toast.LENGTH_LONG
-                        ).show()
+                            android.R.drawable.ic_dialog_info,
+                            0xFF388E3C.toInt()
+                        )
                     } else {
-                        Toast.makeText(
-                            this@Formatoparte15Activity,
+                        mostrarDialogoValidacion(
+                            "Error",
                             "Error al guardar los datos: ${response.message()}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                            android.R.drawable.stat_notify_error,
+                            0xFFD32F2F.toInt()
+                        )
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@Formatoparte15Activity,
-                        "Error de conexión: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    mostrarDialogoValidacion(
+                        "Error de conexión",
+                        "No se pudo conectar al servidor: ${e.message}",
+                        android.R.drawable.stat_notify_error,
+                        0xFFD32F2F.toInt()
+                    )
                 }
             }
         }
@@ -116,7 +245,40 @@ class Formatoparte15Activity : AppCompatActivity() {
     private fun irSiguiente() {
         val intent = Intent(this, Formatoparte16Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
-        intent.putExtra("id_usuario",idUsuario)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
+    }
+
+    private fun mostrarDialogoValidacion(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = layoutInflater.inflate(R.layout.custom_alert_dialog, null)
+
+        val icon = view.findViewById<ImageView>(R.id.ivIcon)
+        val title = view.findViewById<TextView>(R.id.tvTitle)
+        val message = view.findViewById<TextView>(R.id.tvMessage)
+        val btnOk = view.findViewById<Button>(R.id.btnOk)
+
+        icon.setImageResource(iconoResId)
+        icon.setColorFilter(colorTitulo)
+        title.text = titulo
+        title.setTextColor(colorTitulo)
+        message.text = mensaje
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+
+        btnOk.setOnClickListener {
+            dialog.dismiss()
+            onAceptar?.invoke()
+        }
+
+        dialog.show()
     }
 }

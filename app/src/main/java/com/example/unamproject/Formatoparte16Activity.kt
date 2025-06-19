@@ -4,11 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,24 +33,35 @@ class Formatoparte16Activity : AppCompatActivity() {
     private lateinit var btnSiguiente: Button
 
     private var idAcreditado: String? = null
-    private var idUsuario:String? = null
-
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_formatoparte16)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // Obtener el ID del acreditado del intent
         idAcreditado = intent.getStringExtra("id_acreditado")
         idUsuario = intent.getStringExtra("id_usuario")
 
-
         // Vincular vistas
         bindViews()
 
-        btnGuardar.setOnClickListener { guardarDatos() }
-        btnSiguiente.setOnClickListener { irSiguiente() }
+        btnGuardar.setOnClickListener {
+            if (validarCampos()) {
+                guardarDatos()
+            }
+        }
+
+        btnSiguiente.setOnClickListener {
+            if (validarCampos()) {
+                irSiguiente()
+            }
+        }
     }
 
     private fun bindViews() {
@@ -65,18 +80,138 @@ class Formatoparte16Activity : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.btnSiguiente)
     }
 
-    private fun guardarDatos() {
-        if (idAcreditado.isNullOrEmpty()) {
-            Toast.makeText(this, "Error: ID de acreditado no disponible", Toast.LENGTH_LONG).show()
-            return
+    private fun validarCampos(): Boolean {
+        // Validar IDs
+        if (idAcreditado.isNullOrBlank() || idUsuario.isNullOrBlank()) {
+            mostrarDialogoValidacion(
+                "Datos faltantes",
+                "Faltan datos del acreditado o usuario",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            return false
         }
 
-        // Guardar datos de vivienda y observaciones en paralelo para mejor UX
-        guardarDatosVivienda()
-        guardarObservaciones()
+        // Validar campos de vivienda
+        if (viviendaNumeroHabitaciones.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar el número de habitaciones",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            viviendaNumeroHabitaciones.requestFocus()
+            return false
+        }
+
+        if (viviendaNumeroHabitaciones.text.toString().toIntOrNull() == null) {
+            mostrarDialogoValidacion(
+                "Valor inválido",
+                "El número de habitaciones debe ser un valor numérico",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            viviendaNumeroHabitaciones.requestFocus()
+            return false
+        }
+
+        if (viviendaTipoPiso.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar el tipo de piso",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            viviendaTipoPiso.requestFocus()
+            return false
+        }
+
+        if (viviendaTipoTecho.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar el tipo de techo",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            viviendaTipoTecho.requestFocus()
+            return false
+        }
+
+        if (viviendaCuentaBano.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar si cuenta con baño",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            viviendaCuentaBano.requestFocus()
+            return false
+        }
+
+        return true
     }
 
-    private fun guardarDatosVivienda() {
+    private fun guardarDatos() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Ejecutar ambas operaciones en paralelo
+                val viviendaDeferred = async { guardarDatosVivienda() }
+                val observacionesDeferred = async { guardarObservaciones() }
+
+                // Esperar ambos resultados
+                val viviendaResult = viviendaDeferred.await()
+                val observacionesResult = observacionesDeferred.await()
+
+                withContext(Dispatchers.Main) {
+                    when {
+                        viviendaResult && observacionesResult -> {
+                            mostrarDialogoValidacion(
+                                "Éxito",
+                                "Todos los datos se guardaron correctamente",
+                                android.R.drawable.ic_dialog_info,
+                                0xFF388E3C.toInt()
+                            )
+                        }
+                        viviendaResult -> {
+                            mostrarDialogoValidacion(
+                                "Advertencia",
+                                "Datos de vivienda guardados, pero hubo un error con las observaciones",
+                                android.R.drawable.ic_dialog_alert,
+                                0xFFFFA000.toInt()
+                            )
+                        }
+                        observacionesResult -> {
+                            mostrarDialogoValidacion(
+                                "Advertencia",
+                                "Observaciones guardadas, pero hubo un error con los datos de vivienda",
+                                android.R.drawable.ic_dialog_alert,
+                                0xFFFFA000.toInt()
+                            )
+                        }
+                        else -> {
+                            mostrarDialogoValidacion(
+                                "Error",
+                                "No se pudieron guardar los datos",
+                                android.R.drawable.stat_notify_error,
+                                0xFFD32F2F.toInt()
+                            )
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    mostrarDialogoValidacion(
+                        "Error de conexión",
+                        "No se pudo conectar al servidor: ${e.message}",
+                        android.R.drawable.stat_notify_error,
+                        0xFFD32F2F.toInt()
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun guardarDatosVivienda(): Boolean {
         val datosVivienda = datosEspecificosVivienda(
             vivienda_numero_habitaciones = viviendaNumeroHabitaciones.text.toString(),
             vivienda_tipo_piso = viviendaTipoPiso.text.toString(),
@@ -87,79 +222,66 @@ class Formatoparte16Activity : AppCompatActivity() {
             id_usuario = idUsuario!!
         )
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val responseVivienda = RetrofitClient.webService.agregarDatosEspecificosVivienda(datosVivienda)
-                withContext(Dispatchers.Main) {
-                    if (responseVivienda.isSuccessful) {
-                        Toast.makeText(
-                            this@Formatoparte16Activity,
-                            "Datos de vivienda guardados correctamente",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        val errorMsg = responseVivienda.errorBody()?.string() ?: "Error desconocido"
-                        Toast.makeText(
-                            this@Formatoparte16Activity,
-                            "Error al guardar vivienda: $errorMsg",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@Formatoparte16Activity,
-                        "Error de conexión al guardar vivienda: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+        return try {
+            val response = RetrofitClient.webService.agregarDatosEspecificosVivienda(datosVivienda)
+            response.isSuccessful
+        } catch (e: Exception) {
+            false
         }
     }
 
-    private fun guardarObservaciones() {
+    private suspend fun guardarObservaciones(): Boolean {
         val datosObs = datosObservaciones(
             observaciones_entrevistador = observacionesEntrevistador.text.toString(),
             id_acreditado = idAcreditado!!,
             id_usuario = idUsuario!!
         )
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val responseObs = RetrofitClient.webService.agregarDatosObservaciones(datosObs)
-                withContext(Dispatchers.Main) {
-                    if (responseObs.isSuccessful) {
-                        Toast.makeText(
-                            this@Formatoparte16Activity,
-                            "Observaciones guardadas correctamente",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        val errorBody = responseObs.errorBody()?.string() ?: "Sin detalles"
-                        Toast.makeText(
-                            this@Formatoparte16Activity,
-                            "Error al guardar observaciones: $errorBody",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@Formatoparte16Activity,
-                        "Error de conexión al guardar observaciones: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+        return try {
+            val response = RetrofitClient.webService.agregarDatosObservaciones(datosObs)
+            response.isSuccessful
+        } catch (e: Exception) {
+            false
         }
     }
 
     private fun irSiguiente() {
         val intent = Intent(this, FormatoparteFinal::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
-        intent.putExtra("id_usuario",idUsuario)
+        intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
+    }
+
+    private fun mostrarDialogoValidacion(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = layoutInflater.inflate(R.layout.custom_alert_dialog, null)
+
+        val icon = view.findViewById<ImageView>(R.id.ivIcon)
+        val title = view.findViewById<TextView>(R.id.tvTitle)
+        val message = view.findViewById<TextView>(R.id.tvMessage)
+        val btnOk = view.findViewById<Button>(R.id.btnOk)
+
+        icon.setImageResource(iconoResId)
+        icon.setColorFilter(colorTitulo)
+        title.text = titulo
+        title.setTextColor(colorTitulo)
+        message.text = mensaje
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+
+        btnOk.setOnClickListener {
+            dialog.dismiss()
+            onAceptar?.invoke()
+        }
+
+        dialog.show()
     }
 }

@@ -5,7 +5,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,23 +32,39 @@ class MenuTrabajadorActivity : AppCompatActivity() {
         idUsuario = intent.getStringExtra("id_usuario")
 
         agregar = findViewById(R.id.btn_agregar)
+        cerrarSesion = findViewById(R.id.btn_cerrar_sesion)
         recyclerAcreditadosTrabajador = findViewById(R.id.recyclerAcreditadosTrabajador)
         recyclerAcreditadosTrabajador.layoutManager = LinearLayoutManager(this)
 
-
-        cerrarSesion = findViewById(R.id.btn_cerrar_sesion)
-
         cerrarSesion.setOnClickListener {
-            cerrarSesion()
+            mostrarDialogoPersonalizado(
+                titulo = "Sesión cerrada",
+                mensaje = "Has cerrado sesión correctamente.",
+                iconoResId = android.R.drawable.ic_lock_power_off,
+                colorTitulo = 0xFF388E3C.toInt()
+            ) {
+                val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                prefs.edit().clear().apply()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
         }
+
         agregar.setOnClickListener {
             agregarFormato()
         }
 
         if (idUsuario.isNullOrEmpty()) {
-            Toast.makeText(this, "Error: Usuario no identificado", Toast.LENGTH_SHORT).show()
-            // Aquí podrías cerrar la actividad o redirigir al login
-            finish()
+            mostrarDialogoPersonalizado(
+                titulo = "Error",
+                mensaje = "Usuario no identificado.",
+                iconoResId = android.R.drawable.stat_notify_error,
+                colorTitulo = 0xFFD32F2F.toInt() // rojo
+            ) {
+                finish()
+            }
             return
         }
 
@@ -65,7 +83,12 @@ class MenuTrabajadorActivity : AppCompatActivity() {
                 val listaAcreditados = retrofitService.ObtenerAcreditadoPorId(idUsuario!!)
 
                 if (listaAcreditados.isEmpty()) {
-                    Toast.makeText(this@MenuTrabajadorActivity, "No hay acreditados para mostrar", Toast.LENGTH_SHORT).show()
+                    mostrarDialogoPersonalizado(
+                        titulo = "Sin registros",
+                        mensaje = "No hay acreditados disponibles para mostrar.",
+                        iconoResId = android.R.drawable.ic_dialog_info,
+                        colorTitulo = 0xFF1976D2.toInt() // azul
+                    )
                 } else {
                     adapter = AcreditadosTrabajadorAdapter(listaAcreditados)
                     recyclerAcreditadosTrabajador.adapter = adapter
@@ -73,24 +96,49 @@ class MenuTrabajadorActivity : AppCompatActivity() {
 
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(this@MenuTrabajadorActivity, "Error al cargar acreditados", Toast.LENGTH_SHORT).show()
+                mostrarDialogoPersonalizado(
+                    titulo = "Error",
+                    mensaje = "Error al cargar acreditados.",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFD32F2F.toInt() // rojo
+                )
             }
         }
     }
-    private fun cerrarSesion() {
-        // Limpiar SharedPreferences (ejemplo)
-        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        prefs.edit().clear().apply()
 
-        // Opcional: mostrar mensaje
-        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
+    // -------------------------
+    // Función de alerta común
+    // -------------------------
+    private fun mostrarDialogoPersonalizado(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val dialogView = layoutInflater.inflate(R.layout.custom_alert_dialog, null)
 
-        // Ir a pantalla de login y cerrar esta actividad
-        val intent = Intent(this, MainActivity::class.java)
-        // Para evitar que pueda volver con el botón atrás:
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
+        val imageViewIcon = dialogView.findViewById<ImageView>(R.id.ivIcon)
+        val textViewTitulo = dialogView.findViewById<TextView>(R.id.tvTitle)
+        val textViewMensaje = dialogView.findViewById<TextView>(R.id.tvMessage)
+        val btnOk = dialogView.findViewById<Button>(R.id.btnOk)
+
+        imageViewIcon.setImageResource(iconoResId)
+        imageViewIcon.setColorFilter(colorTitulo)
+        textViewTitulo.text = titulo
+        textViewTitulo.setTextColor(colorTitulo)
+        textViewMensaje.text = mensaje
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        btnOk.setOnClickListener {
+            dialog.dismiss()
+            onAceptar?.invoke()
+        }
+
+        dialog.show()
     }
-
 }

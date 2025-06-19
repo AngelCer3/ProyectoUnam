@@ -3,6 +3,7 @@ package com.example.unamproject
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +32,7 @@ class Formatoparte3Activity : AppCompatActivity() {
     private lateinit var documentoCopiaEntregada: EditText
 
     private var idAcreditado: String? = null
-    private var idUsuario:String? = null
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,22 @@ class Formatoparte3Activity : AppCompatActivity() {
         idAcreditado = intent.getStringExtra("id_acreditado")
         idUsuario = intent.getStringExtra("id_usuario")
 
+        initViews()
+
+        guardar.setOnClickListener {
+            if (validarCampos()) {
+                guardarDatos()
+            }
+        }
+
+        siguiente.setOnClickListener {
+            if (validarCampos()) {
+                siguienteFormato()
+            }
+        }
+    }
+
+    private fun initViews() {
         viviendaLocalizada = findViewById(R.id.vivienda_localizada)
         viviendaHabitada = findViewById(R.id.vivienda_habitada)
         verificacionMetodo = findViewById(R.id.verificacion_metodo)
@@ -58,14 +75,60 @@ class Formatoparte3Activity : AppCompatActivity() {
 
         siguiente = findViewById(R.id.btnSiguiente)
         guardar = findViewById(R.id.btnGuardar)
+    }
 
-        guardar.setOnClickListener {
-            guardarDatos()
+    private fun validarCampos(): Boolean {
+        val camposObligatorios = listOf(
+            Pair(viviendaLocalizada, "Localización de la vivienda"),
+            Pair(viviendaHabitada, "Habitabilidad de la vivienda"),
+            Pair(verificacionMetodo, "Método de verificación"),
+            Pair(vecinoNombre, "Nombre del vecino"),
+            Pair(vecinoDireccion, "Dirección del vecino"),
+            Pair(acreditadoVive, "¿El acreditado vive ahí?"),
+            Pair(jefeFamiliaNombre, "Nombre del jefe de familia"),
+            Pair(jefeFamiliaRelacion, "Relación con el jefe de familia"),
+            Pair(fechaOcupacion, "Fecha de ocupación"),
+            Pair(documentoTraspaso, "Documento de traspaso"),
+            Pair(tipoDocumentoTraspaso, "Tipo de documento de traspaso"),
+            Pair(documentoMostrado, "Documento mostrado"),
+            Pair(documentoCopiaEntregada, "Copia del documento entregada")
+        )
+
+        for ((campo, nombreCampo) in camposObligatorios) {
+            if (campo.text.toString().isBlank()) {
+                mostrarDialogoValidacion(
+                    "Campo requerido",
+                    "Por favor, completa el campo: $nombreCampo",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
         }
 
-        siguiente.setOnClickListener {
-            siguienteFormato()
+        if (situacionVivienda.selectedItem == null || situacionVivienda.selectedItem.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Por favor, selecciona la situación de la vivienda",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            situacionVivienda.requestFocus()
+            return false
         }
+
+        if (idAcreditado.isNullOrBlank() || idUsuario.isNullOrBlank()) {
+            mostrarDialogoValidacion(
+                "Datos faltantes",
+                "Faltan datos del acreditado o usuario",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            return false
+        }
+
+        return true
     }
 
     private fun guardarDatos() {
@@ -94,14 +157,29 @@ class Formatoparte3Activity : AppCompatActivity() {
                 val response = RetrofitClient.webService.agregarDatosVivienda(datosVivienda)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@Formatoparte3Activity, "Datos guardados exitosamente", Toast.LENGTH_LONG).show()
+                        mostrarDialogoValidacion(
+                            "Éxito",
+                            "Datos guardados exitosamente",
+                            android.R.drawable.ic_dialog_info,
+                            0xFF388E3C.toInt()
+                        )
                     } else {
-                        Toast.makeText(this@Formatoparte3Activity, "Error al guardar datos", Toast.LENGTH_LONG).show()
+                        mostrarDialogoValidacion(
+                            "Error",
+                            "Error al guardar datos: ${response.message()}",
+                            android.R.drawable.stat_notify_error,
+                            0xFFD32F2F.toInt()
+                        )
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte3Activity, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
+                    mostrarDialogoValidacion(
+                        "Error de conexión",
+                        "No se pudo conectar: ${e.message}",
+                        android.R.drawable.stat_notify_error,
+                        0xFFD32F2F.toInt()
+                    )
                 }
             }
         }
@@ -112,5 +190,38 @@ class Formatoparte3Activity : AppCompatActivity() {
         intent.putExtra("id_acreditado", idAcreditado)
         intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
+    }
+
+    private fun mostrarDialogoValidacion(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = layoutInflater.inflate(R.layout.custom_alert_dialog, null)
+
+        val icon = view.findViewById<ImageView>(R.id.ivIcon)
+        val title = view.findViewById<TextView>(R.id.tvTitle)
+        val message = view.findViewById<TextView>(R.id.tvMessage)
+        val btnOk = view.findViewById<Button>(R.id.btnOk)
+
+        icon.setImageResource(iconoResId)
+        icon.setColorFilter(colorTitulo)
+        title.text = titulo
+        title.setTextColor(colorTitulo)
+        message.text = mensaje
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+
+        btnOk.setOnClickListener {
+            dialog.dismiss()
+            onAceptar?.invoke()
+        }
+
+        dialog.show()
     }
 }

@@ -9,4 +9,5 @@
     <color name="transparente_blanco">#80FFFFFF</color> <!-- Blanco con transparencia -->
     <color name="boton_fondo">#F5F5F5</color> <!-- Color sutil para botones -->
     <color name="verde">#1BC13F</color>
+    <color name="colorPrimary">#3F51B5</color>
 </resources>

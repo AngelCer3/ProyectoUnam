@@ -3,10 +3,10 @@ package com.example.unamproject
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -15,6 +15,7 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -40,42 +41,37 @@ class FormatoparteFinal : AppCompatActivity() {
         Configuration.getInstance().load(applicationContext, getSharedPreferences("osmdroid", MODE_PRIVATE))
         setContentView(R.layout.activity_formatoparte_final)
 
-        // Obtener IDs del Intent y sesión
         idAcreditado = intent.getStringExtra("id_acreditado")
         idUsuario = intent.getStringExtra("id_usuario")
 
-        // Inicializar vistas
         map = findViewById(R.id.map)
         latitudEditText = findViewById(R.id.latitudEditText)
         longitudEditText = findViewById(R.id.longitudEditText)
         btnGuardar = findViewById(R.id.btnGuardar)
         btnFinal = findViewById(R.id.btnSiguiente)
 
-        // Configurar mapa
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
-        val startPoint = GeoPoint(19.4326, -99.1332) // CDMX (punto inicial por defecto)
+        val startPoint = GeoPoint(19.4326, -99.1332)
         map.controller.setZoom(14.0)
         map.controller.setCenter(startPoint)
 
-        // Inicializar FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // Verificar y pedir permisos de ubicación
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(
+                this,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE)
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
         } else {
             obtenerUbicacionActual()
         }
 
-        // Marcar ubicación al tocar el mapa manualmente
         map.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                val projection = map.projection
-                val geoPoint = projection.fromPixels(event.x.toInt(), event.y.toInt()) as GeoPoint
+                val geoPoint = map.projection.fromPixels(event.x.toInt(), event.y.toInt()) as GeoPoint
                 val lat = geoPoint.latitude
                 val lon = geoPoint.longitude
 
@@ -93,15 +89,14 @@ class FormatoparteFinal : AppCompatActivity() {
             false
         }
 
-        // Guardar coordenadas
         btnGuardar.setOnClickListener {
             val lat = latitudEditText.text.toString()
             val lon = longitudEditText.text.toString()
 
             if (lat.isNotEmpty() && lon.isNotEmpty()) {
                 val datos = datosCoordenadas(
-                    coordenadaX = lon,            // Longitud
-                    coordenadaY = lat,            // Latitud
+                    coordenadaX = lon,
+                    coordenadaY = lat,
                     id_acreditado = idAcreditado ?: "",
                     id_usuario = idUsuario ?: ""
                 )
@@ -109,34 +104,62 @@ class FormatoparteFinal : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val response = RetrofitClient.webService.agregarDatosCoordenadas(datos)
-                        runOnUiThread {
+                        withContext(Dispatchers.Main) {
                             if (response.isSuccessful) {
-                                Toast.makeText(this@FormatoparteFinal, "Coordenadas guardadas correctamente", Toast.LENGTH_LONG).show()
+                                mostrarAlertaPersonalizada("Coordenadas guardadas correctamente", true)
                             } else {
-                                Toast.makeText(this@FormatoparteFinal, "Error al guardar: ${response.code()}", Toast.LENGTH_LONG).show()
+                                mostrarAlertaPersonalizada("Error al guardar: ${response.code()}", false)
                             }
                         }
                     } catch (e: Exception) {
-                        runOnUiThread {
-                            Toast.makeText(this@FormatoparteFinal, "Error de red: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                        withContext(Dispatchers.Main) {
+                            mostrarAlertaPersonalizada("Error de red: ${e.localizedMessage}", false)
                         }
                     }
                 }
             } else {
-                Toast.makeText(this, "Selecciona un punto en el mapa primero", Toast.LENGTH_SHORT).show()
+                mostrarAlertaPersonalizada("Selecciona un punto en el mapa primero", false)
             }
         }
 
-        btnFinal.setOnClickListener { irSiguiente() }
+        btnFinal.setOnClickListener {
+            if (idUsuario == null) {
+                mostrarAlertaPersonalizada("ID de usuario no disponible", false)
+                return@setOnClickListener
+            }
 
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitClient.webService.obtenerUsuarioPorId(idUsuario!!.toInt())
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            val usuario = response.body()
+                            when (usuario?.id_rol) {
+                                1 -> startActivity(Intent(this@FormatoparteFinal, MenuAdministradorActivity::class.java).putExtra("id_usuario", idUsuario))
+                                2 -> startActivity(Intent(this@FormatoparteFinal, MenuTrabajadorActivity::class.java).putExtra("id_usuario", idUsuario))
+                                else -> mostrarAlertaPersonalizada("Rol de usuario no reconocido", false)
+                            }
+                            finish()
+                        } else {
+                            mostrarAlertaPersonalizada("Error al obtener el rol del usuario", false)
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        mostrarAlertaPersonalizada("Error de red: ${e.localizedMessage}", false)
+                    }
+                }
+            }
+        }
     }
 
     private fun obtenerUbicacionActual() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    val lat = location.latitude
-                    val lon = location.longitude
+                location?.let {
+                    val lat = it.latitude
+                    val lon = it.longitude
 
                     latitudEditText.setText(lat.toString())
                     longitudEditText.setText(lon.toString())
@@ -151,8 +174,8 @@ class FormatoparteFinal : AppCompatActivity() {
                     marker.title = "Tu ubicación actual"
                     map.overlays.add(marker)
                     map.invalidate()
-                } else {
-                    Toast.makeText(this, "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show()
+                } ?: run {
+                    mostrarAlertaPersonalizada("No se pudo obtener la ubicación", false)
                 }
             }
         }
@@ -160,19 +183,11 @@ class FormatoparteFinal : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                obtenerUbicacionActual()
-            } else {
-                Toast.makeText(this, "Se necesita permiso de ubicación para mostrar tu posición", Toast.LENGTH_SHORT).show()
-            }
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            obtenerUbicacionActual()
+        } else {
+            mostrarAlertaPersonalizada("Se necesita permiso de ubicación para mostrar tu posición", false)
         }
-    }
-
-    private fun irSiguiente() {
-        val intent = Intent(this, MenuTrabajadorActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     override fun onResume() {
@@ -183,5 +198,28 @@ class FormatoparteFinal : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         map.onPause()
+    }
+
+    private fun mostrarAlertaPersonalizada(mensaje: String, esExito: Boolean) {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog, null)
+        val icon = dialogView.findViewById<ImageView>(R.id.ivIcon)
+        val title = dialogView.findViewById<TextView>(R.id.tvTitle)
+        val message = dialogView.findViewById<TextView>(R.id.tvMessage)
+        val btnOk = dialogView.findViewById<Button>(R.id.btnOk)
+
+        icon.setImageResource(if (esExito) R.drawable.ic_success else R.drawable.ic_delete)
+        title.text = if (esExito) "Éxito" else "Error"
+        message.text = mensaje
+
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        btnOk.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 }

@@ -2,18 +2,17 @@ package com.example.unamproject
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class Formatoparte10Activity : AppCompatActivity() {
-
 
     private lateinit var otrosHabitantesActividad: EditText
     private lateinit var hijoNumero: EditText
@@ -46,20 +45,38 @@ class Formatoparte10Activity : AppCompatActivity() {
 
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
-    private var idAcreditado: String? = null
-    private var idUsuario:String? = null
 
+    private var idAcreditado: String? = null
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_formatoparte10)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         idAcreditado = intent.getStringExtra("id_acreditado")
         idUsuario = intent.getStringExtra("id_usuario")
 
+        initViews()
 
-        // Vincular vistas con sus IDs correspondientes
+        btnGuardar.setOnClickListener {
+            if (validarCampos()) {
+                guardarDatos()
+            }
+        }
+
+        btnSiguiente.setOnClickListener {
+            if (validarCampos()) {
+                irSiguiente()
+            }
+        }
+    }
+
+    private fun initViews() {
         otrosHabitantesActividad = findViewById(R.id.otros_habitantes_actividad)
         hijoNumero = findViewById(R.id.hijo_numero)
         hijoActividad = findViewById(R.id.hijo_actividad)
@@ -91,9 +108,100 @@ class Formatoparte10Activity : AppCompatActivity() {
 
         btnGuardar = findViewById(R.id.btnGuardar)
         btnSiguiente = findViewById(R.id.btnSiguiente)
+    }
 
-        btnGuardar.setOnClickListener { guardarDatos() }
-        btnSiguiente.setOnClickListener { irSiguiente() }
+    private fun validarCampos(): Boolean {
+        // Validar campos numéricos para cantidades
+        val camposNumericos = listOf(
+            Pair(hijoNumero, "Número de hijos"),
+            Pair(padreNumero, "Número de padres"),
+            Pair(madreNumero, "Número de madres"),
+            Pair(suegrosNumero, "Número de suegros"),
+            Pair(hermanosNumero, "Número de hermanos"),
+            Pair(nietosNumeros, "Número de nietos"),
+            Pair(yernosNuerasNumero, "Número de yernos/nueras"),
+            Pair(otrosFamiliaresNumero, "Número de otros familiares"),
+            Pair(noFamiliaresNumero, "Número de no familiares")
+        )
+
+        for ((campo, nombre) in camposNumericos) {
+            if (campo.text.toString().isNotBlank() && campo.text.toString().toIntOrNull() == null) {
+                mostrarDialogoValidacion(
+                    "Valor inválido",
+                    "El campo '$nombre' debe ser un número entero",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
+        }
+
+        // Validar campos numéricos para aportaciones
+        val camposAportaciones = listOf(
+            Pair(hijoAportacion, "Aportación de hijos"),
+            Pair(padreAportacion, "Aportación de padres"),
+            Pair(madreAportacion, "Aportación de madres"),
+            Pair(suegrosAportacion, "Aportación de suegros"),
+            Pair(hermanosAportacion, "Aportación de hermanos"),
+            Pair(nietosAportacion, "Aportación de nietos"),
+            Pair(yernosNuerasAportacion, "Aportación de yernos/nueras"),
+            Pair(otrosFamiliaresAportacion, "Aportación de otros familiares"),
+            Pair(noFamiliaresAportacion, "Aportación de no familiares")
+        )
+
+        for ((campo, nombre) in camposAportaciones) {
+            if (campo.text.toString().isNotBlank() && campo.text.toString().toDoubleOrNull() == null) {
+                mostrarDialogoValidacion(
+                    "Valor inválido",
+                    "El campo '$nombre' debe ser un valor monetario",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
+        }
+
+        // Validación condicional: si hay número > 0, actividad es obligatoria
+        val gruposFamiliares = listOf(
+            Triple(hijoNumero, hijoActividad, "hijos"),
+            Triple(padreNumero, padreActividad, "padres"),
+            Triple(madreNumero, madreActividad, "madres"),
+            Triple(suegrosNumero, suegrosActividad, "suegros"),
+            Triple(hermanosNumero, hermanosActividad, "hermanos"),
+            Triple(nietosNumeros, nietosActividad, "nietos"),
+            Triple(yernosNuerasNumero, yernosNuerasActividad, "yernos/nueras"),
+            Triple(otrosFamiliaresNumero, otrosFamiliaresActividad, "otros familiares"),
+            Triple(noFamiliaresNumero, noFamiliaresActividad, "no familiares")
+        )
+
+        for ((campoNumero, campoActividad, nombreGrupo) in gruposFamiliares) {
+            val cantidad = campoNumero.text.toString().toIntOrNull() ?: 0
+            if (cantidad > 0 && campoActividad.text.toString().isBlank()) {
+                mostrarDialogoValidacion(
+                    "Campo requerido",
+                    "Debe especificar la actividad de los $nombreGrupo",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campoActividad.requestFocus()
+                return false
+            }
+        }
+
+        // Validar IDs
+        if (idAcreditado.isNullOrBlank() || idUsuario.isNullOrBlank()) {
+            mostrarDialogoValidacion(
+                "Datos faltantes",
+                "Faltan datos del acreditado o usuario",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            return false
+        }
+
+        return true
     }
 
     private fun guardarDatos() {
@@ -135,14 +243,29 @@ class Formatoparte10Activity : AppCompatActivity() {
                 val response = RetrofitClient.webService.agregarDatosOtrosFamiliares(datos)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@Formatoparte10Activity, "Datos guardados correctamente", Toast.LENGTH_LONG).show()
+                        mostrarDialogoValidacion(
+                            "Éxito",
+                            "Datos de otros familiares guardados correctamente",
+                            android.R.drawable.ic_dialog_info,
+                            0xFF388E3C.toInt()
+                        )
                     } else {
-                        Toast.makeText(this@Formatoparte10Activity, "Error al guardar los datos", Toast.LENGTH_LONG).show()
+                        mostrarDialogoValidacion(
+                            "Error",
+                            "Error al guardar los datos: ${response.message()}",
+                            android.R.drawable.stat_notify_error,
+                            0xFFD32F2F.toInt()
+                        )
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte10Activity, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
+                    mostrarDialogoValidacion(
+                        "Error de conexión",
+                        "No se pudo conectar al servidor: ${e.message}",
+                        android.R.drawable.stat_notify_error,
+                        0xFFD32F2F.toInt()
+                    )
                 }
             }
         }
@@ -153,5 +276,38 @@ class Formatoparte10Activity : AppCompatActivity() {
         intent.putExtra("id_acreditado", idAcreditado)
         intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
+    }
+
+    private fun mostrarDialogoValidacion(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = layoutInflater.inflate(R.layout.custom_alert_dialog, null)
+
+        val icon = view.findViewById<ImageView>(R.id.ivIcon)
+        val title = view.findViewById<TextView>(R.id.tvTitle)
+        val message = view.findViewById<TextView>(R.id.tvMessage)
+        val btnOk = view.findViewById<Button>(R.id.btnOk)
+
+        icon.setImageResource(iconoResId)
+        icon.setColorFilter(colorTitulo)
+        title.text = titulo
+        title.setTextColor(colorTitulo)
+        message.text = mensaje
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+
+        btnOk.setOnClickListener {
+            dialog.dismiss()
+            onAceptar?.invoke()
+        }
+
+        dialog.show()
     }
 }

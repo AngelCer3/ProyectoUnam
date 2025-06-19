@@ -13,5 +13,16 @@
         android:layout_height="wrap_content"
         android:text="1 - Apellido Paterno Apellido Materno Nombre"
         android:textSize="16sp"
-        android:textColor="#000000"/>
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/btnSubir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subir"
+        android:textSize="14sp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF"/>
 </LinearLayout>

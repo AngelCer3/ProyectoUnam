@@ -26,6 +26,10 @@ interface WebService{
         @Path("id") idUsuario: String
     ): List<identificarAcreditado>
 
+    @GET("obtenerUsuario/{id}")
+    suspend fun obtenerUsuarioPorId(@Path("id") id: Int): Response<UsuarioResponse>
+
+
     @GET("/appObtenerAcreditados")
     suspend fun ObtenerAcreditados(): List<identificarAcreditado>
 
@@ -169,7 +173,13 @@ interface WebService{
     @POST("/appAgregarCoordenadas")
     suspend fun agregarDatosCoordenadas(
         @Body datosCoordenadas: datosCoordenadas
-    ): Response<String>
+    ): Response<AcreditadoResponse>
+
+    @POST("/appAgregarTodosLosDatos")
+    suspend fun enviarDatosCompletos(
+        @Body datos: DatosCompletosRequest
+    ):Response<Void>
+
 
     @PUT("/appActualizarDatosGenerales/{id}")
     suspend fun actualizarAcreditado(
@@ -278,7 +288,7 @@ interface WebService{
     suspend fun actualizarDatosCoordenadas(
         @Path("id") idAcreditado: String,
         @Body datosCoordenadas: datosCoordenadas
-    ): Response<ResponseMessage>
+    ): Response<AcreditadoResponse>
 }
 
 object RetrofitClient{

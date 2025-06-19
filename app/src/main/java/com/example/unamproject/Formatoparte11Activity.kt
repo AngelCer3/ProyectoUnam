@@ -2,11 +2,11 @@ package com.example.unamproject
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,28 +56,36 @@ class Formatoparte11Activity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
     private lateinit var btnSiguiente: Button
     private var idAcreditado: String? = null
-    private var idUsuario:String? = null
-
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_formatoparte11)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
-        // Obtener el ID del acreditado del Intent
         idAcreditado = intent.getStringExtra("id_acreditado")
         idUsuario = intent.getStringExtra("id_usuario")
 
+        initViews()
 
-        // Inicializar todas las vistas
-        inicializarVistas()
+        btnGuardar.setOnClickListener {
+            if (validarCampos()) {
+                guardarDatos()
+            }
+        }
 
-        // Configurar listeners de los botones
-        btnGuardar.setOnClickListener { guardarDatos() }
-        btnSiguiente.setOnClickListener { irSiguiente() }
+        btnSiguiente.setOnClickListener {
+            if (validarCampos()) {
+                irSiguiente()
+            }
+        }
     }
 
-    private fun inicializarVistas() {
+    private fun initViews() {
         gastoDespensaAlimentacion = findViewById(R.id.gasto_despensa_alimentacion)
         gastoDespensaMotivo = findViewById(R.id.gasto_despensa_motivo)
         gastoGas = findViewById(R.id.gasto_gas)
@@ -120,14 +128,101 @@ class Formatoparte11Activity : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.btnSiguiente)
     }
 
-    private fun guardarDatos() {
-        // Validar que el ID del acreditado no sea nulo
-        if (idAcreditado.isNullOrEmpty()) {
-            Toast.makeText(this, "Error: No se encontró el ID del acreditado", Toast.LENGTH_LONG).show()
-            return
+    private fun validarCampos(): Boolean {
+        // Lista de pares (campo, nombre) para gastos monetarios
+        val gastosMonetarios = listOf(
+            Pair(gastoDespensaAlimentacion, "Despensa y alimentación"),
+            Pair(gastoGas, "Gas"),
+            Pair(gastoLuz, "Luz"),
+            Pair(gastoAgua, "Agua"),
+            Pair(gastoServicioTelefonico, "Servicio telefónico"),
+            Pair(gastoMantenimientoVivienda, "Mantenimiento vivienda"),
+            Pair(gastoTransportePublico, "Transporte público"),
+            Pair(gastoGasolina, "Gasolina"),
+            Pair(gastoServiciosSalud, "Servicios de salud"),
+            Pair(gastoEducacion, "Educación"),
+            Pair(gastoRecreacion, "Recreación"),
+            Pair(gastoComidasFuera, "Comidas fuera"),
+            Pair(gastoVestidoCalzado, "Vestido y calzado"),
+            Pair(gastoPensionVehiculo, "Pensión vehiculo"),
+            Pair(gastoTelefonoCelular, "Teléfono celular"),
+            Pair(gastoTelevisionPago, "Televisión de pago"),
+            Pair(gastoPagoCreditos, "Pago créditos")
+        )
+
+        // Validar que los montos sean numéricos
+        for ((campo, nombre) in gastosMonetarios) {
+            if (campo.text.toString().isNotBlank() && campo.text.toString().toDoubleOrNull() == null) {
+                mostrarDialogoValidacion(
+                    "Valor inválido",
+                    "El monto de '$nombre' debe ser numérico",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
         }
 
-        // Crear el objeto datosGastos con todos los campos
+        // Validar que si hay monto, debe haber motivo
+        for ((campoMonto, campoMotivo, nombre) in listOf(
+            Triple(gastoDespensaAlimentacion, gastoDespensaMotivo, "despensa y alimentación"),
+            Triple(gastoGas, gastoGasMotivo, "gas"),
+            Triple(gastoLuz, gastoLuzMotivo, "luz"),
+            Triple(gastoAgua, gastoAguaMotivo, "agua"),
+            Triple(gastoServicioTelefonico, gastoServicioTelefonicoMotivo, "servicio telefónico"),
+            Triple(gastoMantenimientoVivienda, gastoMantenimientoMotivo, "mantenimiento vivienda"),
+            Triple(gastoTransportePublico, gastoTransporteMotivo, "transporte público"),
+            Triple(gastoGasolina, gastoGasolinaMotivo, "gasolina"),
+            Triple(gastoServiciosSalud, gastoSaludMotivo, "servicios de salud"),
+            Triple(gastoEducacion, gastoEducacionMotivo, "educación"),
+            Triple(gastoRecreacion, gastoRecreacionMotivo, "recreación"),
+            Triple(gastoComidasFuera, gastoComidasFueraMotivo, "comidas fuera"),
+            Triple(gastoVestidoCalzado, gastoVestidoCalzadoMotivo, "vestido y calzado"),
+            Triple(gastoPensionVehiculo, gastoPensionVehiculoMotivo, "pensión vehiculo"),
+            Triple(gastoTelefonoCelular, gastoTelefonoCelularMotivo, "teléfono celular"),
+            Triple(gastoTelevisionPago, gastoTelevisionPagoMotivo, "televisión de pago"),
+            Triple(gastoPagoCreditos, gastoPagoCreditosMotivo, "pago créditos")
+        )) {
+            if (campoMonto.text.toString().isNotBlank() && campoMotivo.text.toString().isBlank()) {
+                mostrarDialogoValidacion(
+                    "Motivo requerido",
+                    "Debe especificar el motivo del gasto en $nombre",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campoMotivo.requestFocus()
+                return false
+            }
+        }
+
+        // Validar método de pago
+        if (gastoMetodoPago.text.toString().isBlank()) {
+            mostrarDialogoValidacion(
+                "Campo requerido",
+                "Debe especificar el método de pago principal",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            gastoMetodoPago.requestFocus()
+            return false
+        }
+
+        // Validar IDs
+        if (idAcreditado.isNullOrBlank() || idUsuario.isNullOrBlank()) {
+            mostrarDialogoValidacion(
+                "Datos faltantes",
+                "Faltan datos del acreditado o usuario",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            return false
+        }
+
+        return true
+    }
+
+    private fun guardarDatos() {
         val datos = datosGastos(
             gasto_despensa_alimentacion = gastoDespensaAlimentacion.text.toString(),
             gasto_despensa_motivo = gastoDespensaMotivo.text.toString(),
@@ -170,33 +265,34 @@ class Formatoparte11Activity : AppCompatActivity() {
             id_usuario = idUsuario!!
         )
 
-        // Enviar los datos al servidor en un hilo secundario
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitClient.webService.agregarDatosGastos(datos)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@Formatoparte11Activity,
+                        mostrarDialogoValidacion(
+                            "Éxito",
                             "Datos de gastos guardados correctamente",
-                            Toast.LENGTH_LONG
-                        ).show()
+                            android.R.drawable.ic_dialog_info,
+                            0xFF388E3C.toInt()
+                        )
                     } else {
-                        Toast.makeText(
-                            this@Formatoparte11Activity,
+                        mostrarDialogoValidacion(
+                            "Error",
                             "Error al guardar los datos: ${response.message()}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                            android.R.drawable.stat_notify_error,
+                            0xFFD32F2F.toInt()
+                        )
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@Formatoparte11Activity,
-                        "Error de conexión: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    e.printStackTrace()
+                    mostrarDialogoValidacion(
+                        "Error de conexión",
+                        "No se pudo conectar al servidor: ${e.message}",
+                        android.R.drawable.stat_notify_error,
+                        0xFFD32F2F.toInt()
+                    )
                 }
             }
         }
@@ -207,6 +303,38 @@ class Formatoparte11Activity : AppCompatActivity() {
         intent.putExtra("id_acreditado", idAcreditado)
         intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
-        finish()
+    }
+
+    private fun mostrarDialogoValidacion(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = layoutInflater.inflate(R.layout.custom_alert_dialog, null)
+
+        val icon = view.findViewById<ImageView>(R.id.ivIcon)
+        val title = view.findViewById<TextView>(R.id.tvTitle)
+        val message = view.findViewById<TextView>(R.id.tvMessage)
+        val btnOk = view.findViewById<Button>(R.id.btnOk)
+
+        icon.setImageResource(iconoResId)
+        icon.setColorFilter(colorTitulo)
+        title.text = titulo
+        title.setTextColor(colorTitulo)
+        message.text = mensaje
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+
+        btnOk.setOnClickListener {
+            dialog.dismiss()
+            onAceptar?.invoke()
+        }
+
+        dialog.show()
     }
 }

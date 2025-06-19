@@ -26,4 +26,5 @@
         <item>Prestada a otra persona</item>
         <item>Venta con reserva de dominio</item>
     </string-array>
+    <string name="alert_icon">Icono de alerta</string>
 </resources>

@@ -2,19 +2,20 @@ package com.example.unamproject.SinConexion
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unamproject.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Formatoparte5SinConexion : AppCompatActivity() {
 
-    // Declara todos los EditText según los campos de DatosReestructuraEntity
     private lateinit var motivoEt: EditText
     private lateinit var documentoEt: EditText
     private lateinit var tipoDocumentoEt: EditText
@@ -45,19 +46,27 @@ class Formatoparte5SinConexion : AppCompatActivity() {
     private lateinit var siguienteBtn: Button
 
     private lateinit var database: AppDatabase
-    private var idAcreditado: String = ""
+    private var idAcreditado: Long = 0L
+    private var datosGuardados = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte5_sin_conexion)
 
-        // Obtener id_acreditado del Intent
-        idAcreditado = intent.getStringExtra("id_acreditado") ?: ""
+        // Obtener ID del acreditado
+        idAcreditado = intent.getStringExtra("id_acreditado")?.toLongOrNull() ?: run {
+            mostrarErrorYCerrar("No se recibió el ID del acreditado")
+            return
+        }
 
-        // Inicializar base de datos Room
+        // Inicializar base de datos
         database = AppDatabase.getDatabase(this)
 
-        // Vincular vistas
+        initViews()
+        setupButtons()
+    }
+
+    private fun initViews() {
         motivoEt = findViewById(R.id.reestructura_motivo)
         documentoEt = findViewById(R.id.reestructura_documento)
         tipoDocumentoEt = findViewById(R.id.reestructura_tipo_documento)
@@ -86,55 +95,184 @@ class Formatoparte5SinConexion : AppCompatActivity() {
 
         guardarBtn = findViewById(R.id.btnGuardar)
         siguienteBtn = findViewById(R.id.btnSiguiente)
+    }
 
+    private fun setupButtons() {
         guardarBtn.setOnClickListener {
-            guardarDatosReestructura()
+            if (validarCampos()) {
+                guardarDatosReestructura()
+            }
         }
 
         siguienteBtn.setOnClickListener {
-            irASiguiente()
+            if (!datosGuardados) {
+                mostrarDialogo(
+                    titulo = "Advertencia",
+                    mensaje = "Debes guardar los datos antes de continuar",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFFFA000.toInt(),
+                    onAceptar = { guardarDatosReestructura() }
+                )
+            } else {
+                irASiguiente()
+            }
         }
+    }
+
+    private fun validarCampos(): Boolean {
+        // Validar campos obligatorios
+        val camposRequeridos = listOf(
+            motivoEt to "Motivo de reestructura",
+            documentoEt to "Documento",
+            solicitanteEsAcredEt to "¿El solicitante es el acreditado?",
+            sexoEt to "Sexo",
+            fechaNacimientoEt to "Fecha de nacimiento",
+            edadEt to "Edad",
+            estadoCivilEt to "Estado civil"
+        )
+
+        for ((campo, nombre) in camposRequeridos) {
+            if (campo.text.toString().trim().isEmpty()) {
+                mostrarDialogo(
+                    titulo = "Campo requerido",
+                    mensaje = "El campo $nombre es obligatorio",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
+        }
+
+        // Validar formatos de fecha
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        dateFormat.isLenient = false
+
+        val fechas = listOf(
+            fechaNacimientoEt to "Fecha de nacimiento",
+            fechaDictamenEt to "Fecha de dictamen",
+            fechaEstadoCivilEt to "Fecha de estado civil",
+            fechaNoConviveEt to "Fecha de no convivencia"
+        )
+
+        for ((campo, nombre) in fechas) {
+            val fechaStr = campo.text.toString().trim()
+            if (fechaStr.isNotEmpty()) {
+                try {
+                    dateFormat.parse(fechaStr)
+                } catch (e: Exception) {
+                    mostrarDialogo(
+                        titulo = "Formato inválido",
+                        mensaje = "$nombre: debe tener formato dd/MM/yyyy",
+                        iconoResId = android.R.drawable.ic_dialog_alert,
+                        colorTitulo = 0xFFD32F2F.toInt()
+                    )
+                    campo.requestFocus()
+                    return false
+                }
+            }
+        }
+
+        // Validar valores numéricos
+        val numericos = listOf(
+            edadEt to "Edad",
+            porcentajeDiscapacidadEt to "Porcentaje de discapacidad",
+            exesposoMontoEt to "Monto de aportación del exesposo"
+        )
+
+        for ((campo, nombre) in numericos) {
+            val valorStr = campo.text.toString().trim()
+            if (valorStr.isNotEmpty()) {
+                try {
+                    valorStr.toInt()
+                } catch (e: NumberFormatException) {
+                    mostrarDialogo(
+                        titulo = "Valor inválido",
+                        mensaje = "$nombre: debe ser un valor numérico entero",
+                        iconoResId = android.R.drawable.ic_dialog_alert,
+                        colorTitulo = 0xFFD32F2F.toInt()
+                    )
+                    campo.requestFocus()
+                    return false
+                }
+            }
+        }
+
+        // Validar edad razonable (1-120 años)
+        val edad = edadEt.text.toString().trim().toIntOrNull() ?: 0
+        if (edad < 1 || edad > 120) {
+            mostrarDialogo(
+                titulo = "Edad inválida",
+                mensaje = "La edad debe estar entre 1 y 120 años",
+                iconoResId = android.R.drawable.ic_dialog_alert,
+                colorTitulo = 0xFFD32F2F.toInt()
+            )
+            edadEt.requestFocus()
+            return false
+        }
+
+        // Validar porcentaje de discapacidad (0-100)
+        porcentajeDiscapacidadEt.text.toString().trim().toIntOrNull()?.let { porcentaje ->
+            if (porcentaje < 0 || porcentaje > 100) {
+                mostrarDialogo(
+                    titulo = "Porcentaje inválido",
+                    mensaje = "El porcentaje de discapacidad debe estar entre 0 y 100",
+                    iconoResId = android.R.drawable.ic_dialog_alert,
+                    colorTitulo = 0xFFD32F2F.toInt()
+                )
+                porcentajeDiscapacidadEt.requestFocus()
+                return false
+            }
+        }
+
+        return true
     }
 
     private fun guardarDatosReestructura() {
         val datos = DatosReestructuraEntity(
-            reestructura_motivo = motivoEt.text.toString(),
-            reestructura_documento = documentoEt.text.toString(),
-            reestructura_tipo_documento = tipoDocumentoEt.text.toString(),
-            reestructura_solicitante_es_acred = solicitanteEsAcredEt.text.toString(),
-            reestructura_solicitante_nombre = solicitanteNombreEt.text.toString(),
-            reestructura_parentesco = parentescoEt.text.toString(),
-            reestructura_motivo_personal = motivoPersonalEt.text.toString(),
-            reestructura_sexo = sexoEt.text.toString(),
-            reestructura_fecha_nacimiento = fechaNacimientoEt.text.toString(),
-            reestructura_edad = edadEt.text.toString(),
-            reestructura_lugar_nacimiento = lugarNacimientoEt.text.toString(),
-            reestructura_grado_estudios = gradoEstudiosEt.text.toString(),
-            reestructura_conocimiento_comp = conocimientoCompEt.text.toString(),
-            reestructura_discapacidad = discapacidadEt.text.toString(),
-            reestructura_dictamen = dictamenEt.text.toString(),
-            reestructura_institucion_dictamen = institucionDictamenEt.text.toString(),
-            reestructura_fecha_dictamen = fechaDictamenEt.text.toString(),
-            reestructura_porcentaje_discapacidad = porcentajeDiscapacidadEt.text.toString(),
-            reestructura_estado_civil = estadoCivilEt.text.toString(),
-            reestructura_fecha_estado_civil = fechaEstadoCivilEt.text.toString(),
-            reestructura_exesposo_aportacion = exesposoAportacionEt.text.toString(),
-            reestructura_exesposo_monto = exesposoMontoEt.text.toString(),
-            reestructura_regimen_conyugal = regimenConyugalEt.text.toString(),
-            reestructura_vive_con_conyuge = viveConConyugeEt.text.toString(),
-            reestructura_fecha_no_convive = fechaNoConviveEt.text.toString(),
-            id_acreditado = idAcreditado
+            reestructura_motivo = motivoEt.text.toString().trim(),
+            reestructura_documento = documentoEt.text.toString().trim(),
+            reestructura_tipo_documento = tipoDocumentoEt.text.toString().trim(),
+            reestructura_solicitante_es_acred = solicitanteEsAcredEt.text.toString().trim(),
+            reestructura_solicitante_nombre = solicitanteNombreEt.text.toString().trim(),
+            reestructura_parentesco = parentescoEt.text.toString().trim(),
+            reestructura_motivo_personal = motivoPersonalEt.text.toString().trim(),
+            reestructura_sexo = sexoEt.text.toString().trim(),
+            reestructura_fecha_nacimiento = fechaNacimientoEt.text.toString().trim(),
+            reestructura_edad = edadEt.text.toString().trim(),
+            reestructura_lugar_nacimiento = lugarNacimientoEt.text.toString().trim(),
+            reestructura_grado_estudios = gradoEstudiosEt.text.toString().trim(),
+            reestructura_conocimiento_comp = conocimientoCompEt.text.toString().trim(),
+            reestructura_discapacidad = discapacidadEt.text.toString().trim(),
+            reestructura_dictamen = dictamenEt.text.toString().trim(),
+            reestructura_institucion_dictamen = institucionDictamenEt.text.toString().trim(),
+            reestructura_fecha_dictamen = fechaDictamenEt.text.toString().trim(),
+            reestructura_porcentaje_discapacidad = porcentajeDiscapacidadEt.text.toString().trim(),
+            reestructura_estado_civil = estadoCivilEt.text.toString().trim(),
+            reestructura_fecha_estado_civil = fechaEstadoCivilEt.text.toString().trim(),
+            reestructura_exesposo_aportacion = exesposoAportacionEt.text.toString().trim(),
+            reestructura_exesposo_monto = exesposoMontoEt.text.toString().trim(),
+            reestructura_regimen_conyugal = regimenConyugalEt.text.toString().trim(),
+            reestructura_vive_con_conyuge = viveConConyugeEt.text.toString().trim(),
+            reestructura_fecha_no_convive = fechaNoConviveEt.text.toString().trim(),
+            id_acreditado = idAcreditado.toString()
         )
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 database.datosReestructuraDao().insertDatosReestructura(datos)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte5SinConexion, "Datos guardados", Toast.LENGTH_SHORT).show()
+                    datosGuardados = true
+                    mostrarDialogo(
+                        titulo = "Éxito",
+                        mensaje = "Datos de reestructura guardados correctamente",
+                        iconoResId = android.R.drawable.ic_dialog_info,
+                        colorTitulo = 0xFF388E3C.toInt()
+                    )
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte5SinConexion, "Error al guardar datos: ${e.message}", Toast.LENGTH_LONG).show()
+                    mostrarErrorInesperado("Error al guardar datos: ${e.message ?: "Error desconocido"}")
                 }
             }
         }
@@ -142,7 +280,61 @@ class Formatoparte5SinConexion : AppCompatActivity() {
 
     private fun irASiguiente() {
         val intent = Intent(this, Formatoparte6SinConexion::class.java)
-        intent.putExtra("id_acreditado", idAcreditado)
+        intent.putExtra("id_acreditado", idAcreditado.toString())
         startActivity(intent)
+    }
+
+    private fun mostrarErrorInesperado(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error inesperado",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        )
+    }
+
+    private fun mostrarErrorYCerrar(mensaje: String) {
+        mostrarDialogo(
+            titulo = "Error crítico",
+            mensaje = mensaje,
+            iconoResId = android.R.drawable.stat_notify_error,
+            colorTitulo = 0xFFD32F2F.toInt()
+        ) {
+            finish()
+        }
+    }
+
+    private fun mostrarDialogo(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog, null)
+
+        view.findViewById<ImageView>(R.id.ivIcon).apply {
+            setImageResource(iconoResId)
+            setColorFilter(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvTitle).apply {
+            text = titulo
+            setTextColor(colorTitulo)
+        }
+
+        view.findViewById<TextView>(R.id.tvMessage).text = mensaje
+
+        AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+            .apply {
+                view.findViewById<Button>(R.id.btnOk).setOnClickListener {
+                    dismiss()
+                    onAceptar?.invoke()
+                }
+                show()
+            }
     }
 }

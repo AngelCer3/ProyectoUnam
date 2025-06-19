@@ -2,14 +2,15 @@ package com.example.unamproject
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Formatoparte5Activity : AppCompatActivity() {
 
@@ -43,7 +44,7 @@ class Formatoparte5Activity : AppCompatActivity() {
     private lateinit var fechaNoConvive: EditText
 
     private var idAcreditado: String? = null
-    private var idUsuario:String? = null
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +53,22 @@ class Formatoparte5Activity : AppCompatActivity() {
         idAcreditado = intent.getStringExtra("id_acreditado")
         idUsuario = intent.getStringExtra("id_usuario")
 
+        initViews()
+
+        guardar.setOnClickListener {
+            if (validarCampos()) {
+                guardarDatos()
+            }
+        }
+
+        siguiente.setOnClickListener {
+            if (validarCampos()) {
+                siguienteFormato()
+            }
+        }
+    }
+
+    private fun initViews() {
         motivo = findViewById(R.id.reestructura_motivo)
         documento = findViewById(R.id.reestructura_documento)
         tipoDocumento = findViewById(R.id.reestructura_tipo_documento)
@@ -80,14 +97,108 @@ class Formatoparte5Activity : AppCompatActivity() {
 
         guardar = findViewById(R.id.btnGuardar)
         siguiente = findViewById(R.id.btnSiguiente)
+    }
 
-        guardar.setOnClickListener {
-            guardarDatos()
+    private fun validarCampos(): Boolean {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        dateFormat.isLenient = false
+
+        val camposObligatorios = listOf(
+            Pair(motivo, "Motivo"),
+            Pair(documento, "Documento"),
+            Pair(tipoDocumento, "Tipo de documento"),
+            Pair(solicitanteEsAcred, "¿Solicitante es acreditado?"),
+            Pair(solicitanteNombre, "Nombre del solicitante"),
+            Pair(parentesco, "Parentesco"),
+            Pair(motivoPersonal, "Motivo personal"),
+            Pair(sexo, "Sexo"),
+            Pair(fechaNacimiento, "Fecha de nacimiento"),
+            Pair(edad, "Edad"),
+            Pair(lugarNacimiento, "Lugar de nacimiento"),
+            Pair(gradoEstudios, "Grado de estudios"),
+            Pair(conocimientoComp, "Conocimiento computacional"),
+            Pair(discapacidad, "Discapacidad"),
+            Pair(dictamen, "Dictamen"),
+            Pair(institucionDictamen, "Institución del dictamen"),
+            Pair(fechaDictamen, "Fecha del dictamen"),
+            Pair(porcentajeDiscapacidad, "Porcentaje discapacidad"),
+            Pair(estadoCivil, "Estado civil"),
+            Pair(fechaEstadoCivil, "Fecha estado civil"),
+            Pair(exesposoAportacion, "Exesposo aportación"),
+            Pair(exesposoMonto, "Monto del exesposo"),
+            Pair(regimenConyugal, "Régimen conyugal"),
+            Pair(viveConConyuge, "Vive con cónyuge"),
+            Pair(fechaNoConvive, "Fecha no convive")
+        )
+
+        // Validate required fields
+        for ((campo, nombre) in camposObligatorios) {
+            if (campo.text.toString().isBlank()) {
+                mostrarDialogoValidacion(
+                    "Campo requerido",
+                    "Por favor, completa el campo: $nombre",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
         }
 
-        siguiente.setOnClickListener {
-            siguienteFormato()
+        // Validate dates
+        val fechas = listOf(
+            Pair(fechaNacimiento, "Fecha de nacimiento"),
+            Pair(fechaDictamen, "Fecha dictamen"),
+            Pair(fechaEstadoCivil, "Fecha estado civil"),
+            Pair(fechaNoConvive, "Fecha no convive")
+        )
+
+        for ((campo, nombre) in fechas) {
+            try {
+                dateFormat.parse(campo.text.toString())
+            } catch (e: Exception) {
+                mostrarDialogoValidacion(
+                    "Fecha inválida",
+                    "Formato inválido en $nombre (usa formato dd/MM/yyyy)",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
         }
+
+        // Validate numeric fields
+        val camposNumericos = listOf(
+            Pair(edad, "Edad"),
+            Pair(porcentajeDiscapacidad, "Porcentaje discapacidad"),
+            Pair(exesposoMonto, "Monto del exesposo")
+        )
+
+        for ((campo, nombre) in camposNumericos) {
+            if (campo.text.toString().toDoubleOrNull() == null) {
+                mostrarDialogoValidacion(
+                    "Valor inválido",
+                    "El campo '$nombre' debe ser numérico",
+                    android.R.drawable.ic_dialog_alert,
+                    0xFFD32F2F.toInt()
+                )
+                campo.requestFocus()
+                return false
+            }
+        }
+
+        if (idAcreditado.isNullOrBlank() || idUsuario.isNullOrBlank()) {
+            mostrarDialogoValidacion(
+                "Datos faltantes",
+                "Faltan datos del acreditado o usuario",
+                android.R.drawable.ic_dialog_alert,
+                0xFFD32F2F.toInt()
+            )
+            return false
+        }
+
+        return true
     }
 
     private fun guardarDatos() {
@@ -126,22 +237,71 @@ class Formatoparte5Activity : AppCompatActivity() {
                 val response = RetrofitClient.webService.agregarDatosReestrucutra(datos)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@Formatoparte5Activity, "Datos guardados correctamente", Toast.LENGTH_LONG).show()
+                        mostrarDialogoValidacion(
+                            "Éxito",
+                            "Datos guardados correctamente",
+                            android.R.drawable.ic_dialog_info,
+                            0xFF388E3C.toInt()
+                        )
                     } else {
-                        Toast.makeText(this@Formatoparte5Activity, "Error al guardar los datos", Toast.LENGTH_LONG).show()
+                        mostrarDialogoValidacion(
+                            "Error",
+                            "Error al guardar los datos: ${response.message()}",
+                            android.R.drawable.stat_notify_error,
+                            0xFFD32F2F.toInt()
+                        )
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Formatoparte5Activity, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
+                    mostrarDialogoValidacion(
+                        "Error de conexión",
+                        "No se pudo conectar: ${e.message}",
+                        android.R.drawable.stat_notify_error,
+                        0xFFD32F2F.toInt()
+                    )
                 }
             }
         }
     }
+
     private fun siguienteFormato() {
         val intent = Intent(this, Formatoparte6Activity::class.java)
         intent.putExtra("id_acreditado", idAcreditado)
         intent.putExtra("id_usuario", idUsuario)
         startActivity(intent)
+    }
+
+    private fun mostrarDialogoValidacion(
+        titulo: String,
+        mensaje: String,
+        iconoResId: Int,
+        colorTitulo: Int,
+        onAceptar: (() -> Unit)? = null
+    ) {
+        val view = layoutInflater.inflate(R.layout.custom_alert_dialog, null)
+
+        val icon = view.findViewById<ImageView>(R.id.ivIcon)
+        val title = view.findViewById<TextView>(R.id.tvTitle)
+        val message = view.findViewById<TextView>(R.id.tvMessage)
+        val btnOk = view.findViewById<Button>(R.id.btnOk)
+
+        icon.setImageResource(iconoResId)
+        icon.setColorFilter(colorTitulo)
+        title.text = titulo
+        title.setTextColor(colorTitulo)
+        message.text = mensaje
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+
+        btnOk.setOnClickListener {
+            dialog.dismiss()
+            onAceptar?.invoke()
+        }
+
+        dialog.show()
     }
 }

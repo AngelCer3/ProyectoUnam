@@ -1,6 +1,7 @@
 package com.example.unamproject
 
-import android.os.health.UidHealthStats
+import com.example.unamproject.SinConexion.*
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class LoginRequest(
@@ -358,4 +359,26 @@ data class datosCoordenadas(
     val coordenadaY: String,
     val id_acreditado: String,
     val id_usuario: String
+)
+
+data class DatosCompletosRequest(
+    val id_usuario: String,
+    @SerializedName("t_generales") val tGenerales: AcreditadoEntity,
+    @SerializedName("t_visitas") val tVisitas: VisitasEntity?,
+    @SerializedName("t_vivienda") val tVivienda: DatosViviendaEntity?,
+    @SerializedName("t_credito") val tCredito: DatosCreditoEntity?,
+    @SerializedName("t_reestructura") val tReestructura: DatosReestructuraEntity?,
+    @SerializedName("t_conyuge") val tConyuge: DatosConyugeEntity?,
+    @SerializedName("t_familiares") val tFamiliares: DatosFamiliaresEntity?,
+    @SerializedName("t_solicitante") val tSolicitante: DatosSolicitanteEntity?,
+    @SerializedName("t_especiconyuge") val tEspeciConyuge: DatosEspecificosConyugeEntity?,
+    @SerializedName("t_otrosfamiliares") val tOtrosFamiliares: DatosOtrosFamiliaresEntity?,
+    @SerializedName("t_gastos") val tGastos: DatosGastosEntity?,
+    @SerializedName("t_deudas") val tDeudas: DatosFamiliaDeudasEntity?,
+    @SerializedName("t_telefonos") val tTelefonos: DatosTelefonosEntity?,
+    @SerializedName("t_cobranza") val tCobranza: DatosCobranzaEntity?,
+    @SerializedName("t_documentos") val tDocumentos: DatosDocumentosEntity?,
+    @SerializedName("t_especivivienda") val tEspeciVivienda: DatosEspecificosViviendaEntity?,
+    @SerializedName("t_observaciones") val tObservaciones: DatosObservacionesEntity?,
+    @SerializedName("t_coordenadas") val tCoordenadas: DatosCoordenadasEntity?
 )
