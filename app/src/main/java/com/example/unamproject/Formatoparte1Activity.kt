@@ -7,9 +7,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
 import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -41,7 +38,6 @@ class Formatoparte1Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte1)
 
-        // Validar idUsuario primero
         idUsuario = intent.getStringExtra("id_usuario").takeIf { !it.isNullOrBlank() }
             ?: run {
                 mostrarErrorYCerrar("No se recibió el ID de usuario")
@@ -74,6 +70,7 @@ class Formatoparte1Activity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
+
         guardar.setOnClickListener {
             if (validarCampos()) {
                 guardarDatos()
@@ -81,6 +78,11 @@ class Formatoparte1Activity : AppCompatActivity() {
         }
 
         siguiente.setOnClickListener {
+
+            if (!validarCampos()) {
+                return@setOnClickListener
+            }
+
             if (idAcreditado == null) {
                 mostrarDialogo(
                     titulo = "Advertencia",
@@ -96,6 +98,7 @@ class Formatoparte1Activity : AppCompatActivity() {
     }
 
     private fun validarCampos(): Boolean {
+
         val camposRequeridos = listOf(
             entidadFederativa to "Entidad Federativa",
             ciudadMunicipio to "Ciudad/Municipio/Delegación",
@@ -120,7 +123,6 @@ class Formatoparte1Activity : AppCompatActivity() {
             }
         }
 
-        // Validación específica para Código Postal (5 dígitos)
         if (!domicilioCp.text.toString().trim().matches(Regex("\\d{5}"))) {
             mostrarDialogo(
                 titulo = "Código Postal inválido",
@@ -132,8 +134,8 @@ class Formatoparte1Activity : AppCompatActivity() {
             return false
         }
 
-        // Validación específica para CURP (18 caracteres)
         val curp = domicilioCurp.text.toString().trim()
+
         if (curp.length != 18) {
             mostrarDialogo(
                 titulo = "CURP inválido",
@@ -149,6 +151,7 @@ class Formatoparte1Activity : AppCompatActivity() {
     }
 
     private fun guardarDatos() {
+
         val acreditado = Acreditado(
             entidad_federativa = entidadFederativa.text.toString().trim(),
             ciudad_municipio_delegacion = ciudadMunicipio.text.toString().trim(),
@@ -169,37 +172,52 @@ class Formatoparte1Activity : AppCompatActivity() {
         )
 
         CoroutineScope(Dispatchers.IO).launch {
+
             try {
+
                 val response = RetrofitClient.webService.agregarAcreditado(acreditado)
 
                 withContext(Dispatchers.Main) {
+
                     if (response.isSuccessful) {
+
                         response.body()?.let { respuesta ->
+
                             if (respuesta.success) {
+
                                 idAcreditado = respuesta.id_acreditado
+
                                 mostrarDialogo(
                                     titulo = "Éxito",
                                     mensaje = "Datos guardados correctamente",
                                     iconoResId = android.R.drawable.ic_dialog_info,
                                     colorTitulo = 0xFF388E3C.toInt()
                                 )
+
                             } else {
                                 mostrarErrorServidor("El servidor no pudo procesar la solicitud")
                             }
                         } ?: mostrarErrorServidor("Respuesta vacía del servidor")
+
                     } else {
                         manejarErrorRespuesta(response.code(), response.errorBody()?.string())
                     }
                 }
+
             } catch (e: HttpException) {
+
                 withContext(Dispatchers.Main) {
                     manejarErrorRespuesta(e.code(), e.message)
                 }
+
             } catch (e: IOException) {
+
                 withContext(Dispatchers.Main) {
                     mostrarErrorConexion(e.message ?: "Error de red desconocido")
                 }
+
             } catch (e: Exception) {
+
                 withContext(Dispatchers.Main) {
                     mostrarErrorInesperado(e.message ?: "Error desconocido")
                 }
@@ -208,19 +226,24 @@ class Formatoparte1Activity : AppCompatActivity() {
     }
 
     private fun manejarErrorRespuesta(codigo: Int, mensajeError: String?) {
+
         when (codigo) {
+
             500 -> mostrarErrorServidor("Error interno del servidor (500): ${mensajeError ?: "sin detalles"}")
+
             400 -> mostrarDialogo(
                 titulo = "Datos inválidos",
                 mensaje = "Verifica la información ingresada: ${mensajeError ?: "Error 400"}",
                 iconoResId = android.R.drawable.ic_dialog_alert,
                 colorTitulo = 0xFFD32F2F.toInt()
             )
+
             else -> mostrarErrorServidor("Error $codigo: ${mensajeError ?: "Error desconocido"}")
         }
     }
 
     private fun mostrarErrorServidor(mensaje: String) {
+
         mostrarDialogo(
             titulo = "Error del servidor",
             mensaje = mensaje,
@@ -230,6 +253,7 @@ class Formatoparte1Activity : AppCompatActivity() {
     }
 
     private fun mostrarErrorConexion(mensaje: String) {
+
         mostrarDialogo(
             titulo = "Error de conexión",
             mensaje = "No se pudo conectar al servidor: $mensaje",
@@ -239,6 +263,7 @@ class Formatoparte1Activity : AppCompatActivity() {
     }
 
     private fun mostrarErrorInesperado(mensaje: String) {
+
         mostrarDialogo(
             titulo = "Error inesperado",
             mensaje = "Ocurrió un error: $mensaje",
@@ -248,6 +273,7 @@ class Formatoparte1Activity : AppCompatActivity() {
     }
 
     private fun mostrarErrorYCerrar(mensaje: String) {
+
         mostrarDialogo(
             titulo = "Error crítico",
             mensaje = mensaje,
@@ -259,10 +285,12 @@ class Formatoparte1Activity : AppCompatActivity() {
     }
 
     private fun irSiguienteFormato() {
+
         val intent = Intent(this, Formatoparte2Activity::class.java).apply {
             putExtra("id_acreditado", idAcreditado)
             putExtra("id_usuario", idUsuario)
         }
+
         startActivity(intent)
     }
 
@@ -273,6 +301,7 @@ class Formatoparte1Activity : AppCompatActivity() {
         colorTitulo: Int,
         onAceptar: (() -> Unit)? = null
     ) {
+
         val view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog, null)
 
         view.findViewById<ImageView>(R.id.ivIcon).apply {
@@ -292,10 +321,12 @@ class Formatoparte1Activity : AppCompatActivity() {
             .setCancelable(false)
             .create()
             .apply {
+
                 view.findViewById<Button>(R.id.btnOk).setOnClickListener {
                     dismiss()
                     onAceptar?.invoke()
                 }
+
                 show()
             }
     }
