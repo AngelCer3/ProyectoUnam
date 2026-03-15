@@ -20,6 +20,7 @@ class MenuAdministradorActivity : AppCompatActivity() {
     private lateinit var agregar: Button
     private lateinit var rvAcreditados: RecyclerView
     private lateinit var cerrarSesion: Button
+    private lateinit var trabajadores: Button
     private lateinit var adapter: AcreditadosAdapter
     private var idUsuario: String? = null
 
@@ -35,10 +36,16 @@ class MenuAdministradorActivity : AppCompatActivity() {
         rvAcreditados = findViewById(R.id.recyclerAcreditados)
         rvAcreditados.layoutManager = LinearLayoutManager(this)
 
+        trabajadores = findViewById(R.id.btn_trabajadores)
+
         cerrarSesion = findViewById(R.id.btn_cerrar_sesion)
 
         agregar.setOnClickListener {
             agregarFormato()
+        }
+        trabajadores.setOnClickListener {
+            val intent = Intent(this, TrabajadoresActivity::class.java)
+            startActivity(intent)
         }
 
         cerrarSesion.setOnClickListener {

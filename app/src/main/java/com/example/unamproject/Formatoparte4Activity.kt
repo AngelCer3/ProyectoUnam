@@ -38,15 +38,11 @@ class Formatoparte4Activity : AppCompatActivity() {
         initViews()
 
         guardar.setOnClickListener {
-            if (validarCampos()) {
-                guardarDatos()
-            }
+            guardarDatos()
         }
 
         siguiente.setOnClickListener {
-            if (validarCampos()) {
-                siguienteFormato()
-            }
+            siguienteFormato()
         }
     }
 

@@ -141,7 +141,7 @@ class actualizarFormatoparte5 : AppCompatActivity() {
                             edad.setText(data.reestructura_edad)
                             lugarNacimiento.setText(data.reestructura_lugar_nacimiento)
                             gradoEstudios.setText(data.reestructura_grado_estudios)
-                            conocimientoComp.setText(data.reestructura_conocimiento_comp)
+                            conocimientoComp.setText(data.reestructura_conocimiento_com)
                             discapacidad.setText(data.reestructura_discapacidad)
                             dictamen.setText(data.reestructura_dictamen)
                             institucionDictamen.setText(data.reestructura_institucion_dictamen)
@@ -267,7 +267,7 @@ class actualizarFormatoparte5 : AppCompatActivity() {
             reestructura_edad = edad.text.toString().trim(),
             reestructura_lugar_nacimiento = lugarNacimiento.text.toString().trim(),
             reestructura_grado_estudios = gradoEstudios.text.toString().trim(),
-            reestructura_conocimiento_comp = conocimientoComp.text.toString().trim(),
+            reestructura_conocimiento_com = conocimientoComp.text.toString().trim(),
             reestructura_discapacidad = discapacidad.text.toString().trim(),
             reestructura_dictamen = dictamen.text.toString().trim(),
             reestructura_institucion_dictamen = institucionDictamen.text.toString().trim(),

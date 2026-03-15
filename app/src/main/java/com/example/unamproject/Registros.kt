@@ -17,6 +17,22 @@ data class UsuarioResponse(
     val correo: String,
     val id_rol: Int
 )
+data class TrabajadorResponse(
+
+    @SerializedName("id_usuario")
+    val id: Int,
+
+    val correo: String,
+
+    val id_rol: Int
+)
+
+data class UsuarioRequest(
+
+    val correo: String,
+    val contrasena: String,
+    val id_rol: Int
+)
 
 data class identificarAcreditado(
     val id_acreditado: String,
@@ -127,7 +143,7 @@ data class DatosReestructura(
     val reestructura_edad: String,
     val reestructura_lugar_nacimiento: String,
     val reestructura_grado_estudios: String,
-    val reestructura_conocimiento_comp: String,
+    val reestructura_conocimiento_com: String,
     val reestructura_discapacidad: String,
     val reestructura_dictamen: String,
     val reestructura_institucion_dictamen: String,
@@ -343,7 +359,7 @@ data class datosEspecificosVivienda(
     val vivienda_tipo_piso: String,
     val vivienda_tipo_piso_otro: String,
     val vivienda_tipo_techo: String,
-    val vivienda_cuenta_bano: String,
+    val viviendo_cuenta_bano: String,
     val id_acreditado: String,
     val id_usuario: String
 )

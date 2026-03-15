@@ -29,7 +29,7 @@ class Formatoparte5Activity : AppCompatActivity() {
     private lateinit var edad: EditText
     private lateinit var lugarNacimiento: EditText
     private lateinit var gradoEstudios: EditText
-    private lateinit var conocimientoComp: EditText
+    private lateinit var conocimientoCom: EditText
     private lateinit var discapacidad: EditText
     private lateinit var dictamen: EditText
     private lateinit var institucionDictamen: EditText
@@ -56,15 +56,11 @@ class Formatoparte5Activity : AppCompatActivity() {
         initViews()
 
         guardar.setOnClickListener {
-            if (validarCampos()) {
-                guardarDatos()
-            }
+            guardarDatos()
         }
 
         siguiente.setOnClickListener {
-            if (validarCampos()) {
-                siguienteFormato()
-            }
+            siguienteFormato()
         }
     }
 
@@ -81,7 +77,7 @@ class Formatoparte5Activity : AppCompatActivity() {
         edad = findViewById(R.id.reestructura_edad)
         lugarNacimiento = findViewById(R.id.reestructura_lugar_nacimiento)
         gradoEstudios = findViewById(R.id.reestructura_grado_estudios)
-        conocimientoComp = findViewById(R.id.reestructura_conocimiento_comp)
+        conocimientoCom = findViewById(R.id.reestructura_conocimiento_comp)
         discapacidad = findViewById(R.id.reestructura_discapacidad)
         dictamen = findViewById(R.id.reestructura_dictamen)
         institucionDictamen = findViewById(R.id.reestructura_institucion_dictamen)
@@ -116,7 +112,7 @@ class Formatoparte5Activity : AppCompatActivity() {
             Pair(edad, "Edad"),
             Pair(lugarNacimiento, "Lugar de nacimiento"),
             Pair(gradoEstudios, "Grado de estudios"),
-            Pair(conocimientoComp, "Conocimiento computacional"),
+            Pair(conocimientoCom, "Conocimiento computacional"),
             Pair(discapacidad, "Discapacidad"),
             Pair(dictamen, "Dictamen"),
             Pair(institucionDictamen, "Institución del dictamen"),
@@ -215,7 +211,7 @@ class Formatoparte5Activity : AppCompatActivity() {
             reestructura_edad = edad.text.toString(),
             reestructura_lugar_nacimiento = lugarNacimiento.text.toString(),
             reestructura_grado_estudios = gradoEstudios.text.toString(),
-            reestructura_conocimiento_comp = conocimientoComp.text.toString(),
+            reestructura_conocimiento_com = conocimientoCom.text.toString(),
             reestructura_discapacidad = discapacidad.text.toString(),
             reestructura_dictamen = dictamen.text.toString(),
             reestructura_institucion_dictamen = institucionDictamen.text.toString(),

@@ -96,7 +96,7 @@
                     android:id="@+id/vivienda_tipo_piso_otro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tipo de Piso (Otro)"
+                    android:hint="Tipo de Fachada"
                     android:inputType="text"/>
 
                 <EditText

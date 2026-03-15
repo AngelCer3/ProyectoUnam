@@ -23,7 +23,7 @@ class Formatoparte16Activity : AppCompatActivity() {
     private lateinit var viviendaTipoPiso: EditText
     private lateinit var viviendaTipoPisoOtro: EditText
     private lateinit var viviendaTipoTecho: EditText
-    private lateinit var viviendaCuentaBano: EditText
+    private lateinit var viviendoCuentaBano: EditText
 
     // Campos de Observaciones
     private lateinit var observacionesEntrevistador: EditText
@@ -70,7 +70,7 @@ class Formatoparte16Activity : AppCompatActivity() {
         viviendaTipoPiso = findViewById(R.id.vivienda_tipo_piso)
         viviendaTipoPisoOtro = findViewById(R.id.vivienda_tipo_piso_otro)
         viviendaTipoTecho = findViewById(R.id.vivienda_tipo_techo)
-        viviendaCuentaBano = findViewById(R.id.viviendo_cuenta_bano)
+        viviendoCuentaBano = findViewById(R.id.viviendo_cuenta_bano)
 
         // Observaciones
         observacionesEntrevistador = findViewById(R.id.observaciones_entrevistador)
@@ -137,14 +137,14 @@ class Formatoparte16Activity : AppCompatActivity() {
             return false
         }
 
-        if (viviendaCuentaBano.text.toString().isBlank()) {
+        if (viviendoCuentaBano.text.toString().isBlank()) {
             mostrarDialogoValidacion(
                 "Campo requerido",
                 "Debe especificar si cuenta con baño",
                 android.R.drawable.ic_dialog_alert,
                 0xFFD32F2F.toInt()
             )
-            viviendaCuentaBano.requestFocus()
+            viviendoCuentaBano.requestFocus()
             return false
         }
 
@@ -217,7 +217,7 @@ class Formatoparte16Activity : AppCompatActivity() {
             vivienda_tipo_piso = viviendaTipoPiso.text.toString(),
             vivienda_tipo_piso_otro = viviendaTipoPisoOtro.text.toString(),
             vivienda_tipo_techo = viviendaTipoTecho.text.toString(),
-            vivienda_cuenta_bano = viviendaCuentaBano.text.toString(),
+            viviendo_cuenta_bano = viviendoCuentaBano.text.toString(),
             id_acreditado = idAcreditado!!,
             id_usuario = idUsuario!!
         )

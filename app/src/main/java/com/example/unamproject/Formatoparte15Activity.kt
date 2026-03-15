@@ -50,15 +50,11 @@ class Formatoparte15Activity : AppCompatActivity() {
         bindViews()
 
         btnGuardar.setOnClickListener {
-            if (validarCampos()) {
-                guardarDatos()
-            }
+            guardarDatos()
         }
 
         btnSiguiente.setOnClickListener {
-            if (validarCampos()) {
-                irSiguiente()
-            }
+            irSiguiente()
         }
     }
 

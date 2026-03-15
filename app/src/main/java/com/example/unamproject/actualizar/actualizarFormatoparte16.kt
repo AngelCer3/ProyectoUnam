@@ -97,7 +97,7 @@ class actualizarFormatoparte16 : AppCompatActivity() {
                         viviendaTipoPiso.setText(datos.vivienda_tipo_piso)
                         viviendaTipoPisoOtro.setText(datos.vivienda_tipo_piso_otro)
                         viviendaTipoTecho.setText(datos.vivienda_tipo_techo)
-                        viviendaCuentaBano.setText(datos.vivienda_cuenta_bano)
+                        viviendaCuentaBano.setText(datos.viviendo_cuenta_bano)
                     } ?: run {
                         mostrarDialogo(
                             titulo = "Información",
@@ -194,7 +194,7 @@ class actualizarFormatoparte16 : AppCompatActivity() {
             vivienda_tipo_piso = viviendaTipoPiso.text.toString().trim(),
             vivienda_tipo_piso_otro = viviendaTipoPisoOtro.text.toString().trim(),
             vivienda_tipo_techo = viviendaTipoTecho.text.toString().trim(),
-            vivienda_cuenta_bano = viviendaCuentaBano.text.toString().trim(),
+            viviendo_cuenta_bano = viviendaCuentaBano.text.toString().trim(),
             id_acreditado = idAcreditado,
             id_usuario = idUsuario!!
         )

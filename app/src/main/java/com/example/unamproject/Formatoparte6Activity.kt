@@ -45,15 +45,11 @@ class Formatoparte6Activity : AppCompatActivity() {
 
         // Configurar listeners de botones
         btnGuardar.setOnClickListener {
-            if (validarCampos()) {
-                guardarDatos()
-            }
+            guardarDatos()
         }
 
         btnSiguiente.setOnClickListener {
-            if (validarCampos()) {
-                irSiguiente()
-            }
+            irSiguiente()
         }
     }
 

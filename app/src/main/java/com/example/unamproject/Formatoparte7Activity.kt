@@ -52,15 +52,11 @@ class Formatoparte7Activity : AppCompatActivity() {
         initViews()
 
         btnGuardar.setOnClickListener {
-            if (validarCampos()) {
-                guardarDatos()
-            }
+            guardarDatos()
         }
 
         btnSiguiente.setOnClickListener {
-            if (validarCampos()) {
-                irSiguiente()
-            }
+            irSiguiente()
         }
     }
 

@@ -21,7 +21,10 @@ class Formatoparte9Activity : AppCompatActivity() {
     private lateinit var conyugeContratoLaboral: EditText
     private lateinit var conyugeIngresoMensual: EditText
     private lateinit var conyugeEmpresa: EditText
-    private lateinit var conyugeAntiguedad: EditText
+
+    private lateinit var conyugeAntiguedadAnios: EditText
+    private lateinit var conyugeAntiguedadMeses: EditText
+
     private lateinit var comprobanteIngresoConyuge: EditText
     private lateinit var institucionCotizacionConyuge: EditText
     private lateinit var ingresosConceptosConyuge: EditText
@@ -35,6 +38,7 @@ class Formatoparte9Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formatoparte9)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -53,13 +57,12 @@ class Formatoparte9Activity : AppCompatActivity() {
         }
 
         btnSiguiente.setOnClickListener {
-            if (validarCampos()) {
-                irSiguiente()
-            }
+            irSiguiente()
         }
     }
 
     private fun initViews() {
+
         conyugeActivo = findViewById(R.id.conyuge_activo)
         conyugeOcupacionActual = findViewById(R.id.conyuge_ocupacion_actual)
         institucionTrabajoConyuge = findViewById(R.id.institucion_trabajo_conyuge)
@@ -67,7 +70,10 @@ class Formatoparte9Activity : AppCompatActivity() {
         conyugeContratoLaboral = findViewById(R.id.conyuge_contrato_laboral)
         conyugeIngresoMensual = findViewById(R.id.conyuge_ingreso_mensual)
         conyugeEmpresa = findViewById(R.id.conyuge_empresa)
-        conyugeAntiguedad = findViewById(R.id.conyuge_antiguedad)
+
+        conyugeAntiguedadAnios = findViewById(R.id.conyuge_antiguedad_anios)
+        conyugeAntiguedadMeses = findViewById(R.id.conyuge_antiguedad_meses)
+
         comprobanteIngresoConyuge = findViewById(R.id.comprobante_ingreso_conyuge)
         institucionCotizacionConyuge = findViewById(R.id.institucion_cotizacion_conyuge)
         ingresosConceptosConyuge = findViewById(R.id.ingresos_conceptos_conyuge)
@@ -77,93 +83,24 @@ class Formatoparte9Activity : AppCompatActivity() {
     }
 
     private fun validarCampos(): Boolean {
-        // Campos obligatorios principales
-        val camposObligatorios = listOf(
-            Pair(conyugeActivo, "¿Cónyuge activo laboralmente?"),
-            Pair(conyugeOcupacionActual, "Ocupación actual del cónyuge"),
-            Pair(conyugeIngresoMensual, "Ingreso mensual del cónyuge"),
-            Pair(conyugeEmpresa, "Empresa del cónyuge"),
-            Pair(conyugeAntiguedad, "Antigüedad del cónyuge")
-        )
 
-        for ((campo, nombre) in camposObligatorios) {
-            if (campo.text.toString().isBlank()) {
-                mostrarDialogoValidacion(
-                    "Campo requerido",
-                    "Por favor, complete el campo: $nombre",
-                    android.R.drawable.ic_dialog_alert,
-                    0xFFD32F2F.toInt()
-                )
-                campo.requestFocus()
-                return false
-            }
+        if (conyugeActivo.text.toString().isBlank()) {
+            mostrarDialogoValidacion("Campo requerido","Indique si el cónyuge está activo laboralmente",android.R.drawable.ic_dialog_alert,0xFFD32F2F.toInt())
+            return false
         }
 
-        // Validar campos numéricos
-        val camposNumericos = listOf(
-            Pair(conyugeIngresoMensual, "Ingreso mensual del cónyuge"),
-            Pair(conyugeAntiguedad, "Antigüedad del cónyuge")
-        )
-
-        for ((campo, nombre) in camposNumericos) {
-            if (campo.text.toString().isNotBlank() && campo.text.toString().toDoubleOrNull() == null) {
-                mostrarDialogoValidacion(
-                    "Valor inválido",
-                    "El campo '$nombre' debe ser numérico",
-                    android.R.drawable.ic_dialog_alert,
-                    0xFFD32F2F.toInt()
-                )
-                campo.requestFocus()
-                return false
-            }
+        if (conyugeIngresoMensual.text.toString().isBlank()) {
+            mostrarDialogoValidacion("Campo requerido","Ingrese el ingreso mensual del cónyuge",android.R.drawable.ic_dialog_alert,0xFFD32F2F.toInt())
+            return false
         }
 
-        // Validación condicional si el cónyuge está activo
-        if (conyugeActivo.text.toString().equals("Sí", ignoreCase = true) ||
-            conyugeActivo.text.toString().equals("Si", ignoreCase = true)) {
-
-            if (institucionTrabajoConyuge.text.toString().isBlank()) {
-                mostrarDialogoValidacion(
-                    "Campo requerido",
-                    "Debe especificar la institución donde trabaja el cónyuge",
-                    android.R.drawable.ic_dialog_alert,
-                    0xFFD32F2F.toInt()
-                )
-                institucionTrabajoConyuge.requestFocus()
-                return false
-            }
-
-            if (conyugeActividadRemunerada.text.toString().isBlank()) {
-                mostrarDialogoValidacion(
-                    "Campo requerido",
-                    "Debe especificar la actividad remunerada del cónyuge",
-                    android.R.drawable.ic_dialog_alert,
-                    0xFFD32F2F.toInt()
-                )
-                conyugeActividadRemunerada.requestFocus()
-                return false
-            }
-
-            if (conyugeContratoLaboral.text.toString().isBlank()) {
-                mostrarDialogoValidacion(
-                    "Campo requerido",
-                    "Debe especificar el tipo de contrato laboral del cónyuge",
-                    android.R.drawable.ic_dialog_alert,
-                    0xFFD32F2F.toInt()
-                )
-                conyugeContratoLaboral.requestFocus()
-                return false
-            }
+        if (conyugeAntiguedadAnios.text.toString().isBlank() && conyugeAntiguedadMeses.text.toString().isBlank()) {
+            mostrarDialogoValidacion("Campo requerido","Ingrese la antigüedad del cónyuge",android.R.drawable.ic_dialog_alert,0xFFD32F2F.toInt())
+            return false
         }
 
-        // Validar IDs
         if (idAcreditado.isNullOrBlank() || idUsuario.isNullOrBlank()) {
-            mostrarDialogoValidacion(
-                "Datos faltantes",
-                "Faltan datos del acreditado o usuario",
-                android.R.drawable.ic_dialog_alert,
-                0xFFD32F2F.toInt()
-            )
+            mostrarDialogoValidacion("Error","Faltan datos del usuario",android.R.drawable.ic_dialog_alert,0xFFD32F2F.toInt())
             return false
         }
 
@@ -171,6 +108,10 @@ class Formatoparte9Activity : AppCompatActivity() {
     }
 
     private fun guardarDatos() {
+
+        val antiguedadCompleta =
+            "${conyugeAntiguedadAnios.text} años ${conyugeAntiguedadMeses.text} meses"
+
         val datos = datosEspecificosConyuge(
             conyuge_activo = conyugeActivo.text.toString(),
             conyuge_ocupacion_actual = conyugeOcupacionActual.text.toString(),
@@ -179,7 +120,7 @@ class Formatoparte9Activity : AppCompatActivity() {
             conyuge_contrato_laboral = conyugeContratoLaboral.text.toString(),
             conyuge_ingreso_mensual = conyugeIngresoMensual.text.toString(),
             conyuge_empresa = conyugeEmpresa.text.toString(),
-            conyuge_antiguedad = conyugeAntiguedad.text.toString(),
+            conyuge_antiguedad = antiguedadCompleta,
             comprobante_ingreso_conyuge = comprobanteIngresoConyuge.text.toString(),
             institucion_cotizacion_conyuge = institucionCotizacionConyuge.text.toString(),
             ingresos_conceptos_conyuge = ingresosConceptosConyuge.text.toString(),
@@ -188,30 +129,40 @@ class Formatoparte9Activity : AppCompatActivity() {
         )
 
         CoroutineScope(Dispatchers.IO).launch {
+
             try {
+
                 val response = RetrofitClient.webService.agregarDatosEspecificosConyuge(datos)
+
                 withContext(Dispatchers.Main) {
+
                     if (response.isSuccessful) {
+
                         mostrarDialogoValidacion(
                             "Éxito",
-                            "Datos del cónyuge guardados correctamente",
+                            "Datos guardados correctamente",
                             android.R.drawable.ic_dialog_info,
                             0xFF388E3C.toInt()
                         )
+
                     } else {
+
                         mostrarDialogoValidacion(
                             "Error",
-                            "Error al guardar los datos: ${response.message()}",
+                            "Error al guardar datos",
                             android.R.drawable.stat_notify_error,
                             0xFFD32F2F.toInt()
                         )
                     }
                 }
+
             } catch (e: Exception) {
+
                 withContext(Dispatchers.Main) {
+
                     mostrarDialogoValidacion(
                         "Error de conexión",
-                        "No se pudo conectar al servidor: ${e.message}",
+                        "No se pudo conectar al servidor",
                         android.R.drawable.stat_notify_error,
                         0xFFD32F2F.toInt()
                     )
@@ -221,9 +172,12 @@ class Formatoparte9Activity : AppCompatActivity() {
     }
 
     private fun irSiguiente() {
+
         val intent = Intent(this, Formatoparte10Activity::class.java)
+
         intent.putExtra("id_acreditado", idAcreditado)
         intent.putExtra("id_usuario", idUsuario)
+
         startActivity(intent)
     }
 

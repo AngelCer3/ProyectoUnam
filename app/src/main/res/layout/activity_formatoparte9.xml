@@ -121,11 +121,48 @@
                     android:layout_height="wrap_content"
                     android:hint="Empresa donde Trabaja el Cónyuge"/>
 
-                <EditText
-                    android:id="@+id/conyuge_antiguedad"
+                <!-- ANTIGÜEDAD CON AÑOS Y MESES -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Antigüedad en su Empresa Actual"
+                    android:textStyle="bold"
+                    android:paddingTop="8dp"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Antigüedad en su Empresa Actual"/>
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/conyuge_antiguedad_anios"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Años"
+                        android:inputType="number"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Años"
+                        android:padding="8dp"/>
+
+                    <EditText
+                        android:id="@+id/conyuge_antiguedad_meses"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Meses"
+                        android:inputType="number"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Meses"
+                        android:padding="8dp"/>
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/comprobante_ingreso_conyuge"

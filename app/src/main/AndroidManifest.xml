@@ -18,9 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UNAMProject"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31"
-        tools:replace="android:icon">
-    <activity
+        tools:replace="android:icon"
+        tools:targetApi="31">
+        <activity
+            android:name=".RegistrarTrabajadorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditarTrabajadorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrabajadoresActivity"
+            android:exported="false" />
+        <activity
             android:name=".SinConexion.FormatoparteFinalSinConexion"
             android:exported="false" />
         <activity

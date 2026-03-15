@@ -16,7 +16,7 @@ object AppConstantes{
     const val BASE_URL = "http://10.0.2.2:3000/"
 }
 
-interface WebService{
+interface WebService {
 
     @POST("/appInicioSesion")
     fun iniciarSesion(@Body request: LoginRequest): Call<LoginResponse>
@@ -29,6 +29,16 @@ interface WebService{
     @GET("obtenerUsuario/{id}")
     suspend fun obtenerUsuarioPorId(@Path("id") id: Int): Response<UsuarioResponse>
 
+    @GET("obtenerTrabajadores")
+    suspend fun obtenerTrabajadores(): List<TrabajadorResponse>
+
+    @GET("/obtenerTrabajadorPorId/{id}")
+    suspend fun ObtenerTrabajadorPorId(@Path("id") id: Int): Response<TrabajadorResponse>
+
+    @POST("registrarUsuario")
+    suspend fun registrarUsuario(
+        @Body usuario: UsuarioRequest
+    ): Response<Unit>
 
     @GET("/appObtenerAcreditados")
     suspend fun ObtenerAcreditados(): List<identificarAcreditado>
@@ -40,7 +50,7 @@ interface WebService{
     suspend fun obtenerVivienda(@Path("id") idAcreditado: String): Response<datosVivienda>
 
     @GET("/appObtenerDatosCredito/{id}")
-    suspend fun obtenerCredito(@Path("id")idAcreditado: String): Response<datosCredito>
+    suspend fun obtenerCredito(@Path("id") idAcreditado: String): Response<datosCredito>
 
     @GET("/appObtenerDatosReestructura/{id}")
     suspend fun obtenerReestructura(@Path("id") idAcreditado: String): Response<DatosReestructura>
@@ -160,7 +170,7 @@ interface WebService{
         @Body datosDocumentos: datosDocumentos
     ): Response<AcreditadoResponse>
 
-    @POST ("/appAgregarDatosEspecificiosVivienda")
+    @POST("/appAgregarDatosEspecificiosVivienda")
     suspend fun agregarDatosEspecificosVivienda(
         @Body datosEspecificosVivienda: datosEspecificosVivienda
     ): Response<AcreditadoResponse>
@@ -178,8 +188,13 @@ interface WebService{
     @POST("/appAgregarTodosLosDatos")
     suspend fun enviarDatosCompletos(
         @Body datos: DatosCompletosRequest
-    ):Response<Void>
+    ): Response<Void>
 
+    @PUT("actualizarRegistro/{id}")
+    suspend fun actualizarRegistro(
+        @Path("id") id: Int,
+        @Body usuario: UsuarioRequest
+    ): Response<UsuarioRequest>
 
     @PUT("/appActualizarDatosGenerales/{id}")
     suspend fun actualizarAcreditado(

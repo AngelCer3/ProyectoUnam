@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Contenedor de datos -->
+    <!-- Contenedor -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -101,8 +101,7 @@
                     android:id="@+id/solicitante_desempleado_tiempo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tiempo de Desempleo del Solicitante"
-                    android:inputType="text"/>
+                    android:hint="Tiempo de Desempleo del Solicitante"/>
 
                 <EditText
                     android:id="@+id/solicitante_empresa_previa"
@@ -110,13 +109,48 @@
                     android:layout_height="wrap_content"
                     android:hint="Empresa Previa del Solicitante"/>
 
-                <EditText
-                    android:id="@+id/solicitante_antiguedad_empleo_anterior"
+                <!-- ANTIGÜEDAD CON AÑOS Y MESES -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Antigüedad en su Empresa Anterior"
+                    android:textStyle="bold"
+                    android:paddingTop="8dp"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Antigüedad en el Empleo Anterior"
-                    android:inputType="text"/>
+                    android:orientation="horizontal">
 
+                    <EditText
+                        android:id="@+id/solicitante_antiguedad_anios"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Años"
+                        android:inputType="number"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Años"
+                        android:padding="8dp"/>
+
+                    <EditText
+                        android:id="@+id/solicitante_antiguedad_meses"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Meses"
+                        android:inputType="number"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Meses"
+                        android:padding="8dp"/>
+
+                </LinearLayout>
                 <EditText
                     android:id="@+id/institucion_trabajo_solicitante"
                     android:layout_width="match_parent"
@@ -148,11 +182,48 @@
                     android:layout_height="wrap_content"
                     android:hint="Empresa donde Trabaja el Solicitante"/>
 
-                <EditText
-                    android:id="@+id/solicitante_antiguedad"
+                <!-- ANTIGÜEDAD CON AÑOS Y MESES -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Antigüedad en su Empresa Actual"
+                    android:textStyle="bold"
+                    android:paddingTop="8dp"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Antigüedad en su Empresa Actual"/>
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/antiguedad_anios"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Años"
+                        android:inputType="number"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Años"
+                        android:padding="8dp"/>
+
+                    <EditText
+                        android:id="@+id/antiguedad_meses"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Meses"
+                        android:inputType="number"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Meses"
+                        android:padding="8dp"/>
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/comprobante_ingresos_solicitante"
@@ -176,7 +247,7 @@
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
-    <!-- Botón Siguiente -->
+    <!-- Botones -->
     <Button
         android:id="@+id/btnGuardar"
         android:layout_width="wrap_content"
@@ -187,9 +258,8 @@
         android:text="Guardar Datos"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.294"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnSiguiente"/>
 
     <Button
         android:id="@+id/btnSiguiente"
@@ -201,8 +271,7 @@
         android:text="Siguiente"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.687"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/btnGuardar"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
